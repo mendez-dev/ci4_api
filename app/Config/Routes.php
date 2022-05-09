@@ -21,7 +21,7 @@ $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);
+$routes->setAutoRoute(false);
 
 /*
  * --------------------------------------------------------------------
@@ -37,6 +37,13 @@ $routes->get('/', 'Home::index');
 $routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'AppSettingsController::index', ['as' => 'settings']);
     $routes->put('/', 'AppSettingsController::update', ['as' => 'update_settings']);
+});
+
+$routes->group('documentation', ['namespace' => 'App\Controllers'], function($routes) {
+    $routes->get('/', 'DocumentationController::index', ['as' => 'documentation']);
+    $routes->get('json', 'DocumentationController::json', ['as' => 'documentation_json']);
+
+
 });
 
 /*

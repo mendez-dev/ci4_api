@@ -13,7 +13,9 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use \App\Entities\AppSettings;
 
-/**
+ /**
+ * @OA\Info(title="Api codeigniter 4", version="0.1")
+ * 
  * Controllador `AppSettingsController`
  * 
  * Se encarga de la lógica de negocios de los ajustes de la
@@ -38,8 +40,14 @@ class AppSettingsController extends ResourceController
         helper('validation');
     }
 
-
+  
     /**
+     * @OA\Get(
+     *     path="/settings",
+     *     tags={"Ajustes APP"},
+     *     @OA\Response(response="200", description="Retorna los ajustes globales de la aplicación")
+     * )
+     * 
      * Retorna las configuraciones iniciales de la aplicación
      *
      * @return Response
@@ -55,7 +63,7 @@ class AppSettingsController extends ResourceController
         }
 
         // Si no se encontraron datos se retorna un 404
-        return $this->respond(null, 404,);
+        return $this->respond(null, 404);
 
     }
 
