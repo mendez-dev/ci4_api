@@ -33,6 +33,12 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+// Rutas de ajustes de la aplicación
+$routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'AppSettingsController::index', ['as' => 'settings']);
+    $routes->put('/', 'AppSettingsController::update', ['as' => 'update_settings']);
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
