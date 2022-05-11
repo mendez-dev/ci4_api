@@ -33,6 +33,11 @@ $routes->setAutoRoute(false);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+// Rutas de autenticación
+$routes->group('login', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->post('/', 'AuthController::index', ['as' => 'login']);
+});
+
 // Rutas de ajustes de la aplicación
 $routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'AppSettingsController::index', ['as' => 'settings']);
@@ -42,8 +47,6 @@ $routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes
 $routes->group('documentation', ['namespace' => 'App\Controllers'], function($routes) {
     $routes->get('/', 'DocumentationController::index', ['as' => 'documentation']);
     $routes->get('json', 'DocumentationController::json', ['as' => 'documentation_json']);
-
-
 });
 
 /*

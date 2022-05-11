@@ -14,15 +14,13 @@ use CodeIgniter\RESTful\ResourceController;
 use \App\Entities\AppSettings;
 
  /**
- * @OA\Info(title="Api codeigniter 4", version="0.1")
- * 
  * Controllador `AppSettingsController`
  * 
  * Se encarga de la lógica de negocios de los ajustes de la
  * aplicación movil.
  *
  * @package  API_CI4
- * @category Model
+ * @category Controller
  * @author   Wilber Méndez <mendezwilberdev@gmail.com>
  */
 class AppSettingsController extends ResourceController

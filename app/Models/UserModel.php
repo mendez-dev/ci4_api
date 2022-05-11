@@ -11,7 +11,8 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
+use App\Entities\User;
+use App\Models\CustomModel;
 
 /**
  * Modelo `UserModel`
@@ -22,14 +23,14 @@ use CodeIgniter\Model;
  * @category Model
  * @author   Wilber Méndez <mendezwilberdev@gmail.com>
  */
-class UserModel extends Model
+class UserModel extends CustomModel
 {
     /**
      * --------------------------------------------------------------------
      * Configurar parametros del modelo
      *
      */
-    protected $table          = 'user';
+    protected $table          = 'app_user';
     protected $primaryKey     = 'id_user';
     protected $returnType     = User::class;
     protected $useSoftDeletes = true;
@@ -50,4 +51,22 @@ class UserModel extends Model
         'updated_by',
         'deleted_by',
     ];
+
+    /**
+     *
+     * Busca un usuario a partir de la información de sus columnas
+     *
+     * @param string|array $column nombre de la columna por la que se buscara
+     * @param string $value valor a buscar
+     *
+     * @return User
+     */
+    public function getUserBy($column, string $value)
+    {
+        if (is_array($column)) {
+            
+        } else {
+            return $this->where($column, $value)->first();
+        }
+    }
 }
