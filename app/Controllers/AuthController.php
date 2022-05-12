@@ -13,9 +13,19 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use App\Entities\User;
 use App\Libraries\Authorization;
+use CodeIgniter\HTTP\Response;
 
 /**
- * @OA\Info(title="Api codeigniter 4", version="0.1")
+ * @OA\Info(title="Api codeigniter 4", version="0.1"),
+ * @OA\SecurityScheme(
+ *   securityScheme="bearerToken",
+ *   type="http",
+ *   in="header",
+ *   description="Token de acceso, se puede generar en /login",
+ *   name="Authorization",
+ *   scheme="bearer",
+ *   bearerFormat="JWT",
+ * )
  * 
  * Controllador `AuthController`
  * 
@@ -40,10 +50,14 @@ class AuthController extends ResourceController
         $this->userModel = model('UserModel');
         helper('validation');
     }
+
     /**
      * @OA\Post(
      *     path="/login",
      *     tags={"Autenticación"},
+     *     description="Verifíca las credenciales de autenticación y retorna un 
+           token de acceso, si las credenciales son incorrectas o el usuario
+           está inactivo retornara el correspondiente error.",
      *     @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
@@ -106,7 +120,7 @@ class AuthController extends ResourceController
      *
      * @return Response
      */
-    public function index()
+    public function index() : Response
     {
         // Establecemos las validaciones del formulario
         $validation = service('validation');
@@ -157,7 +171,7 @@ class AuthController extends ResourceController
         }
 
          // Verivicamos si el usuario esta activado
-         if ($user->status == 0) {
+         if ($user->is_active == 0) {
             // ! Si el usuario esta inactivo retornmaos un mensaje de error
             return $this->respond(
                 ['errors' => ['Usuario desactivado']],
@@ -165,80 +179,101 @@ class AuthController extends ResourceController
             );
         }
 
-        $token = Authorization::generateToken($user->id_app_user);
+        $token = Authorization::generateToken(["id_user" => $user->id_app_user]);
         return $this->respond(["token" => $token]);
 
     }
 
     /**
      * @OA\Get(
-     *   tags={"Rutas para pruebas covid19"},
-     *   path="/tamizaje/tipo_paciente/{ids}",
-     *   summary="Muestra el listado de tipos de paciente filtrados por el tipo de servicio al que pueden aplicar",
-     *   description="Muestra el listado de pacientes filtrados por el tipo de servicio al que pueden aplicat",
-     *   @OA\Parameter(
-     *     name="ids",
-     *     in="path",
-     *     required=true,
-     *     @OA\Schema(type="integer"),
-     *     example="1"
-     *   ),
+     *   path="/verify",
+     *   tags={"Autenticación"},
+     *   description="Verifíca el token de acceso y retorna la información del 
+         usuario",
      *   @OA\Response(
-     *     response="200",
-     *     description="Lista de tipo de pacientes filtrada",
+     *     response=200,
+     *     description="OK",
      *     @OA\JsonContent(
-     *       @OA\Property(property="resultado", type="string"),
-     *       @OA\Property(property="datos", type="object", @OA\Property(property="error", type="string")),
-     *       @OA\Property(property="entregado", type="string"),
-     *       @OA\Property(property="consumo", type="number"),
-     *       @OA\Examples(
-     *         summary="OK",
-     *         example="",
-     *           value={
-     *             "resultado": "OK",
-     *             "datos": {
-     *               {
-     *                 "id": "1",
-     *                 "nombre": "PACIENTE"
-     *               },
-     *               {
-     *                 "id": "2",
-     *                 "nombre": "PERSONAL DE SALUD"
-     *               }
-     *             },
-     *             "entregado": "2022-03-07 13:52:53 America\/El_Salvador",
-     *             "consumo": 0.06
-     *           }
+     *       type="object",
+     *       example={
+     *          {
+     *            "id_app_user": 1,
+     *            "id_group": 1,
+     *            "firstname": "ADMIN",
+     *            "lastname": "ADMIN",
+     *            "username": "ADMIN",
+     *            "email": "admin@admin.com",
+     *            "picture": "",
+     *            "is_active": true,
+     *            "created_by": 1,
+     *            "created_at": {
+     *              "date": "2022-05-12 10:49:07.000000",
+     *              "timezone_type": 3,
+     *              "timezone": "America/El_Salvador"
+     *            },
+     *            "updated_by": 1,
+     *            "updated_at": {
+     *              "date": "2022-05-12 11:14:21.000000",
+     *              "timezone_type": 3,
+     *              "timezone": "America/El_Salvador"
+     *            },
+     *            "deleted_by": null,
+     *            "deleted_at": null
+     *          }
+     *       }
+     *     )
+     *   ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="El token de acceso es inválido o el usuario esta
+          desactivado.",
+     *    @OA\JsonContent(
+     *      @OA\Examples(
+     *        summary="No se envió el token, o es inválido",
+     *        example="",
+     *        value={
+     *          "errors": {
+     *            "Unautorized"
+     *          } 
+     *        }
      *       ),
-     *       @OA\Examples(
-     *         summary="ERROR",
-     *         example="No se encontraron datos",
-     *           value={
-     *             "resultado": "ERROR",
-     *             "datos": {},
-     *             "entregado": "2022-03-07 13:52:53 America\/El_Salvador",
-     *             "consumo": 0.06
-     *           }
-     *       )
-     *     )
-     *   ),
-     *   @OA\Response(
-     *     response=403,
-     *     description="Token de acceso incorrecto",
-     *     @OA\JsonContent(
-     *       @OA\Examples(
-     *         summary="Error",
-     *         example="Autenticación incorrecta",
-     *         value = {
-     *           "error": "Usuario o clave inválida"
-     *         }
-     *       )
-     *     )
-     *   ),
-     *   security={{"ApiKeyAuth": {}}}
-     * ),
+     *      @OA\Examples(
+     *        summary="Token expirado",
+     *        example="expired token",
+     *        value={
+     *          "errors": {
+     *            "expired token"
+     *          } 
+     *        }
+     *       ),
+     *      @OA\Examples(
+     *        summary="Usuario desactivado",
+     *        example="No se encontraron datos",
+     *        value={
+     *          "errors": {
+     *            "Usuario desactivado"
+     *          } 
+     *        }
+     *      )
+     *    )
+     *  ),
+     *  security={{"bearerToken": {}}}
+     * )
      */
-    public function testFunction(){
+    public function verify() 
+    {
+        $data = Authorization::getData();
 
+        if (!empty($data) && isset($data->id_user)) {
+            if ($user = $this->userModel->find($data->id_user)) {
+                // Se elimina el password_hash de los datos retornados
+                unset($user->password_hash);
+                return $this->respond($user);
+            }
+        }
+
+        return $this->respond(["errors" => ['No se encontro el usuario']], 401);
+
+        
     }
 }

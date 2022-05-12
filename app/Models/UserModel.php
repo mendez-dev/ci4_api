@@ -31,7 +31,7 @@ class UserModel extends CustomModel
      *
      */
     protected $table          = 'app_user';
-    protected $primaryKey     = 'id_user';
+    protected $primaryKey     = 'id_app_user';
     protected $returnType     = User::class;
     protected $useSoftDeletes = true;
     protected $useTimestamps  = true;
@@ -46,7 +46,7 @@ class UserModel extends CustomModel
         'email',
         'password_hash',
         'picture',
-        'status',
+        'is_active',
         'created_by',
         'updated_by',
         'deleted_by',

@@ -56,7 +56,7 @@ class AppUser extends Migration
                 'constraint' => '255',
                 'null'       => true
             ],
-            'status' => [
+            'is_active' => [
                 'type'       => 'TINYINT',
                 'constraint' => '1',
                 'comment'    => '0 = disabled, 1 = enabled ',
@@ -95,7 +95,7 @@ class AppUser extends Migration
             'email'         => 'admin@admin.com',
             'password_hash' => 'f146d5f4a14c117a715dcb9d1554127b7b52a08bb3642ab86f32324c5d79efc1f2cba088b4368ec63de7ba34709cbb0eb8abf5d8f66fc2755827462a9611fe69',
             'picture'       => '',
-            'status'        => 1,
+            'is_active'        => 1,
             'created_by'    => 1,
             'updated_by'    => 1
         ]);
@@ -146,11 +146,11 @@ class AppUser extends Migration
          $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_group_updated`;");
          $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_group_deleted`;");
          
-         $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_user_group`;");
+         $this->db->query("ALTER TABLE `app_user` DROP FOREIGN KEY `fk_user_group`;");
 
-         $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_settings_updated`;");
-         $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_settings_deleted`;");
-         $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_settings_deleted`;");
+         $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_updated`;");
+         $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_updated`;");
+         $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_deleted`;");
          
          // Eliminamos la tabla
          $this->forge->dropTable($this->table_name);

@@ -34,9 +34,8 @@ $routes->setAutoRoute(false);
 $routes->get('/', 'Home::index');
 
 // Rutas de autenticación
-$routes->group('login', ['namespace' => 'App\Controllers'], function ($routes) {
-    $routes->post('/', 'AuthController::index', ['as' => 'login']);
-});
+$routes->post('/login', 'AuthController::index', ['as' => 'login']);
+$routes->get('/verify', 'AuthController::verify', ['filter' => 'auth', 'as' => 'verify']);
 
 // Rutas de ajustes de la aplicación
 $routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes) {

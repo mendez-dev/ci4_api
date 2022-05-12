@@ -43,7 +43,41 @@ class AppSettingsController extends ResourceController
      * @OA\Get(
      *     path="/settings",
      *     tags={"Ajustes APP"},
-     *     @OA\Response(response="200", description="Retorna los ajustes globales de la aplicación")
+     *     @OA\Response(
+     *       response="200",
+     *       description="Retorna los ajustes globales de la aplicación",
+     *       @OA\JsonContent(
+     *         type="object",
+     *         example={
+     *           "id_settings": 1,
+     *           "app_name": "BASE APP",
+     *           "default_tax": 0.13,
+     *           "default_currency": "$",
+     *           "main_color": "#FF4E6A",
+     *           "main_dark_color": "#EA5C44",
+     *           "second_color": "#344968",
+     *           "second_dark_color": "#CCCCDD",
+     *           "accent_color": "#8C98A8",
+     *           "accent_dark_color": "#9999AA",
+     *           "scaffold_dark_color": "#FAFAFA",
+     *           "scaffold_color": "#2C2C2C",
+     *           "created_by": 1,
+     *           "created_at": {
+     *             "date": "2022-05-12 10:49:07.000000",
+     *             "timezone_type": 3,
+     *             "timezone": "America/El_Salvador"
+     *           },
+     *           "updated_by": 1,
+     *           "updated_at": {
+     *             "date": "2022-05-12 10:49:07.000000",
+     *             "timezone_type": 3,
+     *             "timezone": "America/El_Salvador"
+     *           },
+     *           "deleted_by": null,
+     *           "deleted_at": null
+     *         }
+     *       )  
+     *     )
      * )
      * 
      * Retorna las configuraciones iniciales de la aplicación
