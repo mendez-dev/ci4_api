@@ -1,4 +1,16 @@
-# CodeIgniter 4 Application Starter
+# API RESTfull con CodeIgniter 4
+
+Contenido
+-------
+- [Primeros pasos](#primeros-pasos)
+    - [Requisitos del servidor](#requisitos-del-servidor)
+
+---
+
+# Primeros pasos
+## Requisitos del servidor
+La plantilla actualmente esta basada en Codeigniter 4.18
+
 
 ## What is CodeIgniter?
 

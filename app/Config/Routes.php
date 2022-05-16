@@ -33,20 +33,31 @@ $routes->setAutoRoute(false);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-// Rutas de autenticación
-$routes->post('/login', 'AuthController::index', ['as' => 'login']);
-$routes->get('/verify', 'AuthController::verify', ['filter' => 'auth', 'as' => 'verify']);
-
-// Rutas de ajustes de la aplicación
-$routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes) {
-    $routes->get('/', 'AppSettingsController::index', ['as' => 'settings']);
-    $routes->put('/', 'AppSettingsController::update', ['as' => 'update_settings']);
-});
-
+// Rutas para acceder a la documentación
 $routes->group('documentation', ['namespace' => 'App\Controllers'], function($routes) {
     $routes->get('/', 'DocumentationController::index', ['as' => 'documentation']);
     $routes->get('json', 'DocumentationController::json', ['as' => 'documentation_json']);
 });
+
+// Versión 1 de las api
+$routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
+
+    // Rutas de autenticación
+    $routes->post('login', 'AuthController::index', ['as' => 'login']);
+    $routes->get('verify', 'AuthController::verify', ['filter' => 'auth', 'as' => 'verify']);
+    
+    // Rutas de ajustes de la aplicación
+    $routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'AppSettingsController::index', ['as' => 'settings']);
+        $routes->put('/', 'AppSettingsController::update', ['as' => 'update_settings']);
+    });
+    
+    $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'UserController::index', ['filter' => 'auth', 'as' => 'users']);
+    });    
+    
+});
+
 
 /*
  * --------------------------------------------------------------------

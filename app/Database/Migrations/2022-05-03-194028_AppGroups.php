@@ -72,6 +72,7 @@ class AppGroups extends Migration
 
     public function down()
     {
-        //
+        // Se elimina la tabla
+        $this->forge->dropTable($this->table_name);
     }
 }

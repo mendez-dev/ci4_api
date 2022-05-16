@@ -23,7 +23,12 @@ class AppUser extends Migration
             'id_app_user'        => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'auto_increment' => true
+                'auto_increment' => true,
+            ],
+            'id_legacy'           => [
+                'type'           => 'INT',
+                'null'           => true,
+                'unique'         => true
             ],
             'id_group'           => [
                 'type'           => 'INT',
@@ -114,7 +119,7 @@ class AppUser extends Migration
         ON DELETE RESTRICT ON UPDATE CASCADE;');
 
         $this->db->query('ALTER TABLE `app_user` ADD CONSTRAINT `fk_user_group`
-        FOREIGN KEY(`id_app_user`) REFERENCES app_group(`id_app_group`)
+        FOREIGN KEY(`id_group`) REFERENCES app_group(`id_app_group`)
         ON DELETE RESTRICT ON UPDATE CASCADE;');
 
         // modificamos la tabla `app_settings` agregando las llaves foraneas --------------------
@@ -148,7 +153,7 @@ class AppUser extends Migration
          
          $this->db->query("ALTER TABLE `app_user` DROP FOREIGN KEY `fk_user_group`;");
 
-         $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_updated`;");
+         $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_created`;");
          $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_updated`;");
          $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_deleted`;");
          

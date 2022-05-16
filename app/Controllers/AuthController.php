@@ -53,7 +53,7 @@ class AuthController extends ResourceController
 
     /**
      * @OA\Post(
-     *     path="/login",
+     *     path="/v1/login",
      *     tags={"Autenticación"},
      *     description="Verifíca las credenciales de autenticación y retorna un 
            token de acceso, si las credenciales son incorrectas o el usuario
@@ -186,7 +186,7 @@ class AuthController extends ResourceController
 
     /**
      * @OA\Get(
-     *   path="/verify",
+     *   path="/v1/verify",
      *   tags={"Autenticación"},
      *   description="Verifíca el token de acceso y retorna la información del 
          usuario",

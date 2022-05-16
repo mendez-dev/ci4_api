@@ -41,7 +41,7 @@ class AppSettingsController extends ResourceController
   
     /**
      * @OA\Get(
-     *     path="/settings",
+     *     path="/v1/settings",
      *     tags={"Ajustes APP"},
      *     @OA\Response(
      *       response="200",

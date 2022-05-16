@@ -81,3 +81,12 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest auto
 // SALT -------------------------------------------------------------------
 defined('SALT')                || define('SALT', '.:6S@tz9M/PM%-*GebtM/PDM.bCfmg[D');
 defined('HASH_ITERATIONS')     || define('HASH_ITERATIONS', 20);
+
+/*
+ | --------------------------------------------------------------------------
+ | Número de registros por página
+ | --------------------------------------------------------------------------
+ |
+ | El numero de registros que retornara por defecto al solicitar datos paginados
+ */
+defined('RECORDS_PER_PAGE') || define('RECORDS_PER_PAGE', 10);

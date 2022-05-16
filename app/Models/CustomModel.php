@@ -25,14 +25,14 @@ class CustomModel extends Model
 {
 
     /**
-     * Funcion interna del modelo que se encarga de aplicar los filtros segun
-     * los parámetros de busqueda enviados.
+     * Se encarga de aplicar los filtros segun los parámetros de busqueda
+     * enviados.
      *
      * @param array $filters arreglo relacional con los parámetros de busqueda
      * @param bool $strict indica si la busqueda sera un like o where
      * @return void
      */
-    private function filterArray(array $filters, bool $strict = false) : void
+    public function filterArray(array $filters, bool $strict = false) : void
     {
         
         // Verificamos que los campos a filtrar existan en el modelo
@@ -45,7 +45,7 @@ class CustomModel extends Model
                     $this->where($key, $value);
                 } else {
                     // Si la busqueda no es estricta usamos orLike
-                    $this->orLike($key, $value);
+                    $this->Like($key, $value);
                 }
             }
         }
@@ -109,4 +109,29 @@ class CustomModel extends Model
         // Retornamos todos los resultados
         return $this->first();
     }
+
+    /**
+     * Retorna datos paginados con la información del total de paginas
+     *
+     * @param integer $page numero de página solicitada
+     * @param integer $records_per_page total de registros por página
+     * @return array
+     */
+    public function getPagination(int $page = 1, int $records_per_page = RECORDS_PER_PAGE ) : array
+    {
+        $paginate = [
+            "data"         => $this->paginate($records_per_page, "default", $page),
+            'current_page' => $page,
+            'total_pages'  => $this->pager->getPageCount(),
+
+        ];
+
+        // Verificamos que la pagina solicitada no exceda el limite
+        if ($paginate['current_page'] > $paginate['total_pages']) {
+            $paginate['data'] = [];
+        }
+
+        return $paginate;
+    }
+
 }
