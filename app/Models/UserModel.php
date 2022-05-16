@@ -40,6 +40,7 @@ class UserModel extends CustomModel
     protected $deletedField   = 'deleted_at';
     protected $allowedFields  = [
         'id_group',
+        'id_legacy',
         'firstname',
         'lastname',
         'username',

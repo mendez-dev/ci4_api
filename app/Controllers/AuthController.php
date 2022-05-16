@@ -198,6 +198,7 @@ class AuthController extends ResourceController
      *       example={
      *          {
      *            "id_app_user": 1,
+     *            "id_legacy": 1,
      *            "id_group": 1,
      *            "firstname": "ADMIN",
      *            "lastname": "ADMIN",
