@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Swagger UI</title>
+    <title>Documentación de la API</title>
     <link rel="stylesheet" type="text/css" href="/swagger/dist/swagger-ui.css" />
     <link rel="stylesheet" type="text/css" href="/swagger/dist/index.css" />
     <link rel="icon" type="image/png" href="/swagger/dist/favicon-32x32.png" sizes="32x32" />

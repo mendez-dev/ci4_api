@@ -54,6 +54,13 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
     
     $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->get('/', 'UserController::index', ['filter' => 'auth', 'as' => 'users']);
+        $routes->get('(:num)', 'UserController::info/$1', ['filter' => 'auth', 'as' => 'user']);
+        $routes->post('/', 'UserController::store', ['filter' => 'auth', 'as' => 'user_store']);
+        $routes->put('(:num)', 'UserController::update/$1', ['filter' => 'auth', 'as' => 'user_update']);
+        $routes->delete('(:num)', 'UserController::delete/$1', ['filter' => 'auth', 'as' => 'user_delete']);
+        $routes->put('(:num)/enable', 'UserController::enable/$1', ['filter' => 'auth', 'as' => 'user_enable']);
+        $routes->put('(:num)/disable', 'UserController::disable/$1', ['filter' => 'auth', 'as' => 'user_disable']);
+        $routes->put('(:num)/password', 'UserController::chagePassword/$1', ['filter' => 'auth', 'as' => 'user_password']);
     });    
     
 });
