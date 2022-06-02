@@ -501,71 +501,6 @@ class UserController extends ResourceController
         // Obtenemos la información del token
         $auth = Authorization::getData();
 
-        // Cargamos la libreria para validar
-        $validation = service('validation');
-
-        // Definimos las reglas de validación
-        $validation->setRules([
-            'id_legacy' => [
-                'label' => 'id heredado',
-                'rules' => rule_array([
-                    'permit_empty',
-                    'integer',
-                    'is_unique[app_user.id_legacy]'
-                ])
-            ],
-            'id_group ' => [
-                'label' => 'id grupo',
-                'rules' => rule_array([
-                    'required',
-                    'integer',
-                    'is_not_unique[app_group.id_app_group]'
-                ])
-            ],
-            'firstname' => [
-                'label' => 'nombres',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[100]'
-                ])
-            ],
-            'lastname' => [
-                'label' => 'apellidos',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[100]'
-                ])
-            ],
-            'username' => [
-                'label' => 'nombre de usuario',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[30]',
-                    'is_unique[app_user.username]'
-                ])
-            ],
-            'email' => [
-                'label' => 'correo',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[50]',
-                    'is_unique[app_user.email]'
-                ])
-            ],
-            'password' => [
-                'label' => 'contraseña',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ]
-        ]);
-
-        // Si las validaciones fallan
-        if (!$validation->withRequest($this->request)->run()) {
-            return $this->respond(['errors' => get_errors_array($validation->getErrors())], 400);
-        }
-
         // Creamos nuestra entidad usuario
         $user = new User((array) $this->request->getVar());
 
@@ -581,6 +516,8 @@ class UserController extends ResourceController
             $new_user = $this->userModel->find($id_user);
             unset($new_user->password_hash);
             return $this->respond($new_user);
+        } else {
+            return $this->respond(['errors' => get_errors_array($this->userModel->errors())], 400);
         }
 
         return $this->respond(["errors" => ['No se pudo registrar el usuario, error al escribir en la base de datos']], 400);
@@ -757,74 +694,18 @@ class UserController extends ResourceController
             }
         }
 
-        // Cargamos la libreria para validar
-        $validation = service('validation');
-
-        // Definimos las reglas de validación
-        $validation->setRules([
-            'id_legacy' => [
-                'label' => 'id heredado',
-                'rules' => rule_array([
-                    "permit_empty",
-                    "integer",
-                    "is_unique[app_user.id_legacy,id_app_user,$id]"
-                ])
-            ],
-            'id_group ' => [
-                'label' => 'id grupo',
-                'rules' => rule_array([
-                    "required",
-                    "integer",
-                    "is_not_unique[app_group.id_app_group]"
-                ])
-            ],
-            'firstname' => [
-                'label' => 'nombres',
-                'rules' => rule_array([
-                    "required",
-                    "max_length[100]"
-                ])
-            ],
-            'lastname' => [
-                'label' => 'apellidos',
-                'rules' => rule_array([
-                    "required",
-                    "max_length[100]"
-                ])
-            ],
-            'username' => [
-                'label' => 'nombre de usuario',
-                'rules' => rule_array([
-                    "required",
-                    "max_length[30]",
-                    "is_unique[app_user.username,id_app_user,$id]"
-                ])
-            ],
-            'email' => [
-                'label' => 'correo',
-                'rules' => rule_array([
-                    "required",
-                    "max_length[50]",
-                    "is_unique[app_user.email,id_app_user,$id]"
-                ])
-            ]
-        ]);
-
-        // Si las validaciones fallan
-        if (!$validation->withRequest($this->request)->run()) {
-            return $this->respond(['errors' => get_errors_array($validation->getErrors())], 400);
-        }
-
         // Creamos nuestra entidad usuario
         $user = new User((array) $this->request->getVar());
         $user->id_app_user = $id;
         $user->updated_by = $auth->id_user;
 
         // Almacenamos en la base de datos
-        if ($this->userModel->save($user)) {
+        if ($this->userModel->save($user) == true) {
             $updated_user = $this->userModel->find($id);
             unset($updated_user->password_hash);
             return $this->respond($updated_user);
+        } else {
+            return $this->respond(['errors' => get_errors_array($this->userModel->errors())], 400);
         }
 
         return $this->respond(["errors" => ['No se pudo actualizar el usuario, error al escribir en la base de datos']], 400);
@@ -924,7 +805,7 @@ class UserController extends ResourceController
 
         // Iniciamos transact
         $this->userModel->db->transBegin();
-        
+
         // actualizamos el id del usuario que guardo eliminó el registro
         $this->userModel->save($user);
         $this->userModel->delete($id);
@@ -1036,7 +917,7 @@ class UserController extends ResourceController
         // Indicamos quien eliminó el registro
         $user->updated_by = $auth->id_user;
         $user->is_active  = 1;
-        
+
         // actualizamos el id del usuario que guardo eliminó el registro
         if ($this->userModel->save($user)) {
             return $this->respond([]);
@@ -1142,7 +1023,7 @@ class UserController extends ResourceController
         // Indicamos quien eliminó el registro
         $user->updated_by = $auth->id_user;
         $user->is_active  = 0;
-        
+
         // actualizamos el id del usuario que guardo eliminó el registro
         if ($this->userModel->save($user)) {
             return $this->respond([]);
@@ -1275,7 +1156,7 @@ class UserController extends ResourceController
         // Indicamos quien eliminó el registro
         $user->updated_by = $auth->id_user;
         $user->password  = $this->request->getVar("password");
-        
+
         // actualizamos el id del usuario que guardo eliminó el registro
         if ($this->userModel->save($user)) {
             return $this->respond([]);

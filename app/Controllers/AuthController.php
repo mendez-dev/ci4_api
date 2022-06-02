@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the API_CI4.
  *
@@ -38,7 +39,7 @@ use CodeIgniter\HTTP\Response;
 class AuthController extends ResourceController
 {
 
-     /**
+    /**
      * Instancia de UserModel.
      * @var \App\Models\UserModel
      */
@@ -120,7 +121,7 @@ class AuthController extends ResourceController
      *
      * @return Response
      */
-    public function index() : Response
+    public function index(): Response
     {
         // Establecemos las validaciones del formulario
         $validation = service('validation');
@@ -170,8 +171,8 @@ class AuthController extends ResourceController
             );
         }
 
-         // Verivicamos si el usuario esta activado
-         if ($user->is_active == 0) {
+        // Verivicamos si el usuario esta activado
+        if ($user->is_active == 0) {
             // ! Si el usuario esta inactivo retornmaos un mensaje de error
             return $this->respond(
                 ['errors' => ['Usuario desactivado']],
@@ -181,7 +182,6 @@ class AuthController extends ResourceController
 
         $token = Authorization::generateToken(["id_user" => $user->id_app_user]);
         return $this->respond(["token" => $token]);
-
     }
 
     /**
@@ -261,7 +261,7 @@ class AuthController extends ResourceController
      *  security={{"bearerToken": {}}}
      * )
      */
-    public function verify() 
+    public function verify()
     {
         $data = Authorization::getData();
 
@@ -274,7 +274,5 @@ class AuthController extends ResourceController
         }
 
         return $this->respond(["errors" => ['No se encontro el usuario']], 401);
-
-        
     }
 }

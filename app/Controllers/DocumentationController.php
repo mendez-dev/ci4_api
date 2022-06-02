@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the API_CI4.
  *
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please refere to LICENSE file
  * that has been distributed with this source code.
  */
+
 namespace App\Controllers;
 
 use CodeIgniter\HTTP\Response;
@@ -26,11 +28,11 @@ class DocumentationController extends ResourceController
      *
      * @return string
      */
-    public function index() : string
+    public function index(): string
     {
         return view("documentation/index");
     }
-    
+
     /**
      * Retorna el json con la documentación de la api
      * 
@@ -39,12 +41,10 @@ class DocumentationController extends ResourceController
      *
      * @return Response
      */
-    public function json() : Response
+    public function json(): Response
     {
-        $openapi = \OpenApi\Generator::scan([APPPATH.'/Controllers']);
+        $openapi = \OpenApi\Generator::scan([APPPATH . '/Controllers']);
         header('Content-Type: application/json');
         return $this->respond($openapi);
     }
-
-    
 }

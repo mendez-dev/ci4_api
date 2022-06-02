@@ -53,6 +53,38 @@ class UserModel extends CustomModel
         'deleted_by',
     ];
 
+    protected $validationRules = [
+        'id_legacy' => [
+            'label' => 'id heredado',
+            'rules' => 'permit_empty|integer|is_unique[app_user.id_legacy,id_app_user,{id_app_user}]'
+        ],
+        'id_group ' => [
+            'label' => 'id grupo',
+            'rules' => 'required|integer|is_not_unique[app_group.id_app_group]'
+        ],
+        'firstname' => [
+            'label' => 'nombres',
+            'rules' => 'required|max_length[100]'
+        ],
+        'lastname' => [
+            'label' => 'apellidos',
+            'rules' => 'required|max_length[100]'
+        ],
+        'username' => [
+            'label' => 'nombre de usuario',
+            'rules' =>
+            'required|max_length[30]|is_unique[app_user.username,id_app_user,{id_app_user}]'
+        ],
+        'email' => [
+            'label' => 'correo',
+            'rules' => 'required|max_length[50]|is_unique[app_user.email,id_app_user,{id_app_user}]'
+        ],
+        'password' => [
+            'label' => 'contraseña',
+            'rules' => 'required|max_length[7]'
+        ]
+    ];
+
     /**
      *
      * Busca un usuario a partir de la información de sus columnas
@@ -65,7 +97,6 @@ class UserModel extends CustomModel
     public function getUserBy($column, string $value)
     {
         if (is_array($column)) {
-            
         } else {
             return $this->where($column, $value)->first();
         }
