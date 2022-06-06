@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the API_CI4.
+ *
+ * (c) Wilber Mendez <mendezwilber94@gmail.com>
+ *
+ * For the full copyright and license information, please refere to LICENSE file
+ * that has been distributed with this source code.
+ */
+
 namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
@@ -25,7 +34,7 @@ class User extends Entity
         'deleted_by'  => '?integer'
     ];
 
-     /**
+    /**
      * set password
      *
      * Usa hash_pbkdf2 para encriptar contraseñas, los valores del `salt` y el
@@ -45,5 +54,21 @@ class User extends Entity
             HASH_ITERATIONS,
             128
         );
+    }
+
+    /**
+     * Retorna el grupo al que pertenece el usuario
+     *
+     * @return void
+     */
+    protected function getGroup()
+    {
+        if (!empty($this->attributes['id_group'])) {
+            $groupModel = model("GroupModel");
+            return $groupModel
+                ->find($this->attributes['id_group']);
+        }
+
+        return null;
     }
 }

@@ -34,7 +34,7 @@ $routes->setAutoRoute(false);
 $routes->get('/', 'Home::index');
 
 // Rutas para acceder a la documentación
-$routes->group('documentation', ['namespace' => 'App\Controllers'], function($routes) {
+$routes->group('documentation', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'DocumentationController::index', ['as' => 'documentation']);
     $routes->get('json', 'DocumentationController::json', ['as' => 'documentation_json']);
 });
@@ -45,13 +45,14 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
     // Rutas de autenticación
     $routes->post('login', 'AuthController::index', ['as' => 'login']);
     $routes->get('verify', 'AuthController::verify', ['filter' => 'auth', 'as' => 'verify']);
-    
+
     // Rutas de ajustes de la aplicación
     $routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->get('/', 'AppSettingsController::index', ['as' => 'settings']);
         $routes->put('/', 'AppSettingsController::update', ['as' => 'update_settings']);
     });
-    
+
+    // Rutas administracion de usuarios
     $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->get('/', 'UserController::index', ['filter' => 'auth', 'as' => 'users']);
         $routes->get('(:num)', 'UserController::info/$1', ['filter' => 'auth', 'as' => 'user']);
@@ -61,8 +62,12 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->put('(:num)/enable', 'UserController::enable/$1', ['filter' => 'auth', 'as' => 'user_enable']);
         $routes->put('(:num)/disable', 'UserController::disable/$1', ['filter' => 'auth', 'as' => 'user_disable']);
         $routes->put('(:num)/password', 'UserController::chagePassword/$1', ['filter' => 'auth', 'as' => 'user_password']);
-    });    
-    
+    });
+
+    // Rutas para obtener el menu
+    $routes->group('menu', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'MenuController::index', ['filter' => 'auth', 'as' => 'menu']);
+    });
 });
 
 
