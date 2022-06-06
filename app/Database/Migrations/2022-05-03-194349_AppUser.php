@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the API_CI4.
  *
@@ -146,18 +147,18 @@ class AppUser extends Migration
      */
     public function down()
     {
-         // Eliminamos las llaves foraneas
-         $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_group_created`;");
-         $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_group_updated`;");
-         $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_group_deleted`;");
-         
-         $this->db->query("ALTER TABLE `app_user` DROP FOREIGN KEY `fk_user_group`;");
+        // Eliminamos las llaves foraneas
+        $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_group_created`;");
+        $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_group_updated`;");
+        $this->db->query("ALTER TABLE `app_group` DROP FOREIGN KEY `fk_group_deleted`;");
 
-         $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_created`;");
-         $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_updated`;");
-         $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_deleted`;");
-         
-         // Eliminamos la tabla
-         $this->forge->dropTable($this->table_name);
+        $this->db->query("ALTER TABLE `app_user` DROP FOREIGN KEY `fk_user_group`;");
+
+        $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_created`;");
+        $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_updated`;");
+        $this->db->query("ALTER TABLE `app_settings` DROP FOREIGN KEY `fk_settings_deleted`;");
+
+        // Eliminamos la tabla
+        $this->forge->dropTable($this->table_name);
     }
 }

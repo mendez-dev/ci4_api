@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the API_CI4.
  *
@@ -23,7 +24,7 @@ class AppSettings extends Migration
         $fields = [
             'id_settings'        => [
                 'type'           => 'INT',
-                'unsigned'       => true,
+                'constraint'     => '11',
                 'auto_increment' => true
             ],
             'app_name'           => [
@@ -31,64 +32,64 @@ class AppSettings extends Migration
                 'constraint'     => '100'
             ],
             'default_tax'        => [
-                'type'           =>'DECIMAL',
+                'type'           => 'DECIMAL',
                 'constraint'     => '11,4'
             ],
             'default_currency'   => [
-                'type'           =>'VARCHAR',
+                'type'           => 'VARCHAR',
                 'constraint'     => '2'
             ],
             'main_color'         => [
-                'type'           =>'VARCHAR',
+                'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
             'main_dark_color'    => [
-                'type'           =>'VARCHAR',
+                'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
             'second_color'       => [
-                'type'           =>'VARCHAR',
+                'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
             'second_dark_color'  => [
-                'type'           =>'VARCHAR',
+                'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
             'accent_color'       => [
-                'type'           =>'VARCHAR',
+                'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
             'accent_dark_color'  => [
-                'type'           =>'VARCHAR',
+                'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'scaffold_dark_color'=> [
-                'type'           =>'VARCHAR',
+            'scaffold_dark_color' => [
+                'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
             'scaffold_color'     => [
-                'type'           =>'VARCHAR',
+                'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'created_by' => array(
+            'created_by' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-            ),
+            ],
             'created_at DATETIME DEFAULT CURRENT_TIMESTAMP',
-            'updated_by' => array(
+            'updated_by' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-            ),
+            ],
             'updated_at DATETIME DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP',
-            'deleted_by' => array(
+            'deleted_by' => [
                 'type'       => 'INT',
                 'constraint' => 11,
                 'null'       => true
-            ),
-            'deleted_at' => array(
+            ],
+            'deleted_at' => [
                 'type'   => 'DATETIME',
                 'null'   => true
-            ),
+            ],
         ];
 
         $this->forge->addField($fields);  // Se agregan los campos de la tabla

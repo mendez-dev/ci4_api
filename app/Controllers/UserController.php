@@ -501,6 +501,25 @@ class UserController extends ResourceController
         // Obtenemos la información del token
         $auth = Authorization::getData();
 
+        // Validamos la contraseña
+        $validation = service('validation');
+
+        // Definimos las reglas de validación
+        $validation->setRules([
+            'password' => [
+                'label' => 'contraseña',
+                'rules' => rule_array([
+                    'required',
+                    'min_length[8]'
+                ])
+            ]
+        ]);
+
+        // Si las validaciones fallan
+        if (!$validation->withRequest($this->request)->run()) {
+            return $this->respond(['errors' => get_errors_array($validation->getErrors())], 400);
+        }
+
         // Creamos nuestra entidad usuario
         $user = new User((array) $this->request->getVar());
 
@@ -1143,7 +1162,7 @@ class UserController extends ResourceController
                 'label' => 'contraseña',
                 'rules' => rule_array([
                     'required',
-                    'max_length[7]'
+                    'min_length[8]'
                 ])
             ]
         ]);
