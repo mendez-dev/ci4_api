@@ -1,0 +1,46 @@
+get:
+  tags:
+    - Usuarios
+  summary: Retorna el listado de usuarios paginados
+  description: Retorna el listado de usuarios paginados, se puede filtrar por nombre, apellido, correo y por estado
+  parameters:
+    - in: query
+      name: page
+      required: true
+      schema:
+        type: integer
+      example: "1"
+      description: "El número de página que se está solicitando."
+    - in: query
+      name: records_per_page
+      required: false
+      schema:
+        type: integer
+      description: "El número de registros que se requiren por página, por defecto 10."
+    - in: query
+      name: fistname
+      required: false
+      schema:
+        type: string
+      description: "Filtra resultados por nombre (like %query%)"
+    - in: query
+      name: lastname
+      required: false
+      schema:
+        type: string
+      description: "Filtra resultados por apellido (like %query%)"
+    - in: query
+      name: email
+      required: false
+      schema:
+        type: string
+      description: "Filtra resultados por correo (like %query%)"
+    - in: query
+      name: is_active
+      required: false
+      schema:
+        type: boolean
+      description: "Filtra resultados por estado"
+post:
+  tags:
+    - Usuarios

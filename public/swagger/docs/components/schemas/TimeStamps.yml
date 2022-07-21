@@ -1,0 +1,12 @@
+created_by:
+  type: integer
+created_at:
+  $ref: "DateTime.yml"
+updated_by:
+  type: integer
+updated_at:
+  $ref: "DateTime.yml"
+deleted_by:
+  type: integer
+deleted_at:
+  $ref: "DateTime.yml"

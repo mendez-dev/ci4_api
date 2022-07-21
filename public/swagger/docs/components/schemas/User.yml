@@ -1,0 +1,42 @@
+type: object
+required:
+  - id_app_user
+  - id_group
+  - firstname
+  - lastname
+  - username
+  - email
+properties:
+  id_app_user:
+    type: integer
+  id_legacy:
+    type: integer
+    description: Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único
+  id_group:
+    type: integer
+  firstname:
+    type: string
+  lastname:
+    type: string
+  username:
+    type: string
+  email:
+    type: string
+    format: email
+  picture:
+    type: string
+    description: "path de la fotografia del usuario"
+  is_active:
+    type: boolean
+  created_by:
+    type: integer
+  created_at:
+    $ref: "DateTime.yml"
+  updated_by:
+    type: integer
+  updated_at:
+    $ref: "DateTime.yml"
+  deleted_by:
+    type: integer
+  deleted_at:
+    $ref: "DateTime.yml"

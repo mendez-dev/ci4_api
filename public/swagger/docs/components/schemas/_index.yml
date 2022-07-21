@@ -1,0 +1,6 @@
+User:
+  $ref: "User.yml"
+DateTime:
+  $ref: "DateTime.yml"
+ErrorResponse:
+  $ref: "ErrorsResponse.yml"

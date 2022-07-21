@@ -1,0 +1,16 @@
+get:
+  tags:
+    - Autehticación
+  summary: Verifica el estado del token de acceso y retorna la información del usuario
+  description: Verifica el token de acceso enviado en los header como bearerToken y en caso de ser valido retorna la información del usuario, de lo contrario retorna un mensaje de error.
+  security:
+    - bearerToken: []
+  responses:
+    200:
+      description: "Retorna la información del usuario"
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/User"
+    401:
+      $ref: "#components/responses/401Unauthorized"

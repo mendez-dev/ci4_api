@@ -1,0 +1,386 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Petstore",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/"
+    }
+  ],
+  "paths": {
+    "/v1/login": {
+      "post": {
+        "tags": [
+          "Autehticación"
+        ],
+        "summary": "Obtener token de acceso aquí",
+        "description": "Verifíca las credenciales de autenticación y retorna un token de acceso, si las credenciales son incorrectas o el usuario está desactivado retornara el mensaje de error correspondiente.",
+        "requestBody": {
+          "$ref": "#components/requestBodies/Login"
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna el token de autenticación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "required": true,
+                      "description": "Bearer token para acceso",
+                      "type": "string",
+                      "example": "xxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "La petición no se pudo procesar, falta uno o más parámetros en el request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "parameters": {
+                    "summary": "Faltan parámetros en la petición",
+                    "value": {
+                      "errors": [
+                        "El campo contraseña es obligatorio."
+                      ]
+                    }
+                  },
+                  "credentials": {
+                    "summary": "Credenciales inválidas",
+                    "value": {
+                      "errors": [
+                        "Usuario o contraseña incorrectos."
+                      ]
+                    }
+                  },
+                  "disabled": {
+                    "summary": "Usuario desactivado",
+                    "value": {
+                      "errors": [
+                        "Usuario desactivado."
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/verify": {
+      "get": {
+        "tags": [
+          "Autehticación"
+        ],
+        "summary": "Verifica el estado del token de acceso y retorna la información del usuario",
+        "description": "Verifica el token de acceso enviado en los header como bearerToken y en caso de ser valido retorna la información del usuario, de lo contrario retorna un mensaje de error.",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la información del usuario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#components/responses/Unautorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "UserCreate": {
+        "description": "Objeto json con la información para crear un usuario",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "id_group",
+                "firstname",
+                "lastname",
+                "username",
+                "email",
+                "password"
+              ],
+              "properties": {
+                "id_group": {
+                  "minimum": 1,
+                  "example": 1,
+                  "type": "integer"
+                },
+                "id_legacy": {
+                  "type": "integer",
+                  "uniqueItems": true,
+                  "example": 1,
+                  "description": "Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único"
+                },
+                "firstname": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "example": "Juan"
+                },
+                "lastname": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "example": "Pérez"
+                },
+                "username": {
+                  "type": "string",
+                  "maxLength": 30,
+                  "example": "juan_perez"
+                },
+                "email": {
+                  "type": "string",
+                  "maxLength": 50,
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 6
+                }
+              }
+            }
+          }
+        }
+      },
+      "Login": {
+        "description": "Objeto json con la información para iniciar sersión",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "password"
+              ],
+              "properties": {
+                "username": {
+                  "example": "admin",
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "admin"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unautorized": {
+        "description": "No autenticado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "no_token": {
+                "summary": "No se envió un token válido",
+                "value": {
+                  "errors": [
+                    "Unautorized"
+                  ]
+                }
+              },
+              "credentials": {
+                "summary": "Token expirado",
+                "value": {
+                  "errors": [
+                    "expired token"
+                  ]
+                }
+              },
+              "disabled": {
+                "summary": "Usuario desactivado",
+                "value": {
+                  "errors": [
+                    "Usuario desactivado."
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "description": "Token de acceso, se puede generar en /login",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "id_app_user",
+          "id_group",
+          "firstname",
+          "lastname",
+          "username",
+          "email"
+        ],
+        "properties": {
+          "id_app_user": {
+            "type": "integer"
+          },
+          "id_legacy": {
+            "type": "integer",
+            "description": "Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único"
+          },
+          "id_group": {
+            "type": "integer"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "picture": {
+            "type": "string",
+            "description": "path de la fotografia del usuario"
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "created_by": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "object",
+            "required": [
+              "date",
+              "timezone_type",
+              "timezone"
+            ],
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "timezone_type": {
+                "type": "integer"
+              },
+              "timezone": {
+                "type": "string"
+              }
+            }
+          },
+          "updated_by": {
+            "type": "integer"
+          },
+          "updated_at": {
+            "type": "object",
+            "required": [
+              "date",
+              "timezone_type",
+              "timezone"
+            ],
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "timezone_type": {
+                "type": "integer"
+              },
+              "timezone": {
+                "type": "string"
+              }
+            }
+          },
+          "deleted_by": {
+            "type": "integer"
+          },
+          "deleted_at": {
+            "type": "object",
+            "required": [
+              "date",
+              "timezone_type",
+              "timezone"
+            ],
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "timezone_type": {
+                "type": "integer"
+              },
+              "timezone": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "DateTime": {
+        "type": "object",
+        "required": [
+          "date",
+          "timezone_type",
+          "timezone"
+        ],
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "timezone_type": {
+            "type": "integer"
+          },
+          "timezone": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Descripción del error"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

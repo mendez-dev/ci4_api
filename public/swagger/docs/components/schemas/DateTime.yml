@@ -1,0 +1,12 @@
+type: object
+required:
+  - date
+  - timezone_type
+  - timezone
+properties:
+  date:
+    type: string
+  timezone_type:
+    type: integer
+  timezone:
+    type: string

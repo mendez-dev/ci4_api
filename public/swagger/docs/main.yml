@@ -1,0 +1,49 @@
+openapi: "3.0.2"
+info:
+  title: Petstore
+  version: "1.0"
+servers:
+  - url: http://localhost:8080/
+
+paths:
+  /v1/login:
+    $ref: "./paths/Auth.yml"
+  /v1/verify:
+    $ref: "./paths/Verify.yml"
+  # /v1/user:
+  #   $ref: "./paths/User.yml"
+
+components:
+  schemas:
+    $ref: "./components/schemas/_index.yml"
+  securitySchemes:
+    bearerToken:
+      description: "Token de acceso, se puede generar en /login"
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  requestBodies:
+    $ref: "./components/requestBodies/_index.yml"
+  responses:
+    401Unauthorized:
+      description: "No autenticado"
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/ErrorResponse"
+          examples:
+            no_token:
+              summary: No se envió un token válido
+              value:
+                errors:
+                  - "Unautorized"
+            credentials:
+              summary: Token expirado
+              value:
+                errors:
+                  - expired token
+            disabled:
+              summary: Usuario desactivado
+              value:
+                errors:
+                  - Usuario desactivado.

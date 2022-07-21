@@ -1,0 +1,8 @@
+type: object
+properties:
+  errors:
+    type: array
+    items:
+      type: string
+    example:
+      - Descripción del error

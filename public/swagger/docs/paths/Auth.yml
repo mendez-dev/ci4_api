@@ -1,0 +1,42 @@
+post:
+  tags:
+    - Autehticación
+  summary: Obtener token de acceso aquí
+  description: Verifíca las credenciales de autenticación y retorna un token de acceso, si las credenciales son incorrectas o el usuario está desactivado retornara el mensaje de error correspondiente.
+  requestBody:
+    $ref: "#components/requestBodies/Login"
+  responses:
+    200:
+      description: Retorna el token de autenticación
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                required: true
+                description: "Bearer token para acceso"
+                type: string
+                example: "xxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    400:
+      description: "La petición no se pudo procesar, falta uno o más parámetros en el request body."
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/ErrorResponse"
+          examples:
+            parameters:
+              summary: Faltan parámetros en la petición
+              value:
+                errors:
+                  - El campo contraseña es obligatorio.
+            credentials:
+              summary: Credenciales inválidas
+              value:
+                errors:
+                  - Usuario o contraseña incorrectos.
+            disabled:
+              summary: Usuario desactivado
+              value:
+                errors:
+                  - Usuario desactivado.

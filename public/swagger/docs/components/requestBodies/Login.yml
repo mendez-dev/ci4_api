@@ -1,0 +1,16 @@
+description: "Objeto json con la información para iniciar sersión"
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          example: admin
+          type: string
+        password:
+          type: string
+          example: admin
