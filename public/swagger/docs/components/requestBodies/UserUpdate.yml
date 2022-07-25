@@ -1,0 +1,38 @@
+description: "Objeto json con la información para crear un usuario"
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - id_group
+        - firstname
+        - lastname
+        - username
+        - email
+      properties:
+        id_group:
+          minimum: 1
+          example: 1
+          type: integer
+        id_legacy:
+          type: integer
+          uniqueItems: true
+          example: 1
+          description: Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único
+        firstname:
+          type: string
+          maxLength: 100
+          example: Juan
+        lastname:
+          type: string
+          maxLength: 100
+          example: Pérez
+        username:
+          type: string
+          maxLength: 30
+          example: juan_perez
+        email:
+          type: string
+          maxLength: 50
+          format: email

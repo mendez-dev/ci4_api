@@ -1,0 +1,28 @@
+get:
+  tags:
+    - Usuarios
+  summary: Retorna la información de un usuario
+  description: Retorna la información de un unico usuario enviando su id en el path
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: number
+      example: "1"
+      description: "id del usuario"
+  responses:
+    200:
+      description: "Información del usuario"
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/User"
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    404:
+      $ref: "#components/responses/404NotFound"

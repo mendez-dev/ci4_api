@@ -6,12 +6,7 @@ servers:
   - url: http://localhost:8080/
 
 paths:
-  /v1/login:
-    $ref: "./paths/Auth.yml"
-  /v1/verify:
-    $ref: "./paths/Verify.yml"
-  # /v1/user:
-  #   $ref: "./paths/User.yml"
+  $ref: "./paths/_index.yml"
 
 components:
   schemas:
@@ -47,3 +42,39 @@ components:
               value:
                 errors:
                   - Usuario desactivado.
+    403Forbidden:
+      description: "Prohibido"
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/ErrorResponse"
+          examples:
+            forbidden:
+              summary: Sin permisos para realizar esta acción
+              value:
+                errors:
+                  - "No tienes permisos para realizar esta acción"
+    404NotFound:
+      description: "Recurso no encontrado"
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/ErrorResponse"
+          examples:
+            not_found:
+              summary: No se encontraron resultados que coincidan con los parametros de busqueda
+              value:
+                errors:
+                  - "No se encontraron registros"
+    400BadRequest:
+      description: "La petición no se pudo procesar, falta uno o más parámetros en el request body."
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/ErrorResponse"
+          examples:
+            parameters:
+              summary: Faltan parámetros en la petición
+              value:
+                errors:
+                  - El campo x es obligatorio.

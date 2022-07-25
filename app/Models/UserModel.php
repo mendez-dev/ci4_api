@@ -78,10 +78,6 @@ class UserModel extends CustomModel
         'email' => [
             'label' => 'correo',
             'rules' => 'required|max_length[50]|is_unique[app_user.email,id_app_user,{id_app_user}]'
-        ],
-        'password' => [
-            'label' => 'contraseña',
-            'rules' => 'required|max_length[7]'
         ]
     ];
 

@@ -1,0 +1,8 @@
+/v1/login:
+  $ref: "./Auth.yml"
+/v1/verify:
+  $ref: "./Verify.yml"
+/v1/user:
+  $ref: "./User/User.yml"
+/v1/user/{id}:
+  $ref: "./User/UserId.yml"
