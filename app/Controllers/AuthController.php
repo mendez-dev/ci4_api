@@ -17,17 +17,6 @@ use App\Libraries\Authorization;
 use CodeIgniter\HTTP\Response;
 
 /**
- * @OA\Info(title="Api codeigniter 4", version="0.1"),
- * @OA\SecurityScheme(
- *   securityScheme="bearerToken",
- *   type="http",
- *   in="header",
- *   description="Token de acceso, se puede generar en /login",
- *   name="Authorization",
- *   scheme="bearer",
- *   bearerFormat="JWT",
- * )
- * 
  * Controllador `AuthController`
  * 
  * Controla la autenticación de usuarios
@@ -52,75 +41,6 @@ class AuthController extends ResourceController
         helper('validation');
     }
 
-    /**
-     * @OA\Post(
-     *     path="/v1/login",
-     *     tags={"Autenticación"},
-     *     description="Verifíca las credenciales de autenticación y retorna un 
-           token de acceso, si las credenciales son incorrectas o el usuario
-           está inactivo retornara el correspondiente error.",
-     *     @OA\RequestBody(
-     *       required=true,
-     *       @OA\JsonContent(
-     *         type="object",
-     *         required={"username", "password"},
-     *         @OA\Property(property="username", type="string"),
-     *         @OA\Property(property="password", type="string")
-     *       )
-     *     ),
-     *     @OA\Response(
-     *       response=200,
-     *       description="Retorna el token de autenticación",
-     *       @OA\JsonContent(
-     *         type="object",
-     *         example={
-     *           "token": "xxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-     *         }
-     *       )
-     *     ),
-     *     @OA\Response(
-     *       response=400,
-     *       description="La petición no se pudo procesar, falta uno o más parametros en el RequestBody.",
-     *       @OA\JsonContent(
-     *         type="object",
-     *         example={
-     *           "errors": {
-     *             "El campo contraseña es obligatorio."
-     *           }
-     *         }
-     *       )
-     *     ),
-     *     @OA\Response(
-     *       response=401,
-     *       description="No autorizado, las credenciales son inválidas o el usuario está desactivado.",
-     *       @OA\JsonContent(
-     *         @OA\Examples(
-     *           summary="Credenciales inválidas",
-     *           example="",
-     *           value={
-     *             "errors": {
-     *               "Usuario o contraseña incorrectos"
-     *             } 
-     *           }
-     *         ),
-     *         @OA\Examples(
-     *           summary="Usuario desactivado",
-     *           example="No se encontraron datos",
-     *           value={
-     *             "errors": {
-     *               "Usuario desactivado"
-     *             } 
-     *           }
-     *         )
-     *       )
-     *     )
-     * )
-     * 
-     * Verifica las credenciales del usuario y si son correctas retorna un token
-     * de autenticación.
-     *
-     * @return Response
-     */
     public function index(): Response
     {
         // Establecemos las validaciones del formulario
@@ -184,83 +104,6 @@ class AuthController extends ResourceController
         return $this->respond(["token" => $token]);
     }
 
-    /**
-     * @OA\Get(
-     *   path="/v1/verify",
-     *   tags={"Autenticación"},
-     *   description="Verifíca el token de acceso y retorna la información del 
-         usuario",
-     *   @OA\Response(
-     *     response=200,
-     *     description="OK",
-     *     @OA\JsonContent(
-     *       type="object",
-     *       example={
-     *          {
-     *            "id_app_user": 1,
-     *            "id_legacy": 1,
-     *            "id_group": 1,
-     *            "firstname": "ADMIN",
-     *            "lastname": "ADMIN",
-     *            "username": "ADMIN",
-     *            "email": "admin@admin.com",
-     *            "picture": "",
-     *            "is_active": true,
-     *            "created_by": 1,
-     *            "created_at": {
-     *              "date": "2022-05-12 10:49:07.000000",
-     *              "timezone_type": 3,
-     *              "timezone": "America/El_Salvador"
-     *            },
-     *            "updated_by": 1,
-     *            "updated_at": {
-     *              "date": "2022-05-12 11:14:21.000000",
-     *              "timezone_type": 3,
-     *              "timezone": "America/El_Salvador"
-     *            },
-     *            "deleted_by": null,
-     *            "deleted_at": null
-     *          }
-     *       }
-     *     )
-     *   ),
-     *  @OA\Response(
-     *    response=401,
-     *    description="El token de acceso es inválido o el usuario esta
-          desactivado.",
-     *    @OA\JsonContent(
-     *      @OA\Examples(
-     *        summary="No se envió el token, o es inválido",
-     *        example="",
-     *        value={
-     *          "errors": {
-     *            "Unautorized"
-     *          } 
-     *        }
-     *       ),
-     *      @OA\Examples(
-     *        summary="Token expirado",
-     *        example="expired token",
-     *        value={
-     *          "errors": {
-     *            "expired token"
-     *          } 
-     *        }
-     *       ),
-     *      @OA\Examples(
-     *        summary="Usuario desactivado",
-     *        example="No se encontraron datos",
-     *        value={
-     *          "errors": {
-     *            "Usuario desactivado"
-     *          } 
-     *        }
-     *      )
-     *    )
-     *  ),
-     *  security={{"bearerToken": {}}}
-     * )
-     */
     public function verify()
     {
         $data = Authorization::getData();

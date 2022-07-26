@@ -26,3 +26,57 @@ get:
       $ref: "#components/responses/403Forbidden"
     404:
       $ref: "#components/responses/404NotFound"
+put:
+  tags:
+    - Usuarios
+  summary: Actualiza la información de un usuario en la base de datos
+  description: Verifica que los datos enviados en formato json sean correctos y los actualiza en la base de datos
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: number
+      example: "1"
+      description: "id del usuario"
+  requestBody:
+    $ref: "#components/requestBodies/UserUpdate"
+  responses:
+    200:
+      description: "Usuario actualizado con éxito"
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/User"
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    400:
+      $ref: "#components/responses/400BadRequest"
+delete:
+  tags:
+    - Usuarios
+  summary: "Elimina un usuario de la base de datos"
+  description: "Usa soft delete para eliminar el usuario de la base de datos registrando quien lo eliminó y la fecha y hora de la acción"
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: number
+      example: "1"
+      description: "id del usuario"
+  responses:
+    200:
+      description: Usuario eliminado con éxito
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    400:
+      $ref: "#components/responses/400BadRequest"

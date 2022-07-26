@@ -1,6 +1,6 @@
 openapi: "3.0.2"
 info:
-  title: Petstore
+  title: Documentación API
   version: "1.0"
 servers:
   - url: http://localhost:8080/
@@ -67,14 +67,19 @@ components:
                 errors:
                   - "No se encontraron registros"
     400BadRequest:
-      description: "La petición no se pudo procesar, falta uno o más parámetros en el request body."
+      description: "La petición no se pudo procesar, falta uno o más parámetros o los parametros son inválidos"
       content:
         application/json:
           schema:
             $ref: "#components/schemas/ErrorResponse"
           examples:
-            parameters:
-              summary: Faltan parámetros en la petición
+            request_parameters:
+              summary: Faltan parámetros en el request
               value:
                 errors:
                   - El campo x es obligatorio.
+            path_parameters:
+              summary: Id inválido
+              value:
+                errors:
+                  - No existe un registro con el id enviado.

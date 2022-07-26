@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "Petstore",
+    "title": "Documentación API",
     "version": "1.0"
   },
   "servers": [
@@ -294,6 +294,232 @@
             "$ref": "#components/responses/404NotFound"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Actualiza la información de un usuario en la base de datos",
+        "description": "Verifica que los datos enviados en formato json sean correctos y los actualiza en la base de datos",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": "1",
+            "description": "id del usuario"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#components/requestBodies/UserUpdate"
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario actualizado con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Elimina un usuario de la base de datos",
+        "description": "Usa soft delete para eliminar el usuario de la base de datos registrando quien lo eliminó y la fecha y hora de la acción",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": "1",
+            "description": "id del usuario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario eliminado con éxito"
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
+      }
+    },
+    "/v1/user/{id}/enable": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Cambia el estado del usuario a activo",
+        "description": "Cambia el estado del usuario a activo para que pueda acceder al sistama.",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": "1",
+            "description": "id del usuario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario activado con éxito"
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
+      }
+    },
+    "/v1/user/{id}/disable": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Cambia el estado del usuario a inactivo",
+        "description": "Cambia el estado del usuario a inactivo para que ya no pueda acceder al sistama.",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": "1",
+            "description": "id del usuario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario desactivado con éxito"
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
+      }
+    },
+    "/v1/user/{id}/password": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Actualiza la contraseña de un usuario",
+        "description": "Actualiza la contraseña de un usuario.",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "example": "1",
+            "description": "id del usuario"
+          }
+        ],
+        "requestBody": {
+          "description": "Objeto json con la nueva contraseña",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "password"
+                ],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "minLength": 6
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario activado con éxito"
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
       }
     }
   },
@@ -507,6 +733,57 @@
           }
         }
       },
+      "UserUpdate": {
+        "description": "Objeto json con la información para crear un usuario",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "id_group",
+                "firstname",
+                "lastname",
+                "username",
+                "email"
+              ],
+              "properties": {
+                "id_group": {
+                  "minimum": 1,
+                  "example": 1,
+                  "type": "integer"
+                },
+                "id_legacy": {
+                  "type": "integer",
+                  "uniqueItems": true,
+                  "example": 1,
+                  "description": "Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único"
+                },
+                "firstname": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "example": "Juan"
+                },
+                "lastname": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "example": "Pérez"
+                },
+                "username": {
+                  "type": "string",
+                  "maxLength": 30,
+                  "example": "juan_perez"
+                },
+                "email": {
+                  "type": "string",
+                  "maxLength": 50,
+                  "format": "email"
+                }
+              }
+            }
+          }
+        }
+      },
       "Login": {
         "description": "Objeto json con la información para iniciar sersión",
         "required": true,
@@ -611,18 +888,26 @@
         }
       },
       "400BadRequest": {
-        "description": "La petición no se pudo procesar, falta uno o más parámetros en el request body.",
+        "description": "La petición no se pudo procesar, falta uno o más parámetros o los parametros son inválidos",
         "content": {
           "application/json": {
             "schema": {
               "$ref": "#components/schemas/ErrorResponse"
             },
             "examples": {
-              "parameters": {
-                "summary": "Faltan parámetros en la petición",
+              "request_parameters": {
+                "summary": "Faltan parámetros en el request",
                 "value": {
                   "errors": [
                     "El campo x es obligatorio."
+                  ]
+                }
+              },
+              "path_parameters": {
+                "summary": "Id inválido",
+                "value": {
+                  "errors": [
+                    "No existe un registro con el id enviado."
                   ]
                 }
               }

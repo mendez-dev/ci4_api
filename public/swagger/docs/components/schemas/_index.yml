@@ -1,6 +1,6 @@
 User:
-  $ref: "User.yml"
+  $ref: "UserSchema.yml"
 DateTime:
-  $ref: "DateTime.yml"
+  $ref: "DateTimeSchema.yml"
 ErrorResponse:
-  $ref: "ErrorsResponse.yml"
+  $ref: "ErrorsResponseSchema.yml"

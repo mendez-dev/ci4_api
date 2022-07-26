@@ -1,6 +1,6 @@
 UserCreate:
-  $ref: "UserCreate.yml"
+  $ref: "UserCreateRequest.yml"
 UserUpdate:
-  $ref: "UserUpdate.yml"
+  $ref: "UserUpdateRequest.yml"
 Login:
-  $ref: "Login.yml"
+  $ref: "LoginRequest.yml"

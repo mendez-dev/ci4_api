@@ -21,7 +21,7 @@
 
       // the following lines will be replaced by docker/configurator, when it runs in a docker-container
       window.ui = SwaggerUIBundle({
-        url: "<?php echo base_url(route_to("documentation_json")) ?>",
+        url: "<?php echo base_url("/swagger/docs/openapi.json") ?>",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [

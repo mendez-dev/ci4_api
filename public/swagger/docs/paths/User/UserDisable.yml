@@ -1,0 +1,24 @@
+put:
+  tags:
+    - Usuarios
+  summary: "Cambia el estado del usuario a inactivo"
+  description: "Cambia el estado del usuario a inactivo para que ya no pueda acceder al sistama."
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: number
+      example: "1"
+      description: "id del usuario"
+  responses:
+    200:
+      description: Usuario desactivado con éxito
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    400:
+      $ref: "#components/responses/400BadRequest"
