@@ -1,0 +1,37 @@
+type: object
+required:
+  - id_menu
+  - name
+  - label
+  - description
+  - icon
+properties:
+  id_permission:
+    type: integer
+  id_menu:
+    type: integer
+  name:
+    type: string
+  label:
+    type: string
+  description:
+    type: string
+  icon:
+    type: string
+    description: icono de font awesome
+  depends_on:
+    type: integer
+  is_active:
+    type: boolean
+  created_by:
+    type: integer
+  created_at:
+    $ref: "DateTimeSchema.yml"
+  updated_by:
+    type: integer
+  updated_at:
+    $ref: "DateTimeSchema.yml"
+  deleted_by:
+    type: integer
+  deleted_at:
+    $ref: "DateTimeSchema.yml"

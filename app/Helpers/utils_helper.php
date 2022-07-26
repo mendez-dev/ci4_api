@@ -28,7 +28,7 @@ if (!function_exists('getPage')) {
             return $page;
         }
 
-        return 1;
+        return 0;
     }
 }
 
@@ -43,7 +43,7 @@ if (!function_exists('getRecordsPerPage')) {
      */
     function getRecordsPerPage($request) : int
     {
-        if (null !== ($request->getVar("records_per_page"))) {
+        if (null !== ($request->getVar("records_per_page")) && ($request->getVar("records_per_page")) >= 1) {
 
             $records_per_page = (int) $request->getVar("records_per_page") != 0
             ? (int) $request->getVar("records_per_page")

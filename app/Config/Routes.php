@@ -64,6 +64,11 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->put('(:num)/password', 'UserController::chagePassword/$1', ['filter' => 'auth', 'as' => 'user_password']);
     });
 
+    // Rutas para la administracion de permisos
+    $routes->group('permission', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'PermissionController::index', ['filter' => 'auth', 'as' => 'permissions']);
+    });
+
     // Rutas para obtener el menu
     $routes->group('menu', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->get('/', 'MenuController::index', ['filter' => 'auth', 'as' => 'menu']);

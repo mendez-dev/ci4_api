@@ -521,6 +521,141 @@
           }
         }
       }
+    },
+    "/v1/permission": {
+      "get": {
+        "tags": [
+          "Grupos y permisos"
+        ],
+        "summary": "Retorna el listado de permisos paginados",
+        "description": "Retorna el listado de permisos\n### Filtros\nSe puede filtrar por: nombre, etiqueta, descripcion, icono, permiso padre y estado.\n### Paginación\nPara retornar los datos paginados se deberá enviar por query params el número de la página que se está solicitando.\n\nSi no se indica el numero de página se retornaran todos los registros.\n### Schemas\nLos datos páginados se retornaran en formato PaginatedResponse, si no se solicitan datos paginados se retornara un\nlistado con todos los registros, para mas información revisar los schemas/modelos del recurso.\n",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1",
+            "description": "El número de página que se está solicitando, es requerido para páginar"
+          },
+          {
+            "in": "query",
+            "name": "records_per_page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "El número de registros que se requiren por página, por defecto 10."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtra resultados por nombre (like %query%)"
+          },
+          {
+            "in": "query",
+            "name": "label",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtra resultados por etiqueta (like %query%)"
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtra resultados por descripcion (like %query%)"
+          },
+          {
+            "in": "query",
+            "name": "icon",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtra resultados por icono (like %query%)"
+          },
+          {
+            "in": "query",
+            "name": "depends_on",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtra resultados por permiso padre (like %query%)"
+          },
+          {
+            "in": "query",
+            "name": "is_active",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filtra resultados por estado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado de permisos paginados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#components/schemas/Permission"
+                          }
+                        },
+                        "current_page": {
+                          "type": "integer",
+                          "description": "página actual"
+                        },
+                        "total_pages": {
+                          "type": "integer",
+                          "description": "páginas totales"
+                        }
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#components/schemas/Permission"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#components/responses/404NotFound"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -664,6 +799,109 @@
             "example": [
               "Descripción del error"
             ]
+          }
+        }
+      },
+      "Permission": {
+        "type": "object",
+        "required": [
+          "id_menu",
+          "name",
+          "label",
+          "description",
+          "icon"
+        ],
+        "properties": {
+          "id_permission": {
+            "type": "integer"
+          },
+          "id_menu": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string",
+            "description": "icono de font awesome"
+          },
+          "depends_on": {
+            "type": "integer"
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "created_by": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "object",
+            "required": [
+              "date",
+              "timezone_type",
+              "timezone"
+            ],
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "timezone_type": {
+                "type": "integer"
+              },
+              "timezone": {
+                "type": "string"
+              }
+            }
+          },
+          "updated_by": {
+            "type": "integer"
+          },
+          "updated_at": {
+            "type": "object",
+            "required": [
+              "date",
+              "timezone_type",
+              "timezone"
+            ],
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "timezone_type": {
+                "type": "integer"
+              },
+              "timezone": {
+                "type": "string"
+              }
+            }
+          },
+          "deleted_by": {
+            "type": "integer"
+          },
+          "deleted_at": {
+            "type": "object",
+            "required": [
+              "date",
+              "timezone_type",
+              "timezone"
+            ],
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "timezone_type": {
+                "type": "integer"
+              },
+              "timezone": {
+                "type": "string"
+              }
+            }
           }
         }
       }
