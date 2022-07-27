@@ -8,6 +8,6 @@ class InitialData extends Seeder
 {
     public function run()
     {
-        //
+        $this->call('MenuAndPermissions');
     }
 }

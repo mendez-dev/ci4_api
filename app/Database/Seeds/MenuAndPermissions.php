@@ -3,29 +3,24 @@
 namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
+use App\Libraries\MigrationUtils;
 
 class MenuAndPermissions extends Seeder
 {
-    protected $app_user_table = "app_user";
-    protected $app_menu_table = "app_menu";
-    protected $app_permission_table = "app_permission";
-    protected $app_group_table = "app_group";
-    protected $app_group_permission_table = "app_group_permission";
-
     public function run()
     {
-        // Obtenemos el id del usuario administrador, El primer usuario registrado
-        $first_user    = $this->db->table($this->app_user_table)->get()->getRow();
-        $first_user_id = $first_user->id_app_user;
-
-        // Obtenemos el id del grupo super administrador, El primer grupo registrado
-        $first_group    = $this->db->table($this->app_group_table)->get()->getRow();
-        $first_group_id = $first_group->id_app_group;
+        $migrationUtils = new MigrationUtils();
+        $id_user = $migrationUtils->getFirstUserId();
+        /**
+         * @var Object
+         */
+        $super_admin_group = $migrationUtils->getFirstRow(TBL_GROUP);
+        $id_super_admin_group = $super_admin_group->id_user_group;
 
         // Definimos los builders que utilizaremos
-        $menuBuilder            = $this->db->table($this->app_menu_table);
-        $permissionsBuilder     = $this->db->table($this->app_permission_table);
-        $groupPermissionBuilder = $this->db->table($this->app_group_permission_table);
+        $menuBuilder            = $this->db->table(TBL_MENU);
+        $permissionsBuilder     = $this->db->table(TBL_PERMISSION);
+        $groupPermissionBuilder = $this->db->table(TBL_USER_GROUP_PERMISSION);
 
 
         // Insertamos los registros del menu -----------------------------------
@@ -35,18 +30,20 @@ class MenuAndPermissions extends Seeder
                 "icon"       => "fa-solid fa-users",
                 "route"      => "/users",
                 "priority"   => "10",
+                "type"       => "WEB",
                 "is_active"  => "1",
-                "created_by" => $first_user_id,
-                "updated_by" => $first_user_id,
+                "created_by" => $id_user,
+                "updated_by" => $id_user,
             ],
             [
                 "label"      => "Configuración",
                 "icon"       => "fa-solid fa-gears",
                 "route"      => "/settings",
                 "priority"   => "11",
+                "type"       => "WEB",
                 "is_active"  => "1",
-                "created_by" => $first_user_id,
-                "updated_by" => $first_user_id,
+                "created_by" => $id_user,
+                "updated_by" => $id_user,
             ]
         ];
 
@@ -63,8 +60,8 @@ class MenuAndPermissions extends Seeder
                 "description" => "Permite ver los usuarios registrados en el sistema.",
                 "icon"        => FA_EYE,
                 "is_active"   => "1",
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
             [
                 "id_menu"     => $this->getMenuIdByRoute("/settings"),
@@ -73,8 +70,8 @@ class MenuAndPermissions extends Seeder
                 "description" => "Permite ver los ajustes de la aplicación",
                 "icon"        => FA_EYE,
                 "is_active"   => "1",
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
         ];
 
@@ -91,8 +88,8 @@ class MenuAndPermissions extends Seeder
                 "icon"        => FA_CIRCLE_PLUS,
                 "is_active"   => "1",
                 "depends_on"  => $this->getPermissionIdByName("USER_READ"),
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
             [
                 "id_menu"     => $this->getMenuIdByRoute("/users"),
@@ -102,8 +99,8 @@ class MenuAndPermissions extends Seeder
                 "icon"        => FA_PEN_CIRCLE,
                 "is_active"   => "1",
                 "depends_on"  => $this->getPermissionIdByName("USER_READ"),
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
             [
                 "id_menu"     => $this->getMenuIdByRoute("/users"),
@@ -113,8 +110,8 @@ class MenuAndPermissions extends Seeder
                 "icon"        => FA_CIRCLE_TRASH,
                 "is_active"   => "1",
                 "depends_on"  => $this->getPermissionIdByName("USER_READ"),
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
             [
                 "id_menu"     => $this->getMenuIdByRoute("/users"),
@@ -124,8 +121,8 @@ class MenuAndPermissions extends Seeder
                 "icon"        => FA_CIRCLE_CHECK,
                 "is_active"   => "1",
                 "depends_on"  => $this->getPermissionIdByName("USER_READ"),
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
             [
                 "id_menu"     => $this->getMenuIdByRoute("/users"),
@@ -135,8 +132,8 @@ class MenuAndPermissions extends Seeder
                 "icon"        => FA_CIRCLE_MINUS,
                 "is_active"   => "1",
                 "depends_on"  => $this->getPermissionIdByName("USER_READ"),
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
             [
                 "id_menu"     => $this->getMenuIdByRoute("/users"),
@@ -146,8 +143,8 @@ class MenuAndPermissions extends Seeder
                 "icon"        => FA_KEY,
                 "is_active"   => "1",
                 "depends_on"  => $this->getPermissionIdByName("USER_READ"),
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
             [
                 "id_menu"     => $this->getMenuIdByRoute("/settings"),
@@ -157,8 +154,8 @@ class MenuAndPermissions extends Seeder
                 "icon"        => FA_KEY,
                 "is_active"   => "1",
                 "depends_on"  => $this->getPermissionIdByName("APP_SETTINGS_READ"),
-                "created_by"  => $first_user_id,
-                "updated_by"  => $first_user_id,
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
             ],
         ];
 
@@ -169,10 +166,10 @@ class MenuAndPermissions extends Seeder
         foreach ($all_permissions as $permission) {
             $groupPermissionBuilder->insert(
                 [
-                    "id_group" => $first_group_id,
+                    "id_user_group" => $id_super_admin_group,
                     "id_permission" => $permission->id_permission,
-                    "created_by" => $first_user_id,
-                    "updated_by" => $first_user_id
+                    "created_by" => $id_user,
+                    "updated_by" => $id_user
                 ]
             );
         }
@@ -180,14 +177,14 @@ class MenuAndPermissions extends Seeder
 
     private function getMenuIdByRoute(String $route = "")
     {
-        $menu = $this->db->table($this->app_menu_table)
+        $menu = $this->db->table(TBL_MENU)
             ->where("route", $route)->get()->getRow();
         return $menu->id_menu;
     }
 
     private function getPermissionIdByName(String $name = "")
     {
-        $permissions = $this->db->table($this->app_permission_table)
+        $permissions = $this->db->table(TBL_PERMISSION)
             ->where("name", $name)->get()->getRow();
         return $permissions->id_permission;
     }

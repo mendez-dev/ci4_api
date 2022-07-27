@@ -90,3 +90,19 @@ defined('HASH_ITERATIONS')     || define('HASH_ITERATIONS', 20);
  | El numero de registros que retornara por defecto al solicitar datos paginados
  */
 defined('RECORDS_PER_PAGE') || define('RECORDS_PER_PAGE', 10);
+
+/*
+ | --------------------------------------------------------------------------
+ | Nombres de tablas de la base de datos
+ | --------------------------------------------------------------------------
+ |
+ | Almacena los nombres de las tablas en constantes, asi en caso de necesitar cambiar el nombre de
+ | una tabla se cambiara en todos los lugares donde se haga referencia a ella
+ */
+
+defined('TBL_USER') || define('TBL_USER', 'user');
+defined('TBL_GROUP') || define('TBL_GROUP', 'user_group');
+defined('TBL_MENU') || define('TBL_MENU', 'menu');
+defined('TBL_PERMISSION') || define('TBL_PERMISSION', 'permission');
+defined('TBL_USER_GROUP_PERMISSION') || define('TBL_USER_GROUP_PERMISSION', 'user_group_permission');
+defined('TBL_APP_SETTINGS') || define('TBL_APP_SETTINGS', 'app_settings');

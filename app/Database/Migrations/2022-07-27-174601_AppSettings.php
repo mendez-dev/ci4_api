@@ -12,20 +12,20 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use App\Libraries\MigrationUtils;
 
 class AppSettings extends Migration
 {
 
-    protected $table_name = "app_settings";
+    protected $table_name = TBL_APP_SETTINGS;
 
     public function up()
     {
         // Campos de la tabla settings
         $fields = [
             'id_settings'        => [
-                'type'           => 'INT',
-                'constraint'     => '11',
-                'auto_increment' => true
+                'type'           => 'VARCHAR',
+                'constraint'     => 36
             ],
             'app_name'           => [
                 'type'           => 'VARCHAR',
@@ -72,18 +72,18 @@ class AppSettings extends Migration
                 'constraint'     => '7'
             ],
             'created_by' => [
-                'type'       => 'INT',
-                'constraint' => 11,
+                'type'       => 'VARCHAR',
+                'constraint' => 36,
             ],
             'created_at DATETIME DEFAULT CURRENT_TIMESTAMP',
             'updated_by' => [
-                'type'       => 'INT',
-                'constraint' => 11,
+                'type'       => 'VARCHAR',
+                'constraint' => 36,
             ],
             'updated_at DATETIME DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP',
             'deleted_by' => [
-                'type'       => 'INT',
-                'constraint' => 11,
+                'type'       => 'VARCHAR',
+                'constraint' => 36,
                 'null'       => true
             ],
             'deleted_at' => [
@@ -94,7 +94,15 @@ class AppSettings extends Migration
 
         $this->forge->addField($fields);  // Se agregan los campos de la tabla
         $this->forge->addKey('id_settings', true); // Se define la llave primaria
+        $this->forge->addForeignKey('created_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('updated_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('deleted_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');
         $this->forge->createTable($this->table_name); // Se crea la tabla
+
+        // Creamos el triger para usar unique id
+        $migrationUtils = new MigrationUtils();
+        $migrationUtils->createUniqueIdTrigger($this->table_name, 'id_settings');
+        $id_user = $migrationUtils->getFirstUserId();
 
         // Isertamos el primer registro con las configuraciónes iniciales
         $this->db->table($this->table_name)->insert([
@@ -109,8 +117,8 @@ class AppSettings extends Migration
             'accent_dark_color'   => '#9999AA',
             'scaffold_dark_color' => '#FAFAFA',
             'scaffold_color'      => '#2C2C2C',
-            'created_by'          => 1,
-            'updated_by'          => 1,
+            'created_by'          => $id_user,
+            'updated_by'          => $id_user,
             'deleted_by'          => null,
         ]);
     }
