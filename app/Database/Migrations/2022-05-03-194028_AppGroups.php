@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the API_CI4.
  *
@@ -31,6 +32,11 @@ class AppGroups extends Migration
             'description' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '250'
+            ],
+            'is_active' => [
+                'type'       => 'TINYINT',
+                'constraint' => '1',
+                'comment'    => '0 = false, 1 = true ',
             ],
             'created_by' => array(
                 'type'       => 'INT',
@@ -65,6 +71,7 @@ class AppGroups extends Migration
         $this->db->table($this->table_name)->insert([
             'name'        => 'SUPER ADMINISTRADOR',
             'description' => 'ADMINISTRADOR CON TODOS LOS PRIVILEGIOS DEL SISTEMA',
+            'is_active'   => 1,
             'created_by'  => 1,
             'updated_by'  => 1
         ]);
