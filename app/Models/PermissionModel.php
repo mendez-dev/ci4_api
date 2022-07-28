@@ -46,6 +46,7 @@ class PermissionModel extends CustomModel
         'description',
         'icon',
         'depends_on',
+        'type',
         'is_active',
         'created_by',
         'updated_by',

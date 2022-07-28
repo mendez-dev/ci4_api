@@ -190,7 +190,7 @@ class CustomModel extends UuidModel
 
         if ($query_params["page"]) {
             $data["response"] = $this->getPagination($query_params["page"], $query_params["records_per_page"]);
-            if (!empty($data["response"])) {
+            if (!empty($data["response"]["data"])) {
                 $data["code"] = 200;
                 return $data;
             }

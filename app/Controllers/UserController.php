@@ -43,6 +43,19 @@ class UserController extends ResourceController
     {
         $query_params = getQueryParams($this->request);
         $data = $this->userModel->getData($query_params);
+
+        // Eliminamos el password hash de la daata
+        if (isset($data["response"]["data"])) {
+            foreach ($data["response"]["data"] as $key => $value) {
+                unset($data["response"]["data"][$key]->password_hash);
+            }
+        } else if (!isset($data["response"]["errors"])) {
+            foreach ($data["response"] as $key => $value) {
+                unset($data["response"][$key]->password_hash);
+            }
+        }
+
+        // Retornamos la data
         return $this->respond($data["response"], $data["code"]);
     }
 
@@ -77,10 +90,6 @@ class UserController extends ResourceController
                 ])
             ]
         ]);
-
-        echo "datos";
-        print_r($this->request->getVar());
-
         // Si las validaciones fallan
         if (!$validation->withRequest($this->request)->run()) {
             return $this->respond(['errors' => get_errors_array($validation->getErrors())], 400);
@@ -108,7 +117,7 @@ class UserController extends ResourceController
         return $this->respond(["errors" => ['No se pudo registrar el usuario, error al escribir en la base de datos']], 400);
     }
 
-    public function update($id = 0)
+    public function update($id = "")
     {
         // Obtenemos la información del token
         $auth = Authorization::getData();
@@ -122,7 +131,7 @@ class UserController extends ResourceController
 
         // Creamos nuestra entidad usuario
         $user = new User((array) $this->request->getVar());
-        $user->id_app_user = $id;
+        $user->id_user = $id;
         $user->updated_by = $auth->id_user;
 
         // Almacenamos en la base de datos

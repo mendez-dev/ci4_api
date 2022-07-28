@@ -21,6 +21,9 @@ properties:
     description: icono de font awesome
   depends_on:
     type: integer
+  type:
+    type: string
+    enum: [ALL, WEB, MOBILE]
   is_active:
     type: boolean
   created_by:

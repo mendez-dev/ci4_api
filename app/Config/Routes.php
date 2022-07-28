@@ -55,13 +55,13 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
     // Rutas administracion de usuarios
     $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->get('/', 'UserController::index', ['filter' => 'auth', 'as' => 'users']);
-        $routes->get('(:any)', 'UserController::info/$1', ['filter' => 'auth', 'as' => 'user']);
+        $routes->get('(:segment)', 'UserController::info/$1', ['filter' => 'auth', 'as' => 'user']);
         $routes->post('/', 'UserController::store', ['filter' => 'auth', 'as' => 'user_store']);
-        $routes->put('(:any)', 'UserController::update/$1', ['filter' => 'auth', 'as' => 'user_update']);
-        $routes->delete('(:any)', 'UserController::delete/$1', ['filter' => 'auth', 'as' => 'user_delete']);
-        $routes->put('(:any)/enable', 'UserController::enable/$1', ['filter' => 'auth', 'as' => 'user_enable']);
-        $routes->put('(:any)/disable', 'UserController::disable/$1', ['filter' => 'auth', 'as' => 'user_disable']);
-        $routes->put('(:any)/password', 'UserController::chagePassword/$1', ['filter' => 'auth', 'as' => 'user_password']);
+        $routes->put('(:segment)', 'UserController::update/$1', ['filter' => 'auth', 'as' => 'user_update']);
+        $routes->delete('(:segment)', 'UserController::delete/$1', ['filter' => 'auth', 'as' => 'user_delete']);
+        $routes->put('(:segment)/enable', 'UserController::enable/$1', ['filter' => 'auth', 'as' => 'user_enable']);
+        $routes->put('(:segment)/disable', 'UserController::disable/$1', ['filter' => 'auth', 'as' => 'user_disable']);
+        $routes->put('(:segment)/password', 'UserController::chagePassword/$1', ['filter' => 'auth', 'as' => 'user_password']);
     });
 
     // Rutas para la administracion de permisos
