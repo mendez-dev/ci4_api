@@ -10,8 +10,7 @@ put:
       name: id
       required: true
       schema:
-        type: number
-      example: "1"
+        type: string
       description: "id del usuario"
   responses:
     200:

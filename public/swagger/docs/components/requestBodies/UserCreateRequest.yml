@@ -5,22 +5,16 @@ content:
     schema:
       type: object
       required:
-        - id_group
+        - id_user_group
         - firstname
         - lastname
         - username
         - email
         - password
       properties:
-        id_group:
-          minimum: 1
-          example: 1
-          type: integer
-        id_legacy:
-          type: integer
-          uniqueItems: true
-          example: 1
-          description: Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único
+        id_user_group:
+          type: string
+          description: uuidv4 string con longitud de 36 caracteres
         firstname:
           type: string
           maxLength: 100

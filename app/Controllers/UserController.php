@@ -41,28 +41,12 @@ class UserController extends ResourceController
 
     public function index(): Response
     {
-        // Obtenemos el numero de registros por página
-        $page = getPage($this->request);
-        $records_per_page = getRecordsPerPage($this->request);
-
-        // Aplicamos los filtros enviados por query params
-        $this->userModel->filterArray($this->request->getVar());
-        // Buscamos los datos paginados
-        $response = $this->userModel->getPagination($page, $records_per_page);
-
-        if (!empty($response["data"])) {
-            // Eliminamos el campo password_hash
-            foreach ($response["data"] as $key => $value) {
-                unset($response["data"][$key]->password_hash);
-            }
-
-            return $this->respond($response);
-        }
-
-        return $this->respond(["errors" => ['No se encontraron registros']], 404);
+        $query_params = getQueryParams($this->request);
+        $data = $this->userModel->getData($query_params);
+        return $this->respond($data["response"], $data["code"]);
     }
 
-    public function info(int $id)
+    public function info(string $id)
     {
         if (null !== $id) {
             $user = $this->userModel->find($id);
@@ -93,6 +77,9 @@ class UserController extends ResourceController
                 ])
             ]
         ]);
+
+        echo "datos";
+        print_r($this->request->getVar());
 
         // Si las validaciones fallan
         if (!$validation->withRequest($this->request)->run()) {

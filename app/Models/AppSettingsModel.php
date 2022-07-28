@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the API_CI4.
  *
@@ -27,7 +28,7 @@ use \App\Entities\AppSettings;
 class AppSettingsModel extends Model
 {
     // Configuración del modelo
-    protected $table            = 'app_settings';
+    protected $table            = TBL_APP_SETTINGS;
     protected $primaryKey       = 'id_settings';
     protected $returnType       = AppSettings::class;
     protected $useSoftDeletes   = true;

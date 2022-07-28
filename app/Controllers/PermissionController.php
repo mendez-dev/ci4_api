@@ -46,26 +46,8 @@ class PermissionController extends ResourceController
      */
     public function index(): Response
     {
-        // Obtenemos el numero de registros por página
-        $page = getPage($this->request);
-
-        $records_per_page = getRecordsPerPage($this->request);
-        // Aplicamos los filtros enviados por query params
-        $this->permissionModel->filterArray($this->request->getVar());
-        // Buscamos los datos paginados
-
-        if ($page) {
-            $response = $this->permissionModel->getPagination($page, $records_per_page);
-            if (!empty($response["data"])) {
-                return $this->respond($response);
-            }
-        } else {
-            $response = $this->permissionModel->findAll();
-            if (!empty($response)) {
-                return $this->respond($response);
-            }
-        }
-
-        return $this->respond(["errors" => ['No se encontraron registros']], 404);
+        $query_params = getQueryParams($this->request);
+        $data = $this->permissionModel->getData($query_params);
+        return $this->respond($data["response"], $data["code"]);
     }
 }

@@ -25,13 +25,13 @@ class User extends Entity
     protected $datamap = [];
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts   = [
-        'id_app_user' => 'integer',
-        'id_legacy'   => '?integer',
-        'id_group'    => 'integer',
-        'is_active'   => 'bool',
-        'created_by'  => 'integer',
-        'updated_by'  => 'integer',
-        'deleted_by'  => '?integer'
+        'id_user'       => 'string',
+        'id_legacy'     => '?integer',
+        'id_user_group' => 'string',
+        'is_active'     => 'bool',
+        'created_by'    => 'string',
+        'updated_by'    => 'string',
+        'deleted_by'    => '?string'
     ];
 
     /**
@@ -63,10 +63,10 @@ class User extends Entity
      */
     protected function getGroup()
     {
-        if (!empty($this->attributes['id_group'])) {
+        if (!empty($this->attributes['id_user_group'])) {
             $groupModel = model("GroupModel");
             return $groupModel
-                ->find($this->attributes['id_group']);
+                ->find($this->attributes['id_user_group']);
         }
 
         return null;

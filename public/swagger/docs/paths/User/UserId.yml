@@ -10,8 +10,7 @@ get:
       name: id
       required: true
       schema:
-        type: number
-      example: "1"
+        type: string
       description: "id del usuario"
   responses:
     200:
@@ -38,8 +37,7 @@ put:
       name: id
       required: true
       schema:
-        type: number
-      example: "1"
+        type: string
       description: "id del usuario"
   requestBody:
     $ref: "#components/requestBodies/UserUpdate"
@@ -68,8 +66,7 @@ delete:
       name: id
       required: true
       schema:
-        type: number
-      example: "1"
+        type: string
       description: "id del usuario"
   responses:
     200:

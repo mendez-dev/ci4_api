@@ -31,7 +31,7 @@ class PermissionModel extends CustomModel
      * Configurar parametros del modelo
      *
      */
-    protected $table          = 'app_permission';
+    protected $table          = TBL_PERMISSION;
     protected $primaryKey     = 'id_permission ';
     protected $returnType     = Permission::class;
     protected $useSoftDeletes = true;

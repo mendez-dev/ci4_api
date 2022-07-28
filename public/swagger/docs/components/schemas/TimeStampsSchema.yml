@@ -1,12 +1,15 @@
 created_by:
-  type: integer
+  type: string
+  description: uuidv4 string con longitud de 36 caracteres
 created_at:
   $ref: "DateTimeSchema.yml"
 updated_by:
-  type: integer
+  type: string
+  description: uuidv4 string con longitud de 36 caracteres
 updated_at:
   $ref: "DateTimeSchema.yml"
 deleted_by:
-  type: integer
+  type: string
+  description: uuidv4 string con longitud de 36 caracteres
 deleted_at:
   $ref: "DateTimeSchema.yml"

@@ -30,8 +30,9 @@ class UserModel extends CustomModel
      * Configurar parametros del modelo
      *
      */
-    protected $table          = 'app_user';
-    protected $primaryKey     = 'id_app_user';
+    protected $table          = TBL_USER;
+    protected $primaryKey     = 'id_user';
+    protected $uuidFields     = ['id_user'];
     protected $returnType     = User::class;
     protected $useSoftDeletes = true;
     protected $useTimestamps  = true;
@@ -39,7 +40,7 @@ class UserModel extends CustomModel
     protected $updatedField   = 'updated_at';
     protected $deletedField   = 'deleted_at';
     protected $allowedFields  = [
-        'id_group',
+        'id_user_group',
         'id_legacy',
         'firstname',
         'lastname',
@@ -56,11 +57,11 @@ class UserModel extends CustomModel
     protected $validationRules = [
         'id_legacy' => [
             'label' => 'id heredado',
-            'rules' => 'permit_empty|integer|is_unique[app_user.id_legacy,id_app_user,{id_app_user}]'
+            'rules' => 'permit_empty|is_unique[' . TBL_USER . '.id_legacy,id_user,{id_user}]'
         ],
-        'id_group ' => [
+        'id_user_group ' => [
             'label' => 'id grupo',
-            'rules' => 'required|integer|is_not_unique[app_group.id_app_group]'
+            'rules' => 'required|is_not_unique[' . TBL_GROUP . '.id_user_group]'
         ],
         'firstname' => [
             'label' => 'nombres',
@@ -73,11 +74,11 @@ class UserModel extends CustomModel
         'username' => [
             'label' => 'nombre de usuario',
             'rules' =>
-            'required|max_length[30]|is_unique[app_user.username,id_app_user,{id_app_user}]'
+            'required|max_length[30]|is_unique[' . TBL_USER . '.username,id_user,{id_user}]'
         ],
         'email' => [
             'label' => 'correo',
-            'rules' => 'required|max_length[50]|is_unique[app_user.email,id_app_user,{id_app_user}]'
+            'rules' => 'required|max_length[50]|is_unique[' . TBL_USER . '.email,id_user,{id_user}]'
         ]
     ];
 

@@ -1,19 +1,18 @@
 type: object
 required:
-  - id_app_user
-  - id_group
+  - id_user
+  - id_user_group
   - firstname
   - lastname
   - username
   - email
 properties:
-  id_app_user:
-    type: integer
-  id_legacy:
-    type: integer
-    description: Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único
-  id_group:
-    type: integer
+  id_user:
+    type: string
+    description: uuidv4 string con longitud de 36 caracteres
+  id_user_group:
+    type: string
+    description: uuidv4 string con longitud de 36 caracteres
   firstname:
     type: string
   lastname:
@@ -29,14 +28,17 @@ properties:
   is_active:
     type: boolean
   created_by:
-    type: integer
+    type: string
+    description: uuidv4 string con longitud de 36 caracteres
   created_at:
     $ref: "DateTimeSchema.yml"
   updated_by:
-    type: integer
+    type: string
+    description: uuidv4 string con longitud de 36 caracteres
   updated_at:
     $ref: "DateTimeSchema.yml"
   deleted_by:
-    type: integer
+    type: string
+    description: uuidv4 string con longitud de 36 caracteres
   deleted_at:
     $ref: "DateTimeSchema.yml"

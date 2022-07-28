@@ -25,7 +25,7 @@ use App\Entities\Menu;
  */
 class MenuModel extends Model
 {
-    protected $table            = 'app_menu';
+    protected $table            = TBL_MENU;
     protected $primaryKey       = 'id_menu';
     protected $returnType       = Menu::class;
     protected $useSoftDeletes = true;

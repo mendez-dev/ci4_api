@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SYSTEM_CI4.
  *
@@ -10,7 +11,7 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
+use Michalsn\Uuid\UuidModel;
 
 /**
  * Modelo `CustomModel`
@@ -21,8 +22,10 @@ use CodeIgniter\Model;
  * @category Model
  * @author   Wilber Méndez <mendezwilberdev@gmail.com>
  */
-class CustomModel extends Model
+class CustomModel extends UuidModel
 {
+    // Los UUID se almacenaran como strings
+    protected $uuidUseBytes   = false;
 
     /**
      * Se encarga de aplicar los filtros segun los parámetros de busqueda
@@ -32,24 +35,28 @@ class CustomModel extends Model
      * @param bool $strict indica si la busqueda sera un like o where
      * @return void
      */
-    public function filterArray(array $filters, bool $strict = false) : void
+    public function filterArray(array $filters, bool $strict = false): void
     {
-        
+
         // Verificamos que los campos a filtrar existan en el modelo
         foreach ($filters as $key => $value) {
             if (!in_array($key, $this->allowedFields)) {
                 unset($filters[$key]);
-            }else{
+            } else {
                 if ($strict) {
                     // Si la busqueda es estricta usamos where
                     $this->where($key, $value);
                 } else {
                     // Si la busqueda no es estricta usamos orLike
+                    if ($value === "true") {
+                        $value = 1;
+                    } else if ($value === "false") {
+                        $value = 0;
+                    }
                     $this->Like($key, $value);
                 }
             }
         }
-
     }
 
     /**
@@ -72,10 +79,10 @@ class CustomModel extends Model
      * @param bool $strict indica si la busqueda sera un like o where
      * @return array
      */
-    public function filterAll(array $filters, bool $strict = false) : array
+    public function filterAll(array $filters, bool $strict = false): array
     {
         // Aplicamos las condiciones a la busqueda
-        $this->filterArray( $filters, $strict);
+        $this->filterArray($filters, $strict);
 
         // Retornamos todos los resultados
         return $this->findAll();
@@ -104,7 +111,7 @@ class CustomModel extends Model
     public function filterOne(array $filters, bool $strict = false)
     {
         // Aplicamos las condiciones a la busqueda
-        $this->filterArray( $filters, $strict);
+        $this->filterArray($filters, $strict);
 
         // Retornamos todos los resultados
         return $this->first();
@@ -117,10 +124,11 @@ class CustomModel extends Model
      * @param integer $records_per_page total de registros por página
      * @return array
      */
-    public function getPagination(int $page = 1, int $records_per_page = RECORDS_PER_PAGE ) : array
+    public function getPagination(int $page = 1, int $records_per_page = RECORDS_PER_PAGE): array
     {
+
         $paginate = [
-            "data"         => $this->paginate($records_per_page, "default", $page),
+            "data"         => $this->orderBy("created_at", "ASC")->paginate($records_per_page, "default", $page),
             'current_page' => $page,
             'total_pages'  => $this->pager->getPageCount(),
 
@@ -134,4 +142,69 @@ class CustomModel extends Model
         return $paginate;
     }
 
+    /**
+     * Realiza una consulta de datos para retornarlos directamente en la api
+     * 
+     * Permite retornar datos paginados o retornar el listado de todos los registros,
+     * tambien es capas de aplicar filtros por medio de los [allowedFields] de la tabla
+     * por defecto retorna los datos ordenados por su fecha de creacion `created_at` pero
+     * tambien se pueden ordenar por cualquiera de los [allowedFields]
+     *
+     * @param array $query_params el formato del arreglo debe ser el siguiete
+     *   [
+     *   'filters' => ['filed' => 'value],
+     *   'page' => 1,
+     *   'records_per_page' => 10,
+     *   'sort_by' => 'created_at',
+     *   'order_by' => 'ASC'
+     * ]
+     * @return array
+     */
+    public function getData(array $query_params): array
+    {
+        // Aplicamos las condiciones a la busqueda
+        $this->filterArray($query_params['filters']);
+
+        // Ordenamos los resultados de la búsqueda
+        $sort_by = "created_at";
+        $order_by = "ASC";
+
+        if (null != $query_params["sort_by"]) {
+            if (in_array($query_params["sort_by"], $this->allowedFields)) {
+                $sort_by = $query_params["sort_by"];
+            }
+        }
+
+        if (null != $query_params["order_by"]) {
+            if (
+                $query_params["order_by"] == "asc"
+                || $query_params["order_by"] == "ASC"
+                || $query_params["order_by"] == "desc"
+                || $query_params["order_by"] == "DESC"
+            ) {
+                $order_by = $query_params["order_by"];
+            }
+        }
+
+        $this->orderBy($sort_by, $order_by);
+
+        if ($query_params["page"]) {
+            $data["response"] = $this->getPagination($query_params["page"], $query_params["records_per_page"]);
+            if (!empty($data["response"])) {
+                $data["code"] = 200;
+                return $data;
+            }
+        } else {
+            $data["response"] = $this->findAll();
+            if (!empty($data["response"])) {
+                $data["code"] = 200;
+                return $data;
+            }
+        }
+
+        return [
+            "response" => ["errors" => ['No se encontraron registros']],
+            "code" => 404
+        ];
+    }
 }

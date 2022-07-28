@@ -25,8 +25,8 @@ use App\Entities\Group;
  */
 class GroupModel extends Model
 {
-    protected $table            = 'app_group';
-    protected $primaryKey       = 'id_app_group';
+    protected $table            = TBL_GROUP;
+    protected $primaryKey       = 'id_user_group';
     protected $returnType       = Group::class;
     protected $useSoftDeletes   = true;
     protected $useTimestamps    = true;

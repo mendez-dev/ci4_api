@@ -100,7 +100,7 @@ class AuthController extends ResourceController
             );
         }
 
-        $token = Authorization::generateToken(["id_user" => $user->id_app_user]);
+        $token = Authorization::generateToken(["id_user" => $user->id_user]);
         return $this->respond(["token" => $token]);
     }
 

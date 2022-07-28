@@ -267,9 +267,8 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "number"
+              "type": "string"
             },
-            "example": "1",
             "description": "id del usuario"
           }
         ],
@@ -312,9 +311,8 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "number"
+              "type": "string"
             },
-            "example": "1",
             "description": "id del usuario"
           }
         ],
@@ -360,9 +358,8 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "number"
+              "type": "string"
             },
-            "example": "1",
             "description": "id del usuario"
           }
         ],
@@ -400,9 +397,8 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "number"
+              "type": "string"
             },
-            "example": "1",
             "description": "id del usuario"
           }
         ],
@@ -440,9 +436,8 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "number"
+              "type": "string"
             },
-            "example": "1",
             "description": "id del usuario"
           }
         ],
@@ -480,9 +475,8 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "number"
+              "type": "string"
             },
-            "example": "1",
             "description": "id del usuario"
           }
         ],
@@ -663,23 +657,21 @@
       "User": {
         "type": "object",
         "required": [
-          "id_app_user",
-          "id_group",
+          "id_user",
+          "id_user_group",
           "firstname",
           "lastname",
           "username",
           "email"
         ],
         "properties": {
-          "id_app_user": {
-            "type": "integer"
-          },
-          "id_legacy": {
-            "type": "integer",
-            "description": "Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único"
+          "id_user": {
+            "type": "string",
+            "description": "uuidv4 string con longitud de 36 caracteres"
           },
           "id_group": {
-            "type": "integer"
+            "type": "string",
+            "description": "uuidv4 string con longitud de 36 caracteres"
           },
           "firstname": {
             "type": "string"
@@ -702,7 +694,8 @@
             "type": "boolean"
           },
           "created_by": {
-            "type": "integer"
+            "type": "string",
+            "description": "uuidv4 string con longitud de 36 caracteres"
           },
           "created_at": {
             "type": "object",
@@ -724,7 +717,8 @@
             }
           },
           "updated_by": {
-            "type": "integer"
+            "type": "string",
+            "description": "uuidv4 string con longitud de 36 caracteres"
           },
           "updated_at": {
             "type": "object",
@@ -746,7 +740,8 @@
             }
           },
           "deleted_by": {
-            "type": "integer"
+            "type": "string",
+            "description": "uuidv4 string con longitud de 36 caracteres"
           },
           "deleted_at": {
             "type": "object",
@@ -923,7 +918,7 @@
             "schema": {
               "type": "object",
               "required": [
-                "id_group",
+                "id_user_group",
                 "firstname",
                 "lastname",
                 "username",
@@ -931,16 +926,9 @@
                 "password"
               ],
               "properties": {
-                "id_group": {
-                  "minimum": 1,
-                  "example": 1,
-                  "type": "integer"
-                },
-                "id_legacy": {
-                  "type": "integer",
-                  "uniqueItems": true,
-                  "example": 1,
-                  "description": "Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único"
+                "id_user_group": {
+                  "type": "string",
+                  "description": "uuidv4 string con longitud de 36 caracteres"
                 },
                 "firstname": {
                   "type": "string",
@@ -979,23 +967,16 @@
             "schema": {
               "type": "object",
               "required": [
-                "id_group",
+                "id_user_group",
                 "firstname",
                 "lastname",
                 "username",
                 "email"
               ],
               "properties": {
-                "id_group": {
-                  "minimum": 1,
-                  "example": 1,
-                  "type": "integer"
-                },
-                "id_legacy": {
-                  "type": "integer",
-                  "uniqueItems": true,
-                  "example": 1,
-                  "description": "Se utiliza para relacionar el usuario con un registro en otra base de datos, debe ser un valor único"
+                "id_user_group": {
+                  "type": "string",
+                  "description": "uuidv4 string con longitud de 36 caracteres"
                 },
                 "firstname": {
                   "type": "string",
