@@ -89,7 +89,7 @@ class CustomModel extends UuidModel
     }
 
     /**
-     * Filtra por medio de un arreglo con parámetros de busqueda,
+     * Filtra por medio de un arreglo con parámetros de busqueda, 
      * 
      * Recibe un arreglo relacional donde los `key` son los nombres de las
      * columnas que se encuentren en `$this->allowedFields` y el `value` el
