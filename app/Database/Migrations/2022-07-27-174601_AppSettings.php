@@ -71,27 +71,27 @@ class AppSettings extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'background' => [
+            'background_color' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'dark_background'     => [
+            'dark_background_color'     => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'surface' => [
+            'surface_color' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'dark_surface'     => [
+            'dark_surface_color'     => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'error' => [
+            'error_color' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'dark_error'     => [
+            'dark_error_color'     => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
@@ -141,12 +141,12 @@ class AppSettings extends Migration
             'dark_secondary_color'         => '#03DAC6',
             'secondary_color_variant'      => '#018786',
             'dark_secondary_color_variant' => '#018786',
-            'background'                   => '#FAFAFA',
-            'dark_background'              => '#FAFAFA',
-            'surface'                      => '#ffffff',
-            'dark_surface'                 => '#ffffff',
-            'error'                        => '#B00020',
-            'dark_error'                   => '#B00020',
+            'background_color'             => '#FAFAFA',
+            'dark_background_color'        => '#FAFAFA',
+            'surface_color'                => '#ffffff',
+            'dark_surface_color'           => '#ffffff',
+            'error_color'                  => '#B00020',
+            'dark_error_color'             => '#B00020',
             'created_by'                   => $id_user,
             'updated_by'                   => $id_user,
             'deleted_by'                   => null,

@@ -106,27 +106,27 @@ class AppSettingsModel extends Model
             'label' => 'secundario oscuro variante',
             'rules' => 'required|max_length[7]'
         ],
-        'background' => [
+        'background_color' => [
             'label' => 'fondo',
             'rules' => 'required|max_length[7]'
         ],
-        'dark_background' => [
+        'dark_background_color' => [
             'label' => 'fondo oscuro',
             'rules' => 'required|max_length[7]'
         ],
-        'surface' => [
+        'surface_color' => [
             'label' => 'superficie',
             'rules' => 'required|max_length[7]'
         ],
-        'dark_surface' => [
+        'dark_surface_color' => [
             'label' => 'superficie oscuro',
             'rules' => 'required|max_length[7]'
         ],
-        'error' => [
+        'error_color' => [
             'label' => 'error',
             'rules' => 'required|max_length[7]'
         ],
-        'dark_error' => [
+        'dark_error_color' => [
             'label' => 'error oscuro',
             'rules' => 'required|max_length[7]'
         ],
