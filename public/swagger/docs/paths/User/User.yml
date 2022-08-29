@@ -58,6 +58,21 @@ get:
       schema:
         type: boolean
       description: "Filtra resultados por estado"
+    - in: query
+      name: sort_by
+      required: false
+      schema:
+        type: string
+      example: "created_at"
+      description: "Indica por cual columna se quieren ordenar los datos"
+    - in: query
+      name: order_by
+      required: false
+      schema:
+        type: string
+        enum: [ASC, DESC]
+      example: "ASC"
+      description: "Indica el tipo de ordenamiento de los datos ascendente o descendente"
   responses:
     200:
       description: "Retorna la información del usuario"
