@@ -1,0 +1,102 @@
+get:
+  tags:
+    - Grupos y permisos
+  summary: Retorna el listado de grupos paginados
+  description: |
+    Retorna el listado de grupos
+    ### Filtros
+    Se puede filtrar por: nombre, etiqueta, descripcion, icono, permiso padre y estado.
+    ### Paginación
+    Para retornar los datos paginados se deberá enviar por query params el número de la página que se está solicitando.
+
+    Si no se indica el numero de página se retornaran todos los registros.
+    ### Schemas
+    Los datos páginados se retornaran en formato PaginatedResponse, si no se solicitan datos paginados se retornara un
+    listado con todos los registros, para mas información revisar los schemas/modelos del recurso.
+  security:
+    - bearerToken: []
+  parameters:
+    - in: query
+      name: page
+      schema:
+        type: integer
+      example: "1"
+      description: "El número de página que se está solicitando, es requerido para páginar"
+    - in: query
+      name: records_per_page
+      required: false
+      schema:
+        type: integer
+      description: "El número de registros que se requiren por página, por defecto 10."
+    - in: query
+      name: name
+      required: false
+      schema:
+        type: string
+      description: "Filtra resultados por nombre (like %query%)"
+    - in: query
+      name: label
+      required: false
+      schema:
+        type: string
+      description: "Filtra resultados por etiqueta (like %query%)"
+    - in: query
+      name: description
+      required: false
+      schema:
+        type: string
+      description: "Filtra resultados por descripcion (like %query%)"
+    - in: query
+      name: icon
+      required: false
+      schema:
+        type: string
+      description: "Filtra resultados por icono (like %query%)"
+    - in: query
+      name: depends_on
+      required: false
+      schema:
+        type: string
+      description: "Filtra resultados por permiso padre (like %query%)"
+    - in: query
+      name: type
+      required: false
+      schema:
+        type: string
+        enum: [ALL, WEB, MOBILE]
+      description: "Filtra resultados por permiso padre (like %query%)"
+    - in: query
+      name: is_active
+      required: false
+      schema:
+        type: boolean
+      description: "Filtra resultados por estado"
+  responses:
+    200:
+      description: Listado de permisos paginados
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#components/schemas/Permission"
+                  current_page:
+                    type: integer
+                    description: página actual
+                  total_pages:
+                    type: integer
+                    description: páginas totales
+              - type: array
+                items:
+                  $ref: "#components/schemas/Permission"
+
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    404:
+      $ref: "#components/responses/404NotFound"

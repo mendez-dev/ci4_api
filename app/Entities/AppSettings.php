@@ -14,12 +14,9 @@ use CodeIgniter\Entity\Entity;
 class AppSettings extends Entity
 {
     protected $datamap = [];
-    protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates   = [];
     protected $casts   = [
-        'id_settings' => 'integer',
         'default_tax' => 'double',
-        'created_by'  => 'integer',
-        'updated_by'  => 'integer',
         'deleted_by'  => '?integer'
     ];
 }

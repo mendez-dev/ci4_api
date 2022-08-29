@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the API_CI4.
  *
@@ -12,8 +13,9 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use \App\Entities\AppSettings;
+use App\Libraries\Authorization;
 
- /**
+/**
  * Controllador `AppSettingsController`
  * 
  * Se encarga de la lógica de negocios de los ajustes de la
@@ -32,54 +34,15 @@ class AppSettingsController extends ResourceController
      */
     protected $appSettingsModel;
 
-    public function __construct(){
+    public function __construct()
+    {
         // Cargamos modelos librerias y helpers
         $this->appSettingsModel = model('AppSettingsModel');
         helper('validation');
     }
 
-  
+
     /**
-     * @OA\Get(
-     *     path="/v1/settings",
-     *     tags={"Ajustes APP"},
-     *     @OA\Response(
-     *       response="200",
-     *       description="Retorna los ajustes globales de la aplicación",
-     *       @OA\JsonContent(
-     *         type="object",
-     *         example={
-     *           "id_settings": 1,
-     *           "app_name": "BASE APP",
-     *           "default_tax": 0.13,
-     *           "default_currency": "$",
-     *           "main_color": "#FF4E6A",
-     *           "main_dark_color": "#EA5C44",
-     *           "second_color": "#344968",
-     *           "second_dark_color": "#CCCCDD",
-     *           "accent_color": "#8C98A8",
-     *           "accent_dark_color": "#9999AA",
-     *           "scaffold_dark_color": "#FAFAFA",
-     *           "scaffold_color": "#2C2C2C",
-     *           "created_by": 1,
-     *           "created_at": {
-     *             "date": "2022-05-12 10:49:07.000000",
-     *             "timezone_type": 3,
-     *             "timezone": "America/El_Salvador"
-     *           },
-     *           "updated_by": 1,
-     *           "updated_at": {
-     *             "date": "2022-05-12 10:49:07.000000",
-     *             "timezone_type": 3,
-     *             "timezone": "America/El_Salvador"
-     *           },
-     *           "deleted_by": null,
-     *           "deleted_at": null
-     *         }
-     *       )  
-     *     )
-     * )
-     * 
      * Retorna las configuraciones iniciales de la aplicación
      *
      * @return Response
@@ -96,7 +59,6 @@ class AppSettingsController extends ResourceController
 
         // Si no se encontraron datos se retorna un 404
         return $this->respond(null, 404);
-
     }
 
     /**
@@ -106,118 +68,32 @@ class AppSettingsController extends ResourceController
      */
     public function update($id = null)
     {
-        // Cargamos la libreria para validar
-        $validation = service('validation');
+        // Obtenemos la información del token
+        $auth = Authorization::getData();
 
-        // Definimos las reglas de validación
-        $validation->setRules([
-            'app_name' => [
-                'label' => 'nombre de la aplicación',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[100]'
-                ])
-            ],
-            'default_tax' => [
-                'label' => 'inpuesto',
-                'rules' => rule_array([
-                    'required',
-                    'decimal'
-                    ])
-            ],
-            'default_currency' => [
-                'label' => 'signo de la moneda',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[2]'
-                ])
-            ],
-            'default_currency' => [
-                'label' => 'signo de la moneda',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[2]'
-                ])
-            ],
-            'main_color' => [
-                'label' => 'color principal',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ],
-            'main_dark_color' => [
-                'label' => 'color principal (modo oscuro)',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ],
-            'second_color' => [
-                'label' => 'color secundario',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ],
-            'second_dark_color' => [
-                'label' => 'color secundario (modo oscuro)',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ],
-            'accent_color' => [
-                'label' => 'color de acento',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ],
-            'accent_dark_color' => [
-                'label' => 'color de acento (modo oscuro)',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ],
-            'scaffold_color' => [
-                'label' => 'color del scaffold',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ],
-            'scaffold_dark_color' => [
-                'label' => 'color del scaffold (modo oscuro)',
-                'rules' => rule_array([
-                    'required',
-                    'max_length[7]'
-                ])
-            ],
-        ]);
-
-        // Si las validaciones fallan
-        if (!$validation->withRequest($this->request)->run()) {
-            return $this->respond(['errors' => get_errors_array($validation->getErrors())], 400);
-        }
-        
         // Creamos la entidad con los nuevos valores
-        $appSettings = new AppSettings( (array) $this->request->getVar() );
-        $appSettings->id_settings = 1;
-        
+        $appSettings = new AppSettings((array) $this->request->getVar());
+
+        // Eliminamos la información de quien creo y actualizo el registro
+        unset($appSettings->created_by);
+        unset($appSettings->updated_by);
+        unset($appSettings->created_at);
+        unset($appSettings->updated_at);
+
+        // Obteemos el id de los ajustes de la app
+        $response = $this->appSettingsModel->findAll(1);
+        $appSettings->id_settings = $response[0]->id_settings;
         // Asignamos el id del usuario que modifica los ajustes
-        // TODO: Obtener el id del usuario que actualiza el registro
-        $appSettings->updated_by = 1;
-        
+        $appSettings->updated_by = $auth->id_user;
+
         // Actualizamos los datos
         if ($this->appSettingsModel->save($appSettings)) {
             $settings = $this->appSettingsModel->first();
             return $this->respond($settings);
+        } else {
+            return $this->respond(['errors' => get_errors_array($this->appSettingsModel->errors())], 400);
         }
 
         return $this->respond(['errors' => ['La petición no se pudo procesar']], 400);
     }
 }
-
-

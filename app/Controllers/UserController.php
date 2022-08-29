@@ -122,7 +122,7 @@ class UserController extends ResourceController
         // Obtenemos la información del token
         $auth = Authorization::getData();
         // Verificamos si el usuario existe
-        if ($id !== 0) {
+        if ($id !== "") {
             $user = $this->userModel->find($id);
             if (empty($user)) {
                 return $this->respond(["errors" => ['No existe usuario con el id enviado']], 400);

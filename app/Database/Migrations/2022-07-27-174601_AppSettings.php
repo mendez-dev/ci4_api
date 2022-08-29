@@ -39,35 +39,59 @@ class AppSettings extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => '2'
             ],
-            'main_color'         => [
+            'primary_color'         => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'main_dark_color'    => [
+            'dark_primary_color'    => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'second_color'       => [
+            'primary_color_variant' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'second_dark_color'  => [
+            'dark_primary_color_variant' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'accent_color'       => [
+            'secondary_color'       => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'accent_dark_color'  => [
+            'dark_secondary_color'  => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'scaffold_dark_color' => [
+            'secondary_color_variant' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
-            'scaffold_color'     => [
+            'dark_secondary_color_variant' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => '7'
+            ],
+            'background' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => '7'
+            ],
+            'dark_background'     => [
+                'type'           => 'VARCHAR',
+                'constraint'     => '7'
+            ],
+            'surface' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => '7'
+            ],
+            'dark_surface'     => [
+                'type'           => 'VARCHAR',
+                'constraint'     => '7'
+            ],
+            'error' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => '7'
+            ],
+            'dark_error'     => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '7'
             ],
@@ -106,20 +130,26 @@ class AppSettings extends Migration
 
         // Isertamos el primer registro con las configuraciónes iniciales
         $this->db->table($this->table_name)->insert([
-            'app_name'            => 'BASE APP',
-            'default_tax'         => 0.13,
-            'default_currency'    => '$',
-            'main_color'          => '#FF4E6A',
-            'main_dark_color'     => '#EA5C44',
-            'second_color'        => '#344968',
-            'second_dark_color'   => '#CCCCDD',
-            'accent_color'        => '#8C98A8',
-            'accent_dark_color'   => '#9999AA',
-            'scaffold_dark_color' => '#FAFAFA',
-            'scaffold_color'      => '#2C2C2C',
-            'created_by'          => $id_user,
-            'updated_by'          => $id_user,
-            'deleted_by'          => null,
+            'app_name'                     => 'BASE APP',
+            'default_tax'                  => 0.13,
+            'default_currency'             => '$',
+            'primary_color'                => '#6200EE',
+            'dark_primary_color'           => '#6200EE',
+            'primary_color_variant'        => '#3700B3',
+            'dark_primary_color_variant'   => '#3700B3',
+            'secondary_color'              => '#03DAC6',
+            'dark_secondary_color'         => '#03DAC6',
+            'secondary_color_variant'      => '#018786',
+            'dark_secondary_color_variant' => '#018786',
+            'background'                   => '#FAFAFA',
+            'dark_background'              => '#FAFAFA',
+            'surface'                      => '#ffffff',
+            'dark_surface'                 => '#ffffff',
+            'error'                        => '#B00020',
+            'dark_error'                   => '#B00020',
+            'created_by'                   => $id_user,
+            'updated_by'                   => $id_user,
+            'deleted_by'                   => null,
         ]);
     }
 

@@ -47,7 +47,7 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('verify', 'AuthController::verify', ['filter' => 'auth', 'as' => 'verify']);
 
     // Rutas de ajustes de la aplicación
-    $routes->group('settings', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->group('app_settings', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->get('/', 'AppSettingsController::index', ['as' => 'settings']);
         $routes->put('/', 'AppSettingsController::update', ['as' => 'update_settings']);
     });
@@ -62,6 +62,17 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->put('(:segment)/enable', 'UserController::enable/$1', ['filter' => 'auth', 'as' => 'user_enable']);
         $routes->put('(:segment)/disable', 'UserController::disable/$1', ['filter' => 'auth', 'as' => 'user_disable']);
         $routes->put('(:segment)/password', 'UserController::chagePassword/$1', ['filter' => 'auth', 'as' => 'user_password']);
+    });
+
+    // Rutas administracion de grupos
+    $routes->group('group', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'GroupController::index', ['as' => 'groups']);
+        $routes->get('(:segment)', 'GroupController::info/$1', ['as' => 'group']);
+        $routes->post('/', 'GroupController::store', ['filter' => 'auth', 'as' => 'group_store']);
+        $routes->put('(:segment)', 'GroupController::update/$1', ['filter' => 'auth', 'as' => 'group_update']);
+        $routes->delete('(:segment)', 'GroupController::delete/$1', ['filter' => 'auth', 'as' => 'group_delete']);
+        $routes->put('(:segment)/enable', 'GroupController::enable/$1', ['filter' => 'auth', 'as' => 'group_enable']);
+        $routes->put('(:segment)/disable', 'GroupController::disable/$1', ['filter' => 'auth', 'as' => 'group_disable']);
     });
 
     // Rutas para la administracion de permisos

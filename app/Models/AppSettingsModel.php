@@ -42,16 +42,95 @@ class AppSettingsModel extends Model
         'app_name',
         'default_tax',
         'default_currency',
-        'main_color',
-        'main_dark_color',
-        'second_color',
-        'second_dark_color',
-        'accent_color',
-        'accent_dark_color',
-        'scaffold_dark_color',
-        'scaffold_color',
+        'primary_color',
+        'dark_primary_color',
+        'primary_color_variant',
+        'dark_primary_color_variant',
+        'secondary_color',
+        'dark_secondary_color',
+        'secondary_color_variant',
+        'dark_secondary_color_variant',
+        'background',
+        'dark_background',
+        'surface',
+        'dark_surface',
+        'error',
+        'dark_error',
         'created_by',
         'updated_by',
         'deleted_by'
+    ];
+
+    protected $validationRules = [
+        'app_name' => [
+            'label' => 'nombre de la aplicación',
+            'rules' => 'required|max_length[100]'
+        ],
+        'default_tax' => [
+            'label' => 'inpuesto',
+            'rules' => 'required|decimal'
+        ],
+        'default_currency' => [
+            'label' => 'signo de la moneda',
+            'rules' => 'required|max_length[2]'
+        ],
+        'primary_color' => [
+            'label' => 'primario',
+            'rules' => 'required|max_length[7]'
+        ],
+        'dark_primary_color' => [
+            'label' => 'primario oscuro',
+            'rules' => 'required|max_length[7]'
+        ],
+        'primary_color_variant' => [
+            'label' => 'primario variante',
+            'rules' => 'required|max_length[7]'
+        ],
+        'dark_primary_color_variant' => [
+            'label' => 'primario oscuro variante',
+            'rules' => 'required|max_length[7]'
+        ],
+        'secondary_color' => [
+            'label' => 'secundario',
+            'rules' => 'required|max_length[7]'
+        ],
+        'dark_secondary_color' => [
+            'label' => 'secundario oscuro',
+            'rules' => 'required|max_length[7]'
+        ],
+        'secondary_color_variant' => [
+            'label' => 'secundario variante',
+            'rules' => 'required|max_length[7]'
+        ],
+        'dark_secondary_color_variant' => [
+            'label' => 'secundario oscuro variante',
+            'rules' => 'required|max_length[7]'
+        ],
+        'background' => [
+            'label' => 'fondo',
+            'rules' => 'required|max_length[7]'
+        ],
+        'dark_background' => [
+            'label' => 'fondo oscuro',
+            'rules' => 'required|max_length[7]'
+        ],
+        'surface' => [
+            'label' => 'superficie',
+            'rules' => 'required|max_length[7]'
+        ],
+        'dark_surface' => [
+            'label' => 'superficie oscuro',
+            'rules' => 'required|max_length[7]'
+        ],
+        'error' => [
+            'label' => 'error',
+            'rules' => 'required|max_length[7]'
+        ],
+        'dark_error' => [
+            'label' => 'error oscuro',
+            'rules' => 'required|max_length[7]'
+        ],
+
+
     ];
 }

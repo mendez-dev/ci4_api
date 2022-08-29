@@ -13,6 +13,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 use App\Entities\Group;
+use App\Models\CustomModel;
 
 /**
  * Modelo `GroupModel`
@@ -23,7 +24,7 @@ use App\Entities\Group;
  * @category Model
  * @author   Wilber Méndez <mendezwilberdev@gmail.com>
  */
-class GroupModel extends Model
+class GroupModel extends CustomModel
 {
     protected $table            = TBL_GROUP;
     protected $primaryKey       = 'id_user_group';
@@ -37,6 +38,7 @@ class GroupModel extends Model
     protected $allowedFields    = [
         'name',
         'description',
+        'is_active',
         'created_by',
         'updated_by',
         'deleted_by'

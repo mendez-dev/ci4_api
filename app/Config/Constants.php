@@ -106,3 +106,4 @@ defined('TBL_MENU') || define('TBL_MENU', 'menu');
 defined('TBL_PERMISSION') || define('TBL_PERMISSION', 'permission');
 defined('TBL_USER_GROUP_PERMISSION') || define('TBL_USER_GROUP_PERMISSION', 'user_group_permission');
 defined('TBL_APP_SETTINGS') || define('TBL_APP_SETTINGS', 'app_settings');
+defined('TBL_CATEGORIE') || define('TBL_CATEGORIE', 'categorie');
