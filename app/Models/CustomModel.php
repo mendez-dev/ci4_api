@@ -53,7 +53,7 @@ class CustomModel extends UuidModel
                     } else if ($value === "false") {
                         $value = 0;
                     }
-                    $this->Like($key, $value);
+                    $this->OrLike($key, $value);
                 }
             }
         }
