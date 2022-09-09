@@ -35,12 +35,18 @@ class CustomModel extends UuidModel
      * @param bool $strict indica si la busqueda sera un like o where
      * @return void
      */
-    public function filterArray(array $filters, bool $strict = false): void
+    public function filterArray(array $filters, bool $strict = false, bool $verify_aloed_fields = true): void
     {
 
+        if (empty($filters)) return;
+
+        // Agrupamos las condiciones para que no interfieran con el WHERE deleted_at IS NULL
+        $this->orGroupStart();
+        
+        // Iniciamos grupo de filtros
         // Verificamos que los campos a filtrar existan en el modelo
         foreach ($filters as $key => $value) {
-            if (!in_array($key, $this->allowedFields)) {
+            if (!in_array($key, $this->allowedFields) && $verify_aloed_fields) {
                 unset($filters[$key]);
             } else {
                 if ($strict) {
@@ -57,6 +63,8 @@ class CustomModel extends UuidModel
                 }
             }
         }
+        // Cerramos grupo de filtros
+        $this->groupEnd();
     }
 
     /**
@@ -160,10 +168,21 @@ class CustomModel extends UuidModel
      * ]
      * @return array
      */
-    public function getData(array $query_params): array
+    public function getData(array $query_params, array $extra_filters = []): array
     {
+
+        // Agrupamos condiciones para que no interfieran con el WHERE deleted_at IS NULL
+        if (!empty($query_params['filters']) && !empty($extra_filters)) {
+            $this->orGroupStart();
+        }
         // Aplicamos las condiciones a la busqueda
         $this->filterArray($query_params['filters']);
+        // Aplicamos los filtros extra
+        $this->filterArray($extra_filters, false, false);
+        // Agrupamos condiciones para que no interfieran con el WHERE deleted_at IS NULL
+        if (!empty($query_params['filters']) && !empty($extra_filters)) {
+            $this->GroupEnd();
+        }
 
         // Ordenamos los resultados de la búsqueda
         $sort_by = "created_at";
@@ -187,6 +206,8 @@ class CustomModel extends UuidModel
         }
 
         $this->orderBy($sort_by, $order_by);
+
+
 
         if ($query_params["page"]) {
             $data["response"] = $this->getPagination($query_params["page"], $query_params["records_per_page"]);

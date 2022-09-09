@@ -42,7 +42,16 @@ class UserController extends ResourceController
     public function index(): Response
     {
         $query_params = getQueryParams($this->request);
-        $data = $this->userModel->getData($query_params);
+
+        // Filtros extras para la busqueda
+        $filters = [];
+        if ($this->request->getVar('full_name') !== null) {
+            $filters = [
+                "CONCAT(firstname, ' ', lastname)" => $this->request->getVar('full_name'),
+            ];
+        }
+
+        $data = $this->userModel->getData($query_params, $filters);
 
         // Eliminamos el password hash de la daata
         if (isset($data["response"]["data"])) {
