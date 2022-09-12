@@ -25,10 +25,11 @@ class Group extends Entity
     protected $datamap = [];
     protected $dates   = [];
     protected $casts   = [
-        'id_app_group' => 'integer',
-        'created_by' => 'integer',
-        'updated_by' => 'integer',
-        'deleted_by' => '?integer'
+        'id_app_group' => 'string',
+        'is_active'     => 'integer',
+        'created_by' => 'string',
+        'updated_by' => 'string',
+        'deleted_by' => '?string'
     ];
 
     /**

@@ -1,0 +1,18 @@
+description: "Objeto json con la información para crear un grupo"
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          example: Administradores
+        description:
+          type: string
+          maxLength: 250
+          example: Grupo de administradores

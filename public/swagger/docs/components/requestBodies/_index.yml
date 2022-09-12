@@ -4,3 +4,5 @@ UserUpdate:
   $ref: "UserUpdateRequest.yml"
 Login:
   $ref: "LoginRequest.yml"
+GroupCreate:
+  $ref: "GroupCreateRequest.yml"

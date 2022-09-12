@@ -5,7 +5,7 @@ get:
   description: |
     Retorna el listado de grupos
     ### Filtros
-    Se puede filtrar por: nombre, etiqueta, descripcion, icono, permiso padre y estado.
+    Se puede filtrar por: nombre, descripcion y estado.
     ### Paginación
     Para retornar los datos paginados se deberá enviar por query params el número de la página que se está solicitando.
 
@@ -35,36 +35,11 @@ get:
         type: string
       description: "Filtra resultados por nombre (like %query%)"
     - in: query
-      name: label
-      required: false
-      schema:
-        type: string
-      description: "Filtra resultados por etiqueta (like %query%)"
-    - in: query
       name: description
       required: false
       schema:
         type: string
       description: "Filtra resultados por descripcion (like %query%)"
-    - in: query
-      name: icon
-      required: false
-      schema:
-        type: string
-      description: "Filtra resultados por icono (like %query%)"
-    - in: query
-      name: depends_on
-      required: false
-      schema:
-        type: string
-      description: "Filtra resultados por permiso padre (like %query%)"
-    - in: query
-      name: type
-      required: false
-      schema:
-        type: string
-        enum: [ALL, WEB, MOBILE]
-      description: "Filtra resultados por permiso padre (like %query%)"
     - in: query
       name: is_active
       required: false
@@ -73,7 +48,7 @@ get:
       description: "Filtra resultados por estado"
   responses:
     200:
-      description: Listado de permisos paginados
+      description: Listado de grupos paginados
       content:
         application/json:
           schema:
@@ -83,7 +58,7 @@ get:
                   data:
                     type: array
                     items:
-                      $ref: "#components/schemas/Permission"
+                      $ref: "#components/schemas/Group"
                   current_page:
                     type: integer
                     description: página actual
@@ -94,6 +69,34 @@ get:
                 items:
                   $ref: "#components/schemas/Permission"
 
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    404:
+      $ref: "#components/responses/404NotFound"
+
+post:
+  tags:
+    - Grupos y permisos
+  summary: Crea un nuevo grupo
+  description: |
+    Crea un nuevo grupo
+    ### Schemas
+    Para crear un nuevo grupo se deberá enviar un objeto con los datos del grupo, para mas información revisar los schemas/modelos del recurso.
+  security:
+    - bearerToken: []
+  requestBody:
+    $ref: "#components/requestBodies/GroupCreate"
+  responses:
+    201:
+      description: Grupo creado
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/Group"
+    400:
+      $ref: "#components/responses/400BadRequest"
     401:
       $ref: "#components/responses/401Unauthorized"
     403:

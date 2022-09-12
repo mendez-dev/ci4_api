@@ -35,34 +35,38 @@ class CustomModel extends UuidModel
      * @param bool $strict indica si la busqueda sera un like o where
      * @return void
      */
-    public function filterArray(array $filters, bool $strict = false, bool $verify_aloed_fields = true): void
+    public function filterArray(array $filters, bool $strict = false, bool $verify_allowed_fields = true): void
     {
 
+        // Eliminamos del arreglo los campos que no estan permitidos
+        if ($verify_allowed_fields) {
+            $filters = array_intersect_key($filters, array_flip($this->allowedFields));
+        }
+
+        // Si el arreglo esta vacio retornamos
         if (empty($filters)) return;
 
         // Agrupamos las condiciones para que no interfieran con el WHERE deleted_at IS NULL
         $this->orGroupStart();
-        
+
         // Iniciamos grupo de filtros
         // Verificamos que los campos a filtrar existan en el modelo
         foreach ($filters as $key => $value) {
-            if (!in_array($key, $this->allowedFields) && $verify_aloed_fields) {
-                unset($filters[$key]);
+
+            if ($strict) {
+                // Si la busqueda es estricta usamos where
+                $this->where($key, $value);
             } else {
-                if ($strict) {
-                    // Si la busqueda es estricta usamos where
-                    $this->where($key, $value);
-                } else {
-                    // Si la busqueda no es estricta usamos orLike
-                    if ($value === "true") {
-                        $value = 1;
-                    } else if ($value === "false") {
-                        $value = 0;
-                    }
-                    $this->OrLike($key, $value);
+                // Si la busqueda no es estricta usamos orLike
+                if ($value === "true") {
+                    $value = 1;
+                } else if ($value === "false") {
+                    $value = 0;
                 }
+                $this->OrLike($key, $value);
             }
         }
+
         // Cerramos grupo de filtros
         $this->groupEnd();
     }

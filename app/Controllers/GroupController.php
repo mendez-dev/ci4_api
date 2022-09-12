@@ -67,7 +67,7 @@ class GroupController extends ResourceController
         $auth = Authorization::getData();
 
         // Creamos nuestra entidad de grupo
-        $group = new Group((array) $this->request->getVar);
+        $group = new Group((array) $this->request->getVar());
 
         // Agregamos la información del usuario que crea el grupo
         $group->is_active   = true;
@@ -76,7 +76,7 @@ class GroupController extends ResourceController
 
         // Almacenamos en la base de datos
         if ($this->groupModel->save($group)) {
-            $id_group = $this->groupModel->insertID();
+            $id_group = $this->groupModel->getInsertID();
             $new_group = $this->groupModel->find($id_group);
             return $this->respond($new_group);
         } else {

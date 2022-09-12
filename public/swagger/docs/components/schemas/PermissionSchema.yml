@@ -29,12 +29,12 @@ properties:
   created_by:
     type: integer
   created_at:
-    $ref: "DateTimeSchema.yml"
+    type: string
   updated_by:
     type: integer
   updated_at:
-    $ref: "DateTimeSchema.yml"
+    type: string
   deleted_by:
     type: integer
   deleted_at:
-    $ref: "DateTimeSchema.yml"
+    type: string

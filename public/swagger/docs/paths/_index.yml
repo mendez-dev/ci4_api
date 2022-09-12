@@ -12,5 +12,7 @@
   $ref: "./User/UserDisable.yml"
 /v1/user/{id}/password:
   $ref: "./User/UserPassword.yml"
+/v1/group:
+  $ref: "./Groups/Group.yml"
 /v1/permission:
   $ref: "./Groups/Permissions.yml"

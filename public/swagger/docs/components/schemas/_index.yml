@@ -6,3 +6,5 @@ ErrorResponse:
   $ref: "ErrorsResponseSchema.yml"
 Permission:
   $ref: "PermissionSchema.yml"
+Group:
+  $ref: "GroupSchema.yml"

@@ -43,4 +43,19 @@ class GroupModel extends CustomModel
         'updated_by',
         'deleted_by'
     ];
+
+    protected $validationRules  = [
+        'name' => [
+            'label' => 'nombre',
+            'rules' => 'required|max_length[50]|is_unique[' . TBL_GROUP . '.name,id_user_group,{id_user_group}]'
+        ],
+        'description' => [
+            'label' => 'descripcion',
+            'rules' => 'required|max_length[100]'
+        ],
+        'is_active' => [
+            'label' => 'activo',
+            'rules' => 'required|in_list[0,1]'
+        ],
+    ];
 }
