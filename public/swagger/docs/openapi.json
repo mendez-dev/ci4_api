@@ -417,7 +417,7 @@
           "Usuarios"
         ],
         "summary": "Cambia el estado del usuario a activo",
-        "description": "Cambia el estado del usuario a activo para que pueda acceder al sistama.",
+        "description": "Cambia el estado del usuario a activo para que pueda acceder al sistema.",
         "security": [
           {
             "bearerToken": []
@@ -667,7 +667,7 @@
           }
         ],
         "requestBody": {
-          "$ref": "#components/requestBodies/GroupCreate"
+          "$ref": "#components/requestBodies/Group"
         },
         "responses": {
           "201": {
@@ -691,6 +691,253 @@
           },
           "404": {
             "$ref": "#components/responses/404NotFound"
+          }
+        }
+      }
+    },
+    "/v1/group/{id}": {
+      "get": {
+        "tags": [
+          "Grupos y permisos"
+        ],
+        "summary": "Retorna la información de un grupo",
+        "description": "Retorna la información de un unico grupo enviando su id en el path",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "id del grupo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Información del grupo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Group"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#components/responses/404NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Grupos y permisos"
+        ],
+        "summary": "Actualiza la información de un grupo en la base de datos",
+        "description": "Verifica que los datos enviados en formato json sean correctos y los actualiza en la base de datos",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "id del grupo"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#components/requestBodies/Group"
+        },
+        "responses": {
+          "200": {
+            "description": "Grupo actualizado con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Group"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Grupos y permisos"
+        ],
+        "summary": "Elimina un grupo de la base de datos",
+        "description": "Usa soft delete para no eliminar el registro de la base de datos",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "id del grupo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo eliminado con éxito"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#components/responses/404NotFound"
+          }
+        }
+      }
+    },
+    "/v1/group/{id}/enable": {
+      "put": {
+        "tags": [
+          "Grupos y permisos"
+        ],
+        "summary": "Cambia el estado del grupo a activo",
+        "description": "Cambia el estado del grupo a activo para que pueda que los usuarios que pertenezcan a él puedan acceder al sistema.",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "id del grupo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo activado con éxito"
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
+      }
+    },
+    "/v1/group/{id}/disable": {
+      "put": {
+        "tags": [
+          "Grupos y permisos"
+        ],
+        "summary": "Cambia el estado del grupo a inactivo",
+        "description": "Cambia el estado del grupo a inactivo para que los usuarios que pertenezcan a él no puedan acceder al sistema.",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "id del grupo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo desactivado con éxito"
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
+      }
+    },
+    "/v1/group/{id}/permissions": {
+      "get": {
+        "tags": [
+          "Grupos y permisos"
+        ],
+        "summary": "Obtiene los permisos de un grupo",
+        "description": "Obtiene los permisos de un grupo",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "id del grupo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo desactivado con éxito"
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
           }
         }
       }
@@ -1177,7 +1424,7 @@
           }
         }
       },
-      "GroupCreate": {
+      "Group": {
         "description": "Objeto json con la información para crear un grupo",
         "required": true,
         "content": {

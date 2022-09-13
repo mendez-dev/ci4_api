@@ -73,6 +73,16 @@ class MenuAndPermissions extends Seeder
                 "created_by"  => $id_user,
                 "updated_by"  => $id_user,
             ],
+            [
+                "id_menu"     => $this->getMenuIdByRoute("/settings"),
+                "name"        => "PERMISSION_READ",
+                "label"       => "Ver permisos",
+                "description" => "Permite ver los permisos del sistema",
+                "icon"        => FA_EYE,
+                "is_active"   => "1",
+                "created_by"  => $id_user,
+                "updated_by"  => $id_user,
+            ],
         ];
 
         // Insertamos los permisos principales

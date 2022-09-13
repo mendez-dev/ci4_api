@@ -2,7 +2,7 @@ put:
   tags:
     - Usuarios
   summary: "Cambia el estado del usuario a activo"
-  description: "Cambia el estado del usuario a activo para que pueda acceder al sistama."
+  description: "Cambia el estado del usuario a activo para que pueda acceder al sistema."
   security:
     - bearerToken: []
   parameters:

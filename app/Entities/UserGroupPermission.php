@@ -14,23 +14,22 @@ namespace App\Entities;
 use CodeIgniter\Entity\Entity;
 
 /**
- * Entidad `Permission`
+ * Entidad `UserGroupPermission`
  *
  * @package  API_CI4
  * @category Entity
  * @author   Wilber Méndez <mendezwilberdev@gmail.com>
  */
-class Permission extends Entity
+class UserGroupPermission extends Entity
 {
     protected $datamap = [];
     protected $dates   = [];
     protected $casts   = [
+        'id_user_group_permission' => 'string',
+        'id_user_group' => 'string',
         'id_permission' => 'string',
-        'id_menu' => 'string',
-        'depends_on' => '?string',
-        'is_active'   => 'integer',
-        'created_by'  => 'string',
-        'updated_by'  => 'string',
-        'deleted_by'  => '?string'
+        'created_by' => 'string',
+        'updated_by' => 'string',
+        'deleted_by' => '?string'
     ];
 }

@@ -1,0 +1,23 @@
+put:
+  tags:
+    - Grupos y permisos
+  summary: "Cambia el estado del grupo a activo"
+  description: "Cambia el estado del grupo a activo para que pueda que los usuarios que pertenezcan a él puedan acceder al sistema."
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: "id del grupo"
+  responses:
+    200:
+      description: Grupo activado con éxito
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    400:
+      $ref: "#components/responses/400BadRequest"

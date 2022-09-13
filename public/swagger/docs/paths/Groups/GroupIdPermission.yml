@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Grupos y permisos
+  summary: "Obtiene los permisos de un grupo"
+  description: "Obtiene los permisos de un grupo"
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: "id del grupo"
+  responses:
+    200:
+      description: Grupo desactivado con éxito
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    400:
+      $ref: "#components/responses/400BadRequest"

@@ -87,7 +87,7 @@ post:
   security:
     - bearerToken: []
   requestBody:
-    $ref: "#components/requestBodies/GroupCreate"
+    $ref: "#components/requestBodies/Group"
   responses:
     201:
       description: Grupo creado

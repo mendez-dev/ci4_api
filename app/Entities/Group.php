@@ -12,6 +12,7 @@
 namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
+use App\Models\PermissionModel;
 
 /**
  * Entidad `Group`
@@ -46,11 +47,11 @@ class Group extends Entity
     }
 
     /**
-     * Asignar descripcion
+     * Asignar descripción
      *
-     * Pasa la descripción a mayuscula
+     * Pasa la descripción a mayúscula
      *
-     * @param string $description descripcion del grup
+     * @param string $description descripción del grupo
      *
      * @return void
      */
@@ -67,14 +68,31 @@ class Group extends Entity
      */
     protected function getMenu()
     {
-        if (!empty($this->attributes['id_app_group'])) {
+        if (!empty($this->attributes['id_user_group_permission'])) {
             $menuModel = Model('MenuModel');
 
             $subquery = $menuModel->db->table("app_permission AS p")->select("p.id_menu")
                 ->join("app_group_permission AS gp", "p.id_permission = gp.id_permission")
-                ->where("gp.id_group", $this->attributes['id_app_group']);
+                ->where("gp.id_group", $this->attributes['id_user_group_permission']);
 
             return $menuModel->whereIn("id_menu", $subquery)->findAll();
+        }
+    }
+
+    /**
+     * Retorna el listado de permisos
+     *
+     * @return array
+     */
+    protected function getPermissions()
+    {
+        if (!empty($this->attributes['id_user_group'])) {
+            $permissionModel = new PermissionModel();
+
+            $subquery = $permissionModel->db->table("user_group_permission AS gp")->select("gp.id_permission")
+                ->where("gp.id_user_group", $this->attributes['id_user_group']);
+
+            return $permissionModel->whereIn("id_permission", $subquery)->findAll();
         }
     }
 }

@@ -1,0 +1,79 @@
+get:
+  tags:
+    - Grupos y permisos
+  summary: Retorna la información de un grupo
+  description: Retorna la información de un unico grupo enviando su id en el path
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: "id del grupo"
+  responses:
+    200:
+      description: "Información del grupo"
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/Group"
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    404:
+      $ref: "#components/responses/404NotFound"
+put:
+  tags:
+    - Grupos y permisos
+  summary: Actualiza la información de un grupo en la base de datos
+  description: Verifica que los datos enviados en formato json sean correctos y los actualiza en la base de datos
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: "id del grupo"
+  requestBody:
+    $ref: "#components/requestBodies/Group"
+  responses:
+    200:
+      description: "Grupo actualizado con éxito"
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/Group"
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    400:
+      $ref: "#components/responses/400BadRequest"
+delete:
+  tags:
+    - Grupos y permisos
+  summary: "Elimina un grupo de la base de datos"
+  description: "Usa soft delete para no eliminar el registro de la base de datos"
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: "id del grupo"
+  responses:
+    200:
+      description: "Grupo eliminado con éxito"
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    404:
+      $ref: "#components/responses/404NotFound"
