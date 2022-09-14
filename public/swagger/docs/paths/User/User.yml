@@ -79,16 +79,22 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                type: array
+            oneOf:
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#components/schemas/User"
+                  current_page:
+                    type: integer
+                    description: página actual
+                  total_pages:
+                    type: integer
+                    description: páginas totales
+              - type: array
                 items:
                   $ref: "#components/schemas/User"
-              current_page:
-                type: integer
-              total_pages:
-                type: integer
     401:
       $ref: "#components/responses/401Unauthorized"
     403:

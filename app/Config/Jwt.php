@@ -5,9 +5,10 @@
  * 
  * (c) Open Solution Systems <operaciones@tumundolaboral.com.sv>
  * 
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
+
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
@@ -26,6 +27,5 @@ class Jwt extends BaseConfig
      *
      * @var string
      */
-    public $expiration_time ="+7 day";
-
+    public $expiration_time = "+7 day";
 }

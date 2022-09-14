@@ -214,21 +214,33 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#components/schemas/User"
+                          }
+                        },
+                        "current_page": {
+                          "type": "integer",
+                          "description": "página actual"
+                        },
+                        "total_pages": {
+                          "type": "integer",
+                          "description": "páginas totales"
+                        }
+                      }
+                    },
+                    {
                       "type": "array",
                       "items": {
                         "$ref": "#components/schemas/User"
                       }
-                    },
-                    "current_page": {
-                      "type": "integer"
-                    },
-                    "total_pages": {
-                      "type": "integer"
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -940,6 +952,56 @@
             "$ref": "#components/responses/403Forbidden"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Grupos y permisos"
+        ],
+        "summary": "Asigna permisos a un grupo",
+        "description": "Asigna permisos a un grupo, recibe un array con los id de los permisos a asignar y verifica que existan en la base de datos y los asigna al grupo",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "id del grupo"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Permisos asignados con éxito"
+          },
+          "400": {
+            "$ref": "#components/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          }
+        }
       }
     },
     "/v1/permission": {
@@ -1132,6 +1194,50 @@
           },
           "is_active": {
             "type": "boolean"
+          },
+          "group": {
+            "type": "object",
+            "required": [
+              "id_user_group",
+              "name",
+              "description"
+            ],
+            "properties": {
+              "id_user_group": {
+                "type": "string",
+                "description": "uuidv4 string con longitud de 36 caracteres"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "is_active": {
+                "type": "boolean"
+              },
+              "created_by": {
+                "type": "string",
+                "description": "uuidv4 string con longitud de 36 caracteres"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string",
+                "description": "uuidv4 string con longitud de 36 caracteres"
+              },
+              "updated_at": {
+                "type": "string"
+              },
+              "deleted_by": {
+                "type": "string",
+                "description": "uuidv4 string con longitud de 36 caracteres"
+              },
+              "deleted_at": {
+                "type": "string"
+              }
+            }
           },
           "created_by": {
             "type": "string",

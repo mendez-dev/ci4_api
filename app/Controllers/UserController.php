@@ -5,7 +5,7 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
@@ -33,17 +33,23 @@ class UserController extends ResourceController
 
     public function __construct()
     {
-        // Cargamos modelos librerias y helpers
+        // Cargamos modelos librerías y helpers
         $this->userModel = model('UserModel');
         helper('validation');
         helper('utils');
     }
 
+    /**
+     * Retorna todos los usuarios del sistema
+     *
+     * @return Response
+     */
     public function index(): Response
     {
         $query_params = getQueryParams($this->request);
 
-        // Filtros extras para la busqueda
+        // Filtros extras para la búsqueda
+        // Agregamos un filtro que busque por el nombre del usuario concatenado con el apellido
         $filters = [];
         if ($this->request->getVar('full_name') !== null) {
             $filters = [
@@ -51,16 +57,19 @@ class UserController extends ResourceController
             ];
         }
 
+        // Buscamos los usuarios
         $data = $this->userModel->getData($query_params, $filters);
 
-        // Eliminamos el password hash de la daata
+        // Eliminamos el password hash de la data a retornar y retornamos la información del grupo
         if (isset($data["response"]["data"])) {
             foreach ($data["response"]["data"] as $key => $value) {
                 unset($data["response"]["data"][$key]->password_hash);
+                $data["response"]["data"][$key]->group = $data["response"]["data"][$key]->group;
             }
         } else if (!isset($data["response"]["errors"])) {
             foreach ($data["response"] as $key => $value) {
                 unset($data["response"][$key]->password_hash);
+                $data["response"][$key]->group = $data["response"][$key]->group;
             }
         }
 
@@ -68,12 +77,20 @@ class UserController extends ResourceController
         return $this->respond($data["response"], $data["code"]);
     }
 
+    /**
+     * Retorna la información de un usuario
+     * 
+     * @param string $id id del usuario
+     * @return Response
+     */
     public function info(string $id)
     {
         if (null !== $id) {
             $user = $this->userModel->find($id);
             if (!empty($user)) {
                 unset($user->password_hash);
+                // Retornamos también la data del grupo al que pertenece el usuario
+                $user->group = $user->group;
                 return $this->respond($user);
             }
         }
@@ -81,6 +98,11 @@ class UserController extends ResourceController
         return $this->respond(["errors" => ['No se encontraron registros']], 404);
     }
 
+    /**
+     * Crea un nuevo usuario
+     *
+     * @return Response
+     */
     public function store()
     {
         // Obtenemos la información del token
@@ -99,6 +121,7 @@ class UserController extends ResourceController
                 ])
             ]
         ]);
+
         // Si las validaciones fallan
         if (!$validation->withRequest($this->request)->run()) {
             return $this->respond(['errors' => get_errors_array($validation->getErrors())], 400);
@@ -126,10 +149,17 @@ class UserController extends ResourceController
         return $this->respond(["errors" => ['No se pudo registrar el usuario, error al escribir en la base de datos']], 400);
     }
 
+    /**
+     * Actualiza la información de un usuario
+     *
+     * @param string $id id del usuario
+     * @return Response
+     */
     public function update($id = "")
     {
         // Obtenemos la información del token
         $auth = Authorization::getData();
+
         // Verificamos si el usuario existe
         if ($id !== "") {
             $user = $this->userModel->find($id);
@@ -155,6 +185,14 @@ class UserController extends ResourceController
         return $this->respond(["errors" => ['No se pudo actualizar el usuario, error al escribir en la base de datos']], 400);
     }
 
+    /**
+     * Elimina un usuario
+     * 
+     * usa soft deletes para no eliminar el registro de la base de datos
+     *
+     * @param string $id id del usuario
+     * @return Response
+     */
     public function delete($id = null)
     {
         // Obtenemos la información del token
@@ -187,6 +225,14 @@ class UserController extends ResourceController
         return $this->respond(["errors" => ['No se pudo eliminar el usuario, error al escribir en la base de datos']], 400);
     }
 
+    /**
+     * Activa un usuario
+     * 
+     * Cambia el estado de un usuario a activo
+     * 
+     * @param string $id id del usuario
+     * @return Response
+     */
     public function enable($id = null)
     {
         // Obtenemos la información del token
@@ -215,6 +261,14 @@ class UserController extends ResourceController
         return $this->respond(["errors" => ['No se pudo habilitar el usuario, error al escribir en la base de datos']], 400);
     }
 
+    /**
+     * Desactiva un usuario
+     * 
+     * Cambia el estado de un usuario a inactivo
+     * 
+     * @param string $id id del usuario
+     * @return Response
+     */
     public function disable($id = null)
     {
         // Obtenemos la información del token
@@ -243,6 +297,12 @@ class UserController extends ResourceController
         return $this->respond(["errors" => ['No se pudo habilitar el usuario, error al escribir en la base de datos']], 400);
     }
 
+    /**
+     * Actualiza la contraseña de un usuario
+     * 
+     * @param string $id id del usuario
+     * @return Response
+     */
     public function chagePassword($id = null)
     {
         // Obtenemos la información del token
@@ -256,7 +316,7 @@ class UserController extends ResourceController
             }
         }
 
-        // Cargamos la libreria para validar
+        // Cargamos la librería para validar
         $validation = service('validation');
 
         // Definimos las reglas de validación

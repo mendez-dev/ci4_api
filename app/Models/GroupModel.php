@@ -5,13 +5,12 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
 namespace App\Models;
 
-use CodeIgniter\Model;
 use App\Entities\Group;
 use App\Models\CustomModel;
 
@@ -58,4 +57,30 @@ class GroupModel extends CustomModel
             'rules' => 'required|in_list[0,1]'
         ],
     ];
+
+
+    public function deletePermissions($id_user_group, $id_user)
+    {
+        // Eliminar permisos usando soft delete
+        $this->db->table(TBL_USER_GROUP_PERMISSION)
+            ->where('id_user_group', $id_user_group)
+            ->set('deleted_by', $id_user)
+            ->set('deleted_at', date('Y-m-d H:i:s'))
+            ->update();
+    }
+
+
+    public function assignPermission($id_user_group, $id_permission, $id_user)
+    {
+        $user_group_permission = new UserGroupPermissionModel();
+        // Insertar permisos y si falla devolvemos los errores
+        if (!$user_group_permission->insert([
+            'id_user_group' => $id_user_group,
+            'id_permission' => $id_permission,
+            'created_by' => $id_user,
+            'updated_by' => $id_user
+        ])) {
+            return $user_group_permission->errors();
+        }
+    }
 }

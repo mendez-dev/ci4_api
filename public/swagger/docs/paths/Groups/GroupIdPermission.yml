@@ -21,3 +21,34 @@ get:
       $ref: "#components/responses/403Forbidden"
     400:
       $ref: "#components/responses/400BadRequest"
+put:
+  tags:
+    - Grupos y permisos
+  summary: "Asigna permisos a un grupo"
+  description: "Asigna permisos a un grupo, recibe un array con los id de los permisos a asignar y verifica que existan en la base de datos y los asigna al grupo"
+  security:
+    - bearerToken: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: "id del grupo"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: string
+  responses:
+    200:
+      description: Permisos asignados con éxito
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    400:
+      $ref: "#components/responses/400BadRequest"

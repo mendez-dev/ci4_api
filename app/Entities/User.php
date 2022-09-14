@@ -5,7 +5,7 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
@@ -67,6 +67,26 @@ class User extends Entity
             $groupModel = model("GroupModel");
             return $groupModel
                 ->find($this->attributes['id_user_group']);
+        }
+
+        return null;
+    }
+
+    /**
+     * Retorna el nombre del grupo al que pertenece el usuario
+     *
+     * @return void
+     */
+    protected function getGroupName()
+    {
+        if (!empty($this->attributes['id_user_group'])) {
+            $groupModel = model("GroupModel");
+            $group = $groupModel
+                ->find($this->attributes['id_user_group']);
+
+            if (!empty($group)) {
+                return $group->name;
+            }
         }
 
         return null;

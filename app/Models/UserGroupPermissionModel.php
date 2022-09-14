@@ -5,7 +5,7 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
@@ -47,21 +47,22 @@ class UserGroupPermissionModel extends CustomModel
 
     /**
      * --------------------------------------------------------------------
-     * Relaciones
+     * Validaciones
      *
      */
-    protected $has_one = [
-        'user_group' => [
-            'App\Models\UserGroupModel',
-            'id_user_group',
-            'id_user_group'
+
+    //  Verificar que el id_user_group exista en la tabla app_user_group y que este activo
+    protected $validationRules = [
+        'id_user_group' => [
+            'label' => 'grupo de usuario',
+            'rules' => 'required|is_not_unique[' . TBL_GROUP . '.id_user_group,is_active,1]',
         ],
-        'permission' => [
-            'App\Models\PermissionModel',
-            'id_permission',
-            'id_permission'
+        'id_permission' => [
+            'label' => 'permiso',
+            'rules' => 'required|is_not_unique[' . TBL_PERMISSION . '.id_permission,is_active,1]',
         ],
     ];
+
 
     /**
      * --------------------------------------------------------------------
@@ -74,27 +75,4 @@ class UserGroupPermissionModel extends CustomModel
         $this->orderBy('created_at', 'ASC');
         return $this->findAll();
     }
-
-    // public function getPermissionByUserGroupAndMenu($id_user_group, $id_menu)
-    // {
-    //     $this->select('id_permission');
-    //     $this->where('id_user_group', $id_user_group);
-    //     $this->where('id_menu', $id_menu);
-    //     $this->where('is_active', 1);
-    //     $this->where('deleted_at', null);
-    //     $this->orderBy('id_permission', 'ASC');
-    //     return $this->findAll();
-    // }
-
-    // public function getPermissionByUserGroupAndMenuAndType($id_user_group, $id_menu, $type)
-    // {
-    //     $this->select('id_permission');
-    //     $this->where('id_user_group', $id_user_group);
-    //     $this->where('id_menu', $id_menu);
-    //     $this->where('type', $type);
-    //     $this->where('is_active', 1);
-    //     $this->where('deleted_at', null);
-    //     $this->orderBy('id_permission', 'ASC');
-    //     return $this->findAll();
-    // }
 }

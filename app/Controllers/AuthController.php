@@ -5,7 +5,7 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
@@ -17,7 +17,7 @@ use App\Libraries\Authorization;
 use CodeIgniter\HTTP\Response;
 
 /**
- * Controllador `AuthController`
+ * Controlador `AuthController`
  * 
  * Controla la autenticación de usuarios
  *
@@ -36,11 +36,18 @@ class AuthController extends ResourceController
 
     public function __construct()
     {
-        // Cargamos modelos librerias y helpers
+        // Cargamos modelos librerías y helpers
         $this->userModel = model('UserModel');
         helper('validation');
     }
 
+    /**
+     * Autentica un usuario
+     * 
+     * Recibe un correo/usuario y una contraseña y retorna un token de autenticación
+     *
+     * @return Response
+     */
     public function index(): Response
     {
         // Establecemos las validaciones del formulario
@@ -58,17 +65,17 @@ class AuthController extends ResourceController
             );
         }
 
-        // Guardamos los datos de la peticion
+        // Almacenamos en variables los datos de la petición
         $username  = trim($this->request->getVar('username'));
         $password  = trim($this->request->getVar('password'));
 
         /**
-         * Buscamos un usuario que coincida con los parametros enviados
+         * Buscamos un usuario que coincida con los parámetros enviados
          *
          * @var \App\Entities\AppUser $user
          */
         if (!$user = $this->userModel->filterOne(["username" => $username], true)) {
-            // ! Si ningun usuario coincide retornamos un mensaje de error
+            // ! Si ningún usuario coincide retornamos un mensaje de error
             return $this->respond(
                 ['errors' => ['Usuario o contraseña incorrectos']],
                 401
@@ -77,7 +84,7 @@ class AuthController extends ResourceController
 
         /**
          * Hacemos uso de la entidad usuario para encriptar la contraseña
-         * Al asignar el atributo `password` automaticamente se encripta el
+         * Al asignar el atributo `password` automáticamente se encripta el
          * valor enviado
          */
         $form = new User(['password' => $password]);
@@ -91,19 +98,28 @@ class AuthController extends ResourceController
             );
         }
 
-        // Verivicamos si el usuario esta activado
+        // Verificamos si el usuario esta activado
         if ($user->is_active == 0) {
-            // ! Si el usuario esta inactivo retornmaos un mensaje de error
+            // ! Si el usuario esta inactivo retornamos un mensaje de error
             return $this->respond(
                 ['errors' => ['Usuario desactivado']],
                 401
             );
         }
 
+        // Generamos el token de autenticación
         $token = Authorization::generateToken(["id_user" => $user->id_user]);
+        // Retornamos el token
         return $this->respond(["token" => $token]);
     }
 
+    /**
+     * Verifica si un token es válido
+     * 
+     * Recibe un token y retorna los datos del usuario o un mensaje de error
+     * 
+     * @return Response
+     */
     public function verify()
     {
         $data = Authorization::getData();
@@ -112,10 +128,12 @@ class AuthController extends ResourceController
             if ($user = $this->userModel->find($data->id_user)) {
                 // Se elimina el password_hash de los datos retornados
                 unset($user->password_hash);
+                // Retornamos la información del grupo de usuario
+                $user->group = $user->group;
                 return $this->respond($user);
             }
         }
 
-        return $this->respond(["errors" => ['No se encontro el usuario']], 401);
+        return $this->respond(["errors" => ['No se encontró el usuario']], 401);
     }
 }

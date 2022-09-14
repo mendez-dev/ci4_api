@@ -5,7 +5,7 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
@@ -20,7 +20,7 @@ use CodeIgniter\HTTP\Response;
  * Controlador ´GroupController´
  * 
  * Gestión de grupos, registro, actualización, eliminación, cambio de estado
- * de los grupos de usuarioss del sistema.
+ * de los grupos de usuarios del sistema.
  */
 class GroupController extends ResourceController
 {
@@ -44,7 +44,7 @@ class GroupController extends ResourceController
 
     public function __construct()
     {
-        // Cargamos modelos librerias y helpers
+        // Cargamos modelos librerías y helpers
         $this->groupModel = model('GroupModel');
         $this->permissionModel = model('PermissionModel');
         $this->userGroupPermissionModel = model('UserGroupPermissionModel');
@@ -52,6 +52,11 @@ class GroupController extends ResourceController
         helper('utils');
     }
 
+    /**
+     * Retorna todos los grupos registrados en el sistema
+     *
+     * @return Response
+     */
     public function index(): Response
     {
         $query_params = getQueryParams($this->request);
@@ -59,6 +64,12 @@ class GroupController extends ResourceController
         return $this->respond($data["response"], $data["code"]);
     }
 
+    /**
+     * Retorna un grupo en específico
+     *
+     * @param int $id id del grupo
+     * @return Response
+     */
     public function info(string $id): Response
     {
         if (null !== $id) {
@@ -113,7 +124,7 @@ class GroupController extends ResourceController
         if ($id !== "") {
             $group = $this->groupModel->find($id);
             if (empty($group)) {
-                return $this->respond(["errors" => ['No existe grupo con el id enviado']], 404);
+                return $this->respond(["errors" => ['No existe grupo con el id enviado']], 400);
             }
         }
 
@@ -201,7 +212,6 @@ class GroupController extends ResourceController
 
         // Almacenamos en la base de datos
         if ($this->groupModel->save($group)) {
-            $updated_group = $this->groupModel->find($id);
             return $this->respond([]);
         } else {
             return $this->respond(["errors" => $this->groupModel->errors()], 400);
@@ -239,7 +249,6 @@ class GroupController extends ResourceController
 
         // Almacenamos en la base de datos
         if ($this->groupModel->save($group)) {
-            $updated_group = $this->groupModel->find($id);
             return $this->respond([]);
         } else {
             return $this->respond(["errors" => $this->groupModel->errors()], 400);
@@ -260,9 +269,6 @@ class GroupController extends ResourceController
 
         // Verificamos si el grupo existe
         if ($id !== "") {
-            /**
-             * @var Group $group
-             */
             $group = $this->groupModel->find($id);
             if (empty($group)) {
                 return $this->respond(["errors" => ['No existe grupo con el id enviado']], 400);
@@ -271,6 +277,69 @@ class GroupController extends ResourceController
         // Obtenemos los permisos del grupo
         $permissions = $group->permissions;
 
+        // Verificamos si el grupo tiene permisos
+        if (empty($permissions)) {
+            return $this->respond(["errors" => ['El grupo no tiene permisos asignados']], 404);
+        }
+
         return $this->respond($permissions);
+    }
+
+    /**
+     * Asigna permisos a un grupo de usuarios.
+     * @param string $id
+     * @return Response
+     */
+    public function assignPermissions($id = "")
+    {
+        // Obtenemos la información del token
+        $auth = Authorization::getData();
+
+        // Verificamos si el grupo existe
+        if ($id !== "") {
+            $group = $this->groupModel->find($id);
+            if (empty($group)) {
+                return $this->respond(["errors" => ['No existe grupo con el id enviado']], 400);
+            }
+        }
+
+        // Obtenemos los permisos enviados
+        $permissions = $this->request->getVar();
+
+        // print_r($permissions);
+
+        // Verificamos si se enviaron permisos
+        if (empty($permissions)) {
+            return $this->respond(["errors" => ['No se enviaron permisos']], 400);
+        }
+
+        // Iniciamos la transacción
+        $this->groupModel->db->transBegin();
+
+        // Eliminamos los permisos actuales
+        $this->groupModel->deletePermissions($id, $auth->id_user);
+
+        $errors = [];
+        // Asignamos los permisos
+        foreach ($permissions as $permission) {
+            $errors = array_merge($errors, $this->groupModel->assignPermission($id, $permission, $auth->id_user));
+        }
+
+        // Verificamos si se ejecutaron las dos consultas
+        if ($this->groupModel->db->transStatus() === FALSE) {
+            $this->groupModel->db->transRollback();
+            // Retornamos el error en la respuesta
+
+        } else {
+            if (!empty($errors)) {
+                $this->groupModel->db->transRollback();
+                return $this->respond(["errors" => $errors], 400);
+            } else {
+                $this->groupModel->db->transCommit();
+                return $this->respond([]);
+            }
+        }
+
+        return $this->respond(["errors" => ['No se pudo asignar los permisos, error al escribir en la base de datos']], 400);
     }
 }

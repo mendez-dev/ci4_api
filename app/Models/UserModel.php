@@ -5,7 +5,7 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
@@ -79,6 +79,19 @@ class UserModel extends CustomModel
         'email' => [
             'label' => 'correo',
             'rules' => 'required|max_length[50]|is_unique[' . TBL_USER . '.email,id_user,{id_user}]'
+        ]
+    ];
+
+    /**
+     * --------------------------------------------------------------------
+     * Relaciones
+     *
+     */
+    protected $hasOne = [
+        'group' => [
+            'App\Models\GroupModel',
+            'id_user_group',
+            'id_user_group'
         ]
     ];
 

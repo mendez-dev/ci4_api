@@ -5,7 +5,7 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
@@ -33,7 +33,7 @@ class PermissionController extends ResourceController
 
     public function __construct()
     {
-        // Cargamos modelos librerias y helpers
+        // Cargamos modelos librerías y helpers
         $this->permissionModel = model('PermissionModel');
         helper('validation');
         helper('utils');

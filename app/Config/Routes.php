@@ -74,6 +74,7 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->put('(:segment)/enable', 'GroupController::enable/$1', ['filter' => 'auth', 'as' => 'group_enable']);
         $routes->put('(:segment)/disable', 'GroupController::disable/$1', ['filter' => 'auth', 'as' => 'group_disable']);
         $routes->get('(:segment)/permissions', 'GroupController::permissions/$1', ['filter' => 'auth', 'as' => 'group_permissions']);
+        $routes->put('(:segment)/permissions', 'GroupController::assignPermissions/$1', ['filter' => 'auth', 'as' => 'group_permissions_update']);
     });
 
     // Rutas para la administracion de permisos

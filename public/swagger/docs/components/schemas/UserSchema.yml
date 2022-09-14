@@ -27,6 +27,8 @@ properties:
     description: "path de la fotografia del usuario"
   is_active:
     type: boolean
+  group:
+    $ref: "GroupSchema.yml"
   created_by:
     type: string
     description: uuidv4 string con longitud de 36 caracteres

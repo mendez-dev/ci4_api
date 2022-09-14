@@ -5,7 +5,7 @@
  *
  * (c) Wilber Mendez <mendezwilber94@gmail.com>
  *
- * For the full copyright and license information, please refere to LICENSE file
+ * For the full copyright and license information, please refer to LICENSE file
  * that has been distributed with this source code.
  */
 
@@ -16,10 +16,10 @@ use \App\Entities\AppSettings;
 use App\Libraries\Authorization;
 
 /**
- * Controllador `AppSettingsController`
+ * Controlador `AppSettingsController`
  * 
  * Se encarga de la lógica de negocios de los ajustes de la
- * aplicación movil.
+ * aplicación móvil.
  *
  * @package  API_CI4
  * @category Controller
@@ -36,7 +36,7 @@ class AppSettingsController extends ResourceController
 
     public function __construct()
     {
-        // Cargamos modelos librerias y helpers
+        // Cargamos modelos librerías y helpers
         $this->appSettingsModel = model('AppSettingsModel');
         helper('validation');
     }
@@ -49,7 +49,7 @@ class AppSettingsController extends ResourceController
      */
     public function index()
     {
-        // Buscamos las parametros de las cunfiguraciones de la app
+        // Buscamos las parámetros de las configuraciones de la app
         $settings = $this->appSettingsModel->first();
 
         // Si se encontró el registro se retornan los datos
@@ -80,7 +80,7 @@ class AppSettingsController extends ResourceController
         unset($appSettings->created_at);
         unset($appSettings->updated_at);
 
-        // Obteemos el id de los ajustes de la app
+        // Obtenemos el id de los ajustes de la app
         $response = $this->appSettingsModel->findAll(1);
         $appSettings->id_settings = $response[0]->id_settings;
         // Asignamos el id del usuario que modifica los ajustes
