@@ -104,7 +104,7 @@ class GroupController extends ResourceController
             $new_group = $this->groupModel->find($id_group);
             return $this->respond($new_group);
         } else {
-            return $this->respond(["errors" => $this->groupModel->errors()], 400);
+            return $this->respond(["errors" => get_errors_array($this->groupModel->errors())], 400);
         }
 
         return $this->respond(["errors" => ['No se pudo registrar el grupo, error al escribir en la base de datos']], 400);
@@ -138,7 +138,7 @@ class GroupController extends ResourceController
             $updated_group = $this->groupModel->find($id);
             return $this->respond($updated_group);
         } else {
-            return $this->respond(["errors" => $this->groupModel->errors()], 400);
+            return $this->respond(["errors" => get_errors_array($this->groupModel->errors())], 400);
         }
 
         return $this->respond(["errors" => ['No se pudo actualizar el grupo, error al escribir en la base de datos']], 400);
@@ -208,13 +208,13 @@ class GroupController extends ResourceController
 
         // Indicamos quien habilita el grupo
         $group->updated_by = $auth->id_user;
-        $group->is_active = true;
+        $group->is_active = 1;
 
         // Almacenamos en la base de datos
         if ($this->groupModel->save($group)) {
             return $this->respond([]);
         } else {
-            return $this->respond(["errors" => $this->groupModel->errors()], 400);
+            return $this->respond(["errors" => get_errors_array($this->groupModel->errors())], 400);
         }
 
         return $this->respond(["errors" => ['No se pudo habilitar el grupo, error al escribir en la base de datos']], 400);
@@ -245,13 +245,11 @@ class GroupController extends ResourceController
 
         // Indicamos quien deshabilita el grupo
         $group->updated_by = $auth->id_user;
-        $group->is_active = false;
+        $group->is_active = 0;
 
         // Almacenamos en la base de datos
         if ($this->groupModel->save($group)) {
             return $this->respond([]);
-        } else {
-            return $this->respond(["errors" => $this->groupModel->errors()], 400);
         }
 
         return $this->respond(["errors" => ['No se pudo deshabilitar el grupo, error al escribir en la base de datos']], 400);
