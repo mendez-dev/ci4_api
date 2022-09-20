@@ -75,6 +75,7 @@ class GroupController extends ResourceController
         if (null !== $id) {
             $group = $this->groupModel->find($id);
             if (!empty($group)) {
+                $group->permissions = $group->permissions;
                 return $this->respond($group, 200);
             }
         }

@@ -129,8 +129,16 @@ class AuthController extends ResourceController
                 // Se elimina el password_hash de los datos retornados
                 unset($user->password_hash);
                 // Retornamos la información del grupo de usuario
-                $user->group = $user->group;
-                return $this->respond($user);
+                /**
+                 * @var \App\Entities\Group $user
+                 */
+
+                $userArray = $user->toArray();
+                $userArray['group'] = $user->group->toArray();
+                $userArray['group']['permissions'] = $user->group->permissions;
+
+
+                return $this->respond($userArray);
             }
         }
 
