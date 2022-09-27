@@ -43,6 +43,7 @@ class PermissionModel extends CustomModel
         'id_menu',
         'name',
         'label',
+        'group_tag',
         'description',
         'icon',
         'depends_on',

@@ -69,6 +69,20 @@ class GroupModel extends CustomModel
             ->update();
     }
 
+    /**
+     * Eliminar los permisos de un grupo que no esten en la lista de permisos
+     */
+    public function deletePermissionsNotIn($id_user_group, $id_user, $permissions)
+    {
+        // Eliminar permisos usando soft delete
+        $this->db->table(TBL_USER_GROUP_PERMISSION)
+            ->where('id_user_group', $id_user_group)
+            ->whereNotIn('id_permission', $permissions)
+            ->set('deleted_by', $id_user)
+            ->set('deleted_at', date('Y-m-d H:i:s'))
+            ->update();
+    }
+
 
     public function assignPermission($id_user_group, $id_permission, $id_user)
     {

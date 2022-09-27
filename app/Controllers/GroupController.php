@@ -316,7 +316,7 @@ class GroupController extends ResourceController
         $this->groupModel->db->transBegin();
 
         // Eliminamos los permisos actuales
-        $this->groupModel->deletePermissions($id, $auth->id_user);
+        $this->groupModel->deletePermissionsNotIn($id, $auth->id_user, $permissions);
 
         $errors = [];
         // Asignamos los permisos

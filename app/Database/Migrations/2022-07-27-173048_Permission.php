@@ -38,6 +38,10 @@ class Permission extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 50
             ],
+            'group_tag'        => [
+                'type'           => 'VARCHAR',
+                'constraint'     => 50
+            ],
             'description'        => [
                 'type'           => 'VARCHAR',
                 'constraint'     => 50

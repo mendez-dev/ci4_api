@@ -90,7 +90,9 @@ class Group extends Entity
             $permissionModel = new PermissionModel();
 
             $subquery = $permissionModel->db->table("user_group_permission AS gp")->select("gp.id_permission")
-                ->where("gp.id_user_group", $this->attributes['id_user_group']);
+                ->where("gp.id_user_group", $this->attributes['id_user_group'])
+                ->where("deleted_at", null);
+
 
             return $permissionModel->whereIn("id_permission", $subquery)->findAll();
         }

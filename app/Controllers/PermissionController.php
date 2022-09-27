@@ -11,8 +11,6 @@
 
 namespace App\Controllers;
 
-use App\Entities\Permission;
-use App\Libraries\Authorization;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\RESTful\ResourceController;
 
