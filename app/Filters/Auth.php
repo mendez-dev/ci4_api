@@ -37,11 +37,14 @@ class Auth implements FilterInterface
             $response->send();
             die();
         }
-        
+
         // Obtenemos la información del usuario
         $userModel = model('UserModel');
+        /**
+         * @var \App\Entities\User
+         */
         $user = $userModel->find($token['data']->id_user);
-        
+
         // Si no existe el usuario en la base de datos retornamos un error
         if (empty($user)) {
             $response->setStatusCode(401);
@@ -49,7 +52,7 @@ class Auth implements FilterInterface
             $response->send();
             die();
         }
-        
+
         // Si el usuario esta desactivado retornamos un mensaje de error
         if (!$user->is_active) {
             $response->setStatusCode(401);
@@ -58,7 +61,17 @@ class Auth implements FilterInterface
             die();
         }
 
+        // Si el usuario no tiene permisos para acceder a la ruta retornamos un mensaje de error
+        if (!empty($arguments)) {
+            $userPermissionsName = array_column($user->group->permissions, 'name');
 
+            if (!in_array($arguments[0], $userPermissionsName)) {
+                $response->setStatusCode(401);
+                $response->setJSON(['errors' => ['No tiene permisos para acceder a esta ruta']]);
+                $response->send();
+                die();
+            }
+        }
     }
 
     /**

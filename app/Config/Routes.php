@@ -54,14 +54,14 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
 
     // Rutas administracion de usuarios
     $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
-        $routes->get('/', 'UserController::index', ['filter' => 'auth', 'as' => 'users']);
-        $routes->get('(:segment)', 'UserController::info/$1', ['filter' => 'auth', 'as' => 'user']);
-        $routes->post('/', 'UserController::store', ['filter' => 'auth', 'as' => 'user_store']);
-        $routes->put('(:segment)', 'UserController::update/$1', ['filter' => 'auth', 'as' => 'user_update']);
-        $routes->delete('(:segment)', 'UserController::delete/$1', ['filter' => 'auth', 'as' => 'user_delete']);
-        $routes->put('(:segment)/enable', 'UserController::enable/$1', ['filter' => 'auth', 'as' => 'user_enable']);
-        $routes->put('(:segment)/disable', 'UserController::disable/$1', ['filter' => 'auth', 'as' => 'user_disable']);
-        $routes->put('(:segment)/password', 'UserController::chagePassword/$1', ['filter' => 'auth', 'as' => 'user_password']);
+        $routes->get('/', 'UserController::index', ['filter' => 'auth:USER_READ', 'as' => 'users']);
+        $routes->get('(:segment)', 'UserController::info/$1', ['filter' => 'auth:USER_READ', 'as' => 'user']);
+        $routes->post('/', 'UserController::store', ['filter' => 'auth:USER_CREATE', 'as' => 'user_store']);
+        $routes->put('(:segment)', 'UserController::update/$1', ['filter' => 'auth:USER_UPDATE', 'as' => 'user_update']);
+        $routes->delete('(:segment)', 'UserController::delete/$1', ['filter' => 'auth:USER_DELETE', 'as' => 'user_delete']);
+        $routes->put('(:segment)/enable', 'UserController::enable/$1', ['filter' => 'auth:USER_ENABLE', 'as' => 'user_enable']);
+        $routes->put('(:segment)/disable', 'UserController::disable/$1', ['filter' => 'auth:USER_DISABLE', 'as' => 'user_disable']);
+        $routes->put('(:segment)/password', 'UserController::chagePassword/$1', ['filter' => 'auth:USER_PASSWORD', 'as' => 'user_password']);
     });
 
     // Rutas administracion de grupos

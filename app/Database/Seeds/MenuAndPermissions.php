@@ -2,10 +2,10 @@
 
 namespace App\Database\Seeds;
 
-use CodeIgniter\Database\Seeder;
+use App\Libraries\CustomSeeder;
 use App\Libraries\MigrationUtils;
 
-class MenuAndPermissions extends Seeder
+class MenuAndPermissions extends CustomSeeder
 {
     public function run()
     {
@@ -193,20 +193,6 @@ class MenuAndPermissions extends Seeder
                 ]
             );
         }
-    }
-
-    private function getMenuIdByRoute(String $route = "")
-    {
-        $menu = $this->db->table(TBL_MENU)
-            ->where("route", $route)->get()->getRow();
-        return $menu->id_menu;
-    }
-
-    private function getPermissionIdByName(String $name = "")
-    {
-        $permissions = $this->db->table(TBL_PERMISSION)
-            ->where("name", $name)->get()->getRow();
-        return $permissions->id_permission;
     }
 }
 
