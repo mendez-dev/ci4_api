@@ -312,6 +312,11 @@ class GroupController extends ResourceController
             return $this->respond(["errors" => ['No se enviaron permisos']], 400);
         }
 
+        // Almacenamos los permisos actuales del grupo
+        $currentPermissions = $group->permissions;
+
+
+
         // Iniciamos la transacción
         $this->groupModel->db->transBegin();
 
@@ -321,7 +326,19 @@ class GroupController extends ResourceController
         $errors = [];
         // Asignamos los permisos
         foreach ($permissions as $permission) {
-            $errors = array_merge($errors, $this->groupModel->assignPermission($id, $permission, $auth->id_user));
+            // Verificamos si el permiso ya se encuentra en los permisos actuales
+            $exists = false;
+            foreach ($currentPermissions as $currentPermission) {
+                if ($currentPermission->id_permission == $permission) {
+                    $exists = true;
+                    break;
+                }
+            }
+
+            // Si el permiso no existe lo agregamos
+            if (!$exists) {
+                $this->groupModel->assignPermission($id, $permission, $auth->id_user);
+            }
         }
 
         // Verificamos si se ejecutaron las dos consultas
