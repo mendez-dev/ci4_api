@@ -30,3 +30,12 @@ class CustomSeeder extends Seeder
         return $permissions->id_permission;
     }
 }
+
+// Constantes con nombres de iconos
+define("FA_EYE", "fa-solid fa-eye");
+define("FA_CIRCLE_PLUS", "fa-solid fa-circle-plus");
+define("FA_PEN_CIRCLE", "fa-solid fa-pen-circle");
+define("FA_CIRCLE_TRASH", "fa-solid fa-circle-trash");
+define("FA_CIRCLE_CHECK", "fa-solid fa-circle-check");
+define("FA_CIRCLE_MINUS", "fa-solid fa-circle-minus");
+define("FA_KEY", "fa-solid fa-key");

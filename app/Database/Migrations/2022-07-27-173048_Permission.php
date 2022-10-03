@@ -25,10 +25,6 @@ class Permission extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 36,
             ],
-            'id_menu'        => [
-                'type'           => 'VARCHAR',
-                'constraint'     => 36
-            ],
             'name'        => [
                 'type'           => 'VARCHAR',
                 'constraint'     => 50,
@@ -88,7 +84,6 @@ class Permission extends Migration
 
         $this->forge->addField($fields);  // Se agregan los campos de la tabla
         $this->forge->addKey('id_permission', true); // Se define la llave primaria
-        $this->forge->addForeignKey('id_menu', TBL_MENU, 'id_menu', 'CASCADE', 'RESTRICT');
         $this->forge->addForeignKey('created_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');
         $this->forge->addForeignKey('updated_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');
         $this->forge->addForeignKey('deleted_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');

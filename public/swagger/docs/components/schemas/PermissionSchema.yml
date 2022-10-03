@@ -1,14 +1,11 @@
 type: object
 required:
-  - id_menu
   - name
   - label
   - description
   - icon
 properties:
   id_permission:
-    type: integer
-  id_menu:
     type: integer
   name:
     type: string

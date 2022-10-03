@@ -1298,7 +1298,6 @@
       "Permission": {
         "type": "object",
         "required": [
-          "id_menu",
           "name",
           "label",
           "description",
@@ -1306,9 +1305,6 @@
         ],
         "properties": {
           "id_permission": {
-            "type": "integer"
-          },
-          "id_menu": {
             "type": "integer"
           },
           "name": {
