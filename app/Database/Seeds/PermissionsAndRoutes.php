@@ -3,17 +3,19 @@
 namespace App\Database\Seeds;
 
 use App\Libraries\CustomSeeder;
-use App\Libraries\MigrationUtils;
 
-class MenuAndPermissions extends CustomSeeder
+class PermissionsAndRoutes extends CustomSeeder
 {
     public function run()
     {
-        // Inserción de menus y permisos
+        // Inserción de permisos
         $this->call('PermissionsUser');
         $this->call('PermissionsSettings');
 
         // Asignación de permisos al grupo super administrador
         $this->call('AssignPermissions');
+
+        // Inserción de rutas
+        $this->call('RoutesSettings');
     }
 }
