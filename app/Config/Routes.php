@@ -82,11 +82,13 @@ $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
         $routes->get('/', 'PermissionController::index', ['filter' => 'auth', 'as' => 'permissions']);
     });
 
-    // Rutas para obtener el menu
-    $routes->group('menu', ['namespace' => 'App\Controllers'], function ($routes) {
-        $routes->get('/', 'MenuController::index', ['filter' => 'auth', 'as' => 'menu']);
+    // Rutas para las rutas
+    $routes->group('route', ['namespace' => 'App\Controllers'], function ($routes) {
+        $routes->get('/', 'RouteController::index', ['filter' => 'auth', 'as' => 'routes']);
     });
 });
+
+
 
 
 /*

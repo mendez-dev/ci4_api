@@ -1091,8 +1091,7 @@
                 "WEB",
                 "MOBILE"
               ]
-            },
-            "description": "Filtra resultados por permiso padre (like %query%)"
+            }
           },
           {
             "in": "query",
@@ -1137,6 +1136,60 @@
                       }
                     }
                   ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#components/responses/404NotFound"
+          }
+        }
+      }
+    },
+    "/v1/route": {
+      "get": {
+        "tags": [
+          "Rutas"
+        ],
+        "summary": "Retorna el listado de rutas",
+        "description": "Retorna el listado de rutas\n### Filtros\nSe puede filtrar por: tipo\n",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "WEB",
+                "MOBILE"
+              ]
+            },
+            "description": "Filtra resultados por tipo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado de rutas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#components/schemas/Route"
+                  }
                 }
               }
             }
@@ -1313,6 +1366,9 @@
           "label": {
             "type": "string"
           },
+          "group_tag": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           },
@@ -1335,19 +1391,19 @@
             "type": "boolean"
           },
           "created_by": {
-            "type": "integer"
+            "type": "string"
           },
           "created_at": {
             "type": "string"
           },
           "updated_by": {
-            "type": "integer"
+            "type": "string"
           },
           "updated_at": {
             "type": "string"
           },
           "deleted_by": {
-            "type": "integer"
+            "type": "string"
           },
           "deleted_at": {
             "type": "string"
@@ -1392,6 +1448,82 @@
           "deleted_by": {
             "type": "string",
             "description": "uuidv4 string con longitud de 36 caracteres"
+          },
+          "deleted_at": {
+            "type": "string"
+          }
+        }
+      },
+      "Route": {
+        "type": "object",
+        "required": [
+          "label",
+          "name",
+          "path",
+          "icon",
+          "priority",
+          "type",
+          "show_in_menu",
+          "is_active"
+        ],
+        "properties": {
+          "id_route": {
+            "type": "string",
+            "description": "uuidv4 string con longitud de 36 caracteres"
+          },
+          "id_parent_route": {
+            "type": "string",
+            "description": "uuidv4 string con longitud de 36 caracteres"
+          },
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "ALL",
+              "WEB",
+              "MOBILE"
+            ]
+          },
+          "show_in_menu": {
+            "type": "boolean"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "deleted_by": {
+            "type": "string"
           },
           "deleted_at": {
             "type": "string"

@@ -114,13 +114,13 @@ class CustomSeeder extends Seeder
     {
         $this->db->transStart();
         foreach ($data as $key => $value) {
-            $exists = $this->db->table(TBL_ROUTE_PERMISSIONS)
+            $exists = $this->db->table(TBL_ROUTE_PERMISSION)
                 ->where("id_route", $value["id_route"])
                 ->where("id_permission", $value["id_permission"])
                 ->where("deleted_at", null)
                 ->get()->getRow();
             if (!$exists) {
-                $this->db->table(TBL_ROUTE_PERMISSIONS)->insert($value);
+                $this->db->table(TBL_ROUTE_PERMISSION)->insert($value);
             }
         }
         $this->db->transComplete();
@@ -139,3 +139,4 @@ define("FA_GEAR", "fa-solid fa-gear");
 define("FA_USER", "fa-solid fa-user");
 define("FA_USERS", "fa-solid fa-users");
 define("FA_MOBILE", "fa-solid fa-mobile");
+define("FA_SHIELD", "fa-solid fa-shield");

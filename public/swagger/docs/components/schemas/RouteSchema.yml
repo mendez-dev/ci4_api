@@ -1,28 +1,39 @@
 type: object
 required:
-  - name
   - label
-  - description
+  - name
+  - path
   - icon
+  - priority
+  - type
+  - show_in_menu
+  - is_active
 properties:
-  id_permission:
-    type: integer
-  name:
+  id_route:
     type: string
+    description: uuidv4 string con longitud de 36 caracteres
+  id_parent_route:
+    type: string
+    description: uuidv4 string con longitud de 36 caracteres
   label:
     type: string
-  group_tag:
+  name:
     type: string
-  description:
+  path:
     type: string
   icon:
     type: string
-    description: icono de font awesome
-  depends_on:
+  priority:
     type: integer
   type:
     type: string
     enum: [ALL, WEB, MOBILE]
+  show_in_menu:
+    type: boolean
+  children:
+    type: array
+    items:
+      type: object
   is_active:
     type: boolean
   created_by:

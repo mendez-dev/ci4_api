@@ -16,7 +16,7 @@ use App\Libraries\MigrationUtils;
 
 class RoutePermissions extends Migration
 {
-    protected $table_name = TBL_ROUTE_PERMISSIONS;
+    protected $table_name = TBL_ROUTE_PERMISSION;
 
     public function up()
     {

@@ -17,7 +17,7 @@ use App\Models\CustomModel;
 /**
  * Modelo `UserModel`
  *
- * Administra la interaccion con la base de datos de la tabla app_user
+ * Administra la interaccion con la base de datos de la tabla user
  *
  * @package  API_CI4
  * @category Model

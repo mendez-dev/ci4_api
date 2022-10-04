@@ -103,7 +103,7 @@ defined('RECORDS_PER_PAGE') || define('RECORDS_PER_PAGE', 10);
 defined('TBL_USER') || define('TBL_USER', 'user');
 defined('TBL_GROUP') || define('TBL_GROUP', 'user_group');
 defined('TBL_ROUTE') || define('TBL_ROUTE', 'route');
-defined('TBL_ROUTE_PERMISSIONS') || define('TBL_ROUTE_PERMISSIONS', 'route_permissions');
+defined('TBL_ROUTE_PERMISSION') || define('TBL_ROUTE_PERMISSION', 'route_permission');
 defined('TBL_PERMISSION') || define('TBL_PERMISSION', 'permission');
 defined('TBL_USER_GROUP_PERMISSION') || define('TBL_USER_GROUP_PERMISSION', 'user_group_permission');
 defined('TBL_APP_SETTINGS') || define('TBL_APP_SETTINGS', 'app_settings');
