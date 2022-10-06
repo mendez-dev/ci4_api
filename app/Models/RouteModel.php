@@ -59,15 +59,24 @@ class RouteModel extends CustomModel
      * 
      * @return array
      */
-    public function getRoutes(array $permissions)
+    public function getRoutes(array $permissions, string $filter = "")
     {
-        $routes = $this->where('id_parent_route', null)
+
+        $this->where('id_parent_route', null)
             ->where('is_active', true)
-            ->orderBy('priority', 'ASC')
-            ->findAll();
+            ->orderBy('priority', 'ASC');
+
+        if ($filter && $filter != 'ALL') {
+            $this->groupStart()
+                ->where('type', $filter)
+                ->orWhere('type', 'ALL')
+            ->groupEnd();
+        }
+
+        $routes = $this->findAll();
 
         foreach ($routes as $route) {
-            $route->children = $this->getChildren($route->id_route, $permissions);
+            $route->children = $this->getChildren($route->id_route, $permissions, $filter);
         }
 
         return $routes;
@@ -80,12 +89,20 @@ class RouteModel extends CustomModel
      * @param string $id_route
      * @return array
      */
-    private function getChildren($id_route, array $permissions)
+    private function getChildren($id_route, array $permissions, string $filter = '')
     {
-        $children = $this->where('id_parent_route', $id_route)
+        $this->where('id_parent_route', $id_route)
             ->where('is_active', true)
-            ->orderBy('priority', 'ASC')
-            ->findAll();
+            ->orderBy('priority', 'ASC');
+
+        if ($filter && $filter != 'ALL') {
+            $this->groupStart()
+                ->where('type', $filter)
+                ->orWhere('type', 'ALL')
+            ->groupEnd();
+        }
+
+        $children = $this->findAll();
 
         foreach ($children as $child) {
             $child->children = $this->getChildren($child->id_route, $permissions);
@@ -111,8 +128,6 @@ class RouteModel extends CustomModel
                     return true;
                 }
             }
-
-            
         });
 
         return $children;

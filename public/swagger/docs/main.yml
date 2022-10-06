@@ -3,7 +3,7 @@ info:
   title: Documentación API
   version: "1.0"
 servers:
-  - url: http://localhost:8080/
+  - url: http://localhost:3005/
 
 paths:
   $ref: "./paths/_index.yml"

@@ -78,7 +78,7 @@ class RoutesSettings extends CustomSeeder
                 "path"         => "/app-settings",
                 "icon"         => FA_MOBILE,
                 "priority"     => 2,
-                "type"         => "ALL",
+                "type"         => "WEB",
                 "show_in_menu" => 1,
                 "is_active"    => 1,
                 "created_by"   => $id_user,

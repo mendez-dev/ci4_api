@@ -36,11 +36,15 @@ class RouteController extends ResourceController
         $auth = Authorization::getData();
         $user = $this->userModel->find($auth->id_user);
 
+        // Obtenemos la informacion del filtro
+        $filter = $this->request->getGet('type') ?? '';
+        
+
         $ids_permissions = array_map(function ($permission) {
             return $permission->id_permission;
         }, $user->group->permissions);
 
-        $data = $this->routeModel->getRoutes($ids_permissions);
+        $data = $this->routeModel->getRoutes($ids_permissions, $filter);
         if (empty($data)) {
             return $this->respond(["errors" => ['No se encontraron registros']], 404);
         }
