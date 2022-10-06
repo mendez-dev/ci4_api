@@ -13,9 +13,6 @@ class PermissionsSettings extends CustomSeeder
         $migrationUtils = new MigrationUtils();
         $id_user = $migrationUtils->getFirstUserId();
 
-        // Definimos los builders que utilizaremos
-        $permissionsBuilder     = $this->db->table(TBL_PERMISSION);
-
 
         // Definimos los permisos principales o padres
         $main_permissions = [
@@ -32,7 +29,7 @@ class PermissionsSettings extends CustomSeeder
         ];
 
         // Insertamos los permisos principales
-        $permissionsBuilder->insertBatch($main_permissions);
+        $this->insertBatchIfNotExists(TBL_PERMISSION, $main_permissions, "name");
 
         // Definimos los permisos hijos
         $permissions = [
@@ -50,6 +47,6 @@ class PermissionsSettings extends CustomSeeder
         ];
 
         // Insertamos los permisos hijos
-        $permissionsBuilder->insertBatch($permissions);
+        $this->insertBatchIfNotExists(TBL_PERMISSION, $permissions, "name");
     }
 }

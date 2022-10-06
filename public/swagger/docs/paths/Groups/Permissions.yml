@@ -64,7 +64,6 @@ get:
       schema:
         type: string
         enum: [ALL, WEB, MOBILE]
-      description: "Filtra resultados por permiso padre (like %query%)"
     - in: query
       name: is_active
       required: false

@@ -24,3 +24,5 @@
   $ref: "./Groups/GroupIdPermission.yml"
 /v1/permission:
   $ref: "./Groups/Permissions.yml"
+/v1/route:
+  $ref: "./Routes/Routes.yml"

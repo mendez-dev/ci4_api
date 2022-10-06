@@ -8,3 +8,5 @@ Permission:
   $ref: "PermissionSchema.yml"
 Group:
   $ref: "GroupSchema.yml"
+Route:
+  $ref: "RouteSchema.yml"

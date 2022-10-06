@@ -14,42 +14,24 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use App\Libraries\MigrationUtils;
 
-class Menu extends Migration
+class RoutePermissions extends Migration
 {
-    protected $table_name = TBL_MENU;
+    protected $table_name = TBL_ROUTE_PERMISSION;
 
     public function up()
     {
         $fields = [
-            'id_menu'        => [
+            'id_route_permission'        => [
                 'type'           => 'VARCHAR',
                 'constraint'     => 36,
             ],
-            'label'        => [
+            'id_route'        => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 50
+                'constraint'     => 36,
             ],
-            'icon'        => [
+            'id_permission'        => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 50
-            ],
-            'route'        => [
-                'type'           => 'VARCHAR',
-                'constraint'     => 100
-            ],
-            'priority' => [
-                'type'           => 'INT',
-                'constraint'     => '11',
-            ],
-            'type' => [
-                'type'       => 'ENUM',
-                'constraint' => ['ALL', 'WEB', 'MOBILE'],
-                'default'    => 'ALL',
-            ],
-            'is_active' => [
-                'type'       => 'TINYINT',
-                'constraint' => '1',
-                'comment'    => '0 = false, 1 = true ',
+                'constraint'     => 36,
             ],
             'created_by' => [
                 'type'       => 'VARCHAR',
@@ -72,21 +54,24 @@ class Menu extends Migration
             ]
         ];
 
-        $this->forge->addField($fields);  // Se agregan los campos de la tabla
-        $this->forge->addKey('id_menu', true); // Se define la llave primaria
+        $this->forge->addField($fields);
+        $this->forge->addKey('id_route_permission', true);
+        $this->forge->addForeignKey('id_route', TBL_ROUTE, 'id_route', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('id_permission', TBL_PERMISSION, 'id_permission', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('created_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');
         $this->forge->addForeignKey('updated_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');
         $this->forge->addForeignKey('deleted_by', TBL_USER, 'id_user', 'CASCADE', 'RESTRICT');
-        $this->forge->createTable($this->table_name); // Se crea la tabla
+        $this->forge->createTable($this->table_name);
 
-        // Creamos el triger para usar unique id
+
+
+        // Creamos los triggers para usar unique id
         $migrationUtils = new MigrationUtils();
-        $migrationUtils->createUniqueIdTrigger($this->table_name, 'id_menu');
+        $migrationUtils->createUniqueIdTrigger($this->table_name, 'id_route_permission');
     }
 
     public function down()
     {
-        // Se elimina la tabla
         $this->forge->dropTable($this->table_name);
     }
 }
