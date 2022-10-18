@@ -32,11 +32,11 @@ class RouteController extends ResourceController
 
     public function index(): Response
     {
-        // Obteemos los permisos del usuario
+        // Obtenemos los permisos del usuario
         $auth = Authorization::getData();
         $user = $this->userModel->find($auth->id_user);
 
-        // Obtenemos la informacion del filtro
+        // Obtenemos la información del filtro
         $filter = $this->request->getGet('type') ?? '';
         
 

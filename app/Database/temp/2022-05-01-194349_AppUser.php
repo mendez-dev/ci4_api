@@ -94,7 +94,7 @@ class AppUser extends Migration
         $this->forge->addKey('id_app_user', true); // Se define la llave primaria
         $this->forge->createTable($this->table_name); // Se crea la tabla
 
-        // Creamos el triger para usar unique id
+        // Creamos el trigger para usar unique id
         $unique = new UniqueId();
         $unique->createUniqueIdTrigger($this->table_name, 'id_app_user');
 

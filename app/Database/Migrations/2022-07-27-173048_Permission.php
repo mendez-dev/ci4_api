@@ -90,7 +90,7 @@ class Permission extends Migration
         $this->forge->addForeignKey('depends_on', $this->table_name, 'id_permission', 'CASCADE', 'RESTRICT');
         $this->forge->createTable($this->table_name); // Se crea la tabla
 
-        // Creamos el triger para usar unique id
+        // Creamos el trigger para usar unique id
         $migrationUtils = new MigrationUtils();
         $migrationUtils->createUniqueIdTrigger($this->table_name, 'id_permission');
     }
