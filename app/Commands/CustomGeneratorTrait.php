@@ -34,6 +34,54 @@ trait CustomGeneratorTrait
     }
 
     /**
+     * Solicita al usuario toda la información necesaria para generar la migración.
+     * 
+     * @param array $data
+     * 
+     * @return array
+     */
+    protected function requestMigrationData(array $data = [], string $className = ''): array
+    {
+        if (empty($data['table'])) $data['table'] = CLI::prompt(
+            lang("Nombre de la tabla por defecto [{$className}]"),
+            null
+        );
+
+        if (empty($data['table'])) {
+            $data['table'] = $className;
+        }
+
+        if (empty($data['id'])) $data['id'] = CLI::prompt(
+            'Nombre del campo ID',
+            null,
+            'required'
+        );
+
+        $id_type = CLI::prompt('Tipo de ID', ['UUID', 'AI'], 'required');
+
+        if ($id_type == 'UUID') {
+            $fields[$data['id']] = [
+                'type' => 'VARCHAR',
+                'constraint' => 36
+            ];
+            $data['uuid'] = true;
+        } else {
+            $fields[$data['id']] = [
+                'type' => 'INT',
+                'constraint' => 11,
+                'unsigned' => true,
+                'auto_increment' => true
+            ];
+        }
+
+        $fields = array_merge($fields, $this->defineFields());
+        $fields = array_merge($fields, $this->addTimestampsAndUserFields());
+        $data['fields'] = $fields;
+
+        return $data;
+    }
+
+    /**
      * En esta función se definen las columnas de la tabla que se van a generar
      * en el archivo de migración.
      * 
@@ -41,31 +89,31 @@ trait CustomGeneratorTrait
      */
     protected function defineFields(): array
     {
-        $columns = [];
+        $fields = [];
         do {
-            $column_name = '';
+            $field_name = '';
 
-            $column_name = CLI::prompt('Nombre del campo');
+            $field_name = CLI::prompt('Nombre del campo');
 
-            if ($column_name) {
+            if ($field_name) {
 
-                $columns[$column_name]['type'] = strtoupper(CLI::prompt('Tipo de dato', $this->allowed_field_types, 'required'));
+                $fields[$field_name]['type'] = strtoupper(CLI::prompt('Tipo de dato', $this->allowed_field_types, 'required'));
 
-                $columns[$column_name]['constraint'] = $this->defineConstraints($columns[$column_name]['type']);
-                if (!$columns[$column_name]['constraint']) unset($columns[$column_name]['constraint']);
+                $fields[$field_name]['constraint'] = $this->defineConstraints($fields[$field_name]['type']);
+                if (!$fields[$field_name]['constraint']) unset($fields[$field_name]['constraint']);
 
                 $unique = CLI::prompt('¿Es único?', ['n', 'y'], 'required');
-                if ($unique == 'y') $columns[$column_name]['unique'] = true;
+                if ($unique == 'y') $fields[$field_name]['unique'] = true;
 
                 $null = CLI::prompt('¿Puede ser nulo?', ['n', 'y'], 'required');
-                if ($null == 'y') $columns[$column_name]['null'] = true;
+                if ($null == 'y') $fields[$field_name]['null'] = true;
 
                 $comment = CLI::prompt('Comentario');
-                if ($comment) $columns[$column_name]['comment'] = $comment;
+                if ($comment) $fields[$field_name]['comment'] = $comment;
             }
-        } while ($column_name != '');
+        } while ($field_name != '');
 
-        return $columns;
+        return $fields;
     }
 
     /**

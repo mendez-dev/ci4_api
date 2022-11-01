@@ -104,10 +104,9 @@ class UserModel extends CustomModel
      *
      * @return User
      */
-    public function getUserBy($column, string $value)
+    public function getUserBy(string $column, string $value)
     {
-        if (is_array($column)) {
-        } else {
+        if (in_array($column, $this->allowedFields)) {
             return $this->where($column, $value)->first();
         }
     }

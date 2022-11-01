@@ -6,7 +6,7 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use APP\Commands\CustomGeneratorTrait;
 
-class CustomMigration extends BaseCommand
+class GeneratorMigration extends BaseCommand
 {
     use CustomGeneratorTrait;
 
@@ -59,6 +59,7 @@ class CustomMigration extends BaseCommand
         '--suffix'    => 'Define el sufijo de la clase. Por defecto: "".',
         '--session'   => 'Define si la migración es para la tabla de sesiones. Por defecto: "false".',
         '--matchIP'   => 'Define si la migración es para la tabla de sesiones. Por defecto: "false".',
+        '--data' => 'Son los parámetros de la migración enviados desde otro comando. Por defecto: "[]".',
     ];
 
 
@@ -85,45 +86,22 @@ class CustomMigration extends BaseCommand
      */
     protected function prepare(string $class): string
     {
-        $data = [];
-        $fields = [];
-        $data['table'] = $this->getOption('table');
-        $data['id']    = $this->getOption('id');
-        $data['uuid'] = false;
 
+        // Accedemos a las opciones
+        $data = $this->getOption('data');
 
+        if (empty($data)) {
 
-        if (empty($data['table'])) $data['table'] = CLI::prompt(
-            lang('CLI.generator.tableName'),
-            null
-        );
+            $data = [];
+            $data['table'] = $this->getOption('table');
+            $data['id']    = $this->getOption('id');
+            $data['uuid'] = false;
 
-        if (empty($data['id'])) $data['id'] = CLI::prompt(
-            'Nombre del campo ID',
-            null,
-            'required'
-        );
+            // Obtenemos el nombre de la clase
+            $className = strtolower(str_replace("App\\{$this->directory}\\", '', $class));
 
-        $id_type = CLI::prompt('Tipo de ID', ['UUID', 'AI'], 'required');
-
-        if ($id_type == 'UUID') {
-            $fields[$data['id']] = [
-                'type' => 'VARCHAR',
-                'constraint' => 36
-            ];
-            $data['uuid'] = true;
-        } else {
-            $fields[$data['id']] = [
-                'type' => 'INT',
-                'constraint' => 11,
-                'unsigned' => true,
-                'auto_increment' => true
-            ];
+            $data = $this->requestMigrationData($data, $className);
         }
-
-        $fields = array_merge($fields, $this->defineFields());
-        $fields = array_merge($fields, $this->addTimestampsAndUserFields());
-        $data['fields'] = $fields;
 
         return $this->parseTemplate($class, [], [], $data);
     }
