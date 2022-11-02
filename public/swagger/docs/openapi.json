@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://10.168.241.106/api_ci4/public/"
+      "url": "http://localhost:8080"
     }
   ],
   "paths": {
