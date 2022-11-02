@@ -76,5 +76,6 @@ class Wizard extends BaseCommand
         $this->call('create:migration', array_merge([$class], $migrationOpts));
         $this->call('create:entity', array_merge([$class], $migrationOpts));
         $this->call('create:model', array_merge([$class], $migrationOpts));
+        $this->call('create:controller', array_merge([$class], $migrationOpts));
     }
 }
