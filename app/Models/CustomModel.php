@@ -176,11 +176,13 @@ class CustomModel extends UuidModel
     {
 
         // Agrupamos condiciones para que no interfieran con el WHERE deleted_at IS NULL
-        if (!empty($query_params['filters']) && !empty($extra_filters)) {
+        if (!empty($query_params['filters']) && !empty($extra_filters) && is_array($query_params['filters'])) {
             $this->orGroupStart();
         }
         // Aplicamos las condiciones a la busqueda
-        $this->filterArray($query_params['filters']);
+        if (!empty($query_params['filters']) && is_array($query_params['filters'])) {
+            $this->filterArray($query_params['filters']);
+        }
         // Aplicamos los filtros extra
         $this->filterArray($extra_filters, false, false);
         // Agrupamos condiciones para que no interfieran con el WHERE deleted_at IS NULL

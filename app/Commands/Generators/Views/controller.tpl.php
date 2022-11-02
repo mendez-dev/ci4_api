@@ -14,7 +14,7 @@ use App\Libraries\Authorization;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\HTTP\Response;
 
-class {class} extends ResourceController
+class <?= $entity ?>Controller extends ResourceController
 {
     /**
      * Instancia de <?= $entity ?>Model.
@@ -108,7 +108,7 @@ class {class} extends ResourceController
 
         // Creamos nuestra entidad
         $<?= strtolower($entity) ?> = new <?= $entity ?>((array) $this->request->getVar());
-        $<?= strtolower($entity) ?>->id_user_<?= strtolower($entity) ?> = $id;
+        $<?= strtolower($entity) ?>-><?= $id ?> = $id;
         $<?= strtolower($entity) ?>->updated_by = $auth->id_user;
 
         // Almacenamos en la base de datos

@@ -24,7 +24,7 @@ namespace {namespace};
 use App\Entities\<?= $entity ?>;
 use App\Models\CustomModel;
 
-class {class} extends CustomModel
+class <?= $entity ?>Model extends CustomModel
 {
     protected $table          = '<?= $table ?>';
     protected $primaryKey     = '<?= $id ?>';
