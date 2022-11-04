@@ -32,28 +32,28 @@ class {class} extends Entity
     '<?= $field ?>' => '<?php
     switch ($value['type']) {
         case 'INT':
-            echo 'integer';
+            echo isset($value['null']) ?  '?integer' : 'integer';
             break;
         case 'VARCHAR':
-            echo 'string';
+            echo isset($value['null']) ?  '?string' : 'string';
             break;
         case 'TEXT':
-            echo 'string';
+            echo isset($value['null']) ?  '?string' : 'string';
             break;
         case 'DECIMAL':
-            echo 'float';
+            echo isset($value['null']) ?  '?float' : 'float';
             break;
         case 'FLOAT':
-            echo 'float';
+            echo isset($value['null']) ?  '?float' : 'float';
             break;
         case 'DOUBLE':
-            echo 'float';
+            echo isset($value['null']) ?  '?float' : 'float';
             break;
         case 'TINYINT':
-            echo 'boolean';
+            echo isset($value['null']) ?  '?integer' : 'integer';
             break;
         default:
-            echo 'string';
+            echo isset($value['null']) ?  '?string' : 'string';
             break;
         }?>',
 <?php endif; ?>
