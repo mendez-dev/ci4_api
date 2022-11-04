@@ -50,7 +50,7 @@ class {class} extends Entity
             echo isset($value['null']) ?  '?float' : 'float';
             break;
         case 'TINYINT':
-            echo isset($value['null']) ?  '?integer' : 'integer';
+            echo isset($value['null']) ?  '?boolean' : 'boolean';
             break;
         default:
             echo isset($value['null']) ?  '?string' : 'string';
