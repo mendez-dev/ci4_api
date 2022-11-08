@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080"
+      "url": "http://localhost:3005/"
     }
   ],
   "paths": {
@@ -1190,6 +1190,195 @@
                   "items": {
                     "$ref": "#components/schemas/Route"
                   }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#components/responses/404NotFound"
+          }
+        }
+      }
+    },
+    "/v1/sync/resources": {
+      "get": {
+        "tags": [
+          "Sincronización de datos"
+        ],
+        "summary": "Obtiene el listado de recursos que la aplicación puede sincronizar",
+        "description": "Este es el primer paso para realizar una descarga de datos a la aplicación móvil, se debe consultar este endpoint para obtener el listado de recursos que la aplicación puede sincronizar.\n\n### A continuación se listan los pasos para realizar una descarga de datos:\n\n1. Consultar este endpoint para obtener el listado de recursos que la aplicación puede sincronizar.\n2. Consultar el endpoint de lotes para obtener el número de lotes que se deben descargar por cada recurso.\n3. Descargar cada lote de cada recurso desde el endpoint de descarga.\n",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna el listado de recursos que la aplicación puede sincronizar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "customers"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#components/responses/404NotFound"
+          }
+        }
+      }
+    },
+    "/v1/sync/batchs": {
+      "get": {
+        "tags": [
+          "Sincronización de datos"
+        ],
+        "summary": "Obtiene la cantidad de lotes que se deben descargar para sincronizar todos los registros de la tabla",
+        "description": "Obtiene la cantidad de lotes que se deben descargar para sincronizar todos los registros del recurso indicado.\n\nLa cantidad obtenida determina cuantas veces se debe llamar al endpoint de descarga de lotes para sincronizar todos los registros del recurso.\n",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "resource",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "El nombre del recurso que se desea sincronizar",
+            "example": "user"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "El número de registros que se requieren por lote, por defecto 1000.",
+            "example": "1000"
+          },
+          {
+            "in": "query",
+            "name": "last_update",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Filtra los registros que se deben sincronizar por fecha de actualización"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna la cantidad de lotes que se deben descargar para sincronizar todos los registros de la tabla",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_batches": {
+                      "type": "integer",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#components/responses/401Unauthorized"
+          },
+          "403": {
+            "$ref": "#components/responses/403Forbidden"
+          },
+          "404": {
+            "$ref": "#components/responses/404NotFound"
+          }
+        }
+      }
+    },
+    "/v1/sync/download": {
+      "get": {
+        "tags": [
+          "Sincronización de datos"
+        ],
+        "summary": "Descarga un lote de registros de una tabla",
+        "description": "Descarga un lote de registros de una tabla\n\nEl lote de registros se descarga en formato JSON cada recurso tiene un formato diferente, por lo que se debe consultar la documentación de cada recurso para conocer el formato de los datos.\n",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "resource",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "El nombre del recurso que se desea sincronizar",
+            "example": "user"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "El número de registros que se requieren por lote, por defecto 1000.",
+            "example": "1000"
+          },
+          {
+            "in": "query",
+            "name": "last_update",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Filtra los registros que se deben sincronizar por fecha de actualización"
+          },
+          {
+            "in": "query",
+            "name": "batch",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "El número de lote que se desea descargar",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna un lote de registros de una tabla",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
                 }
               }
             }

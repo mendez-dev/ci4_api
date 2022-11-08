@@ -1,0 +1,32 @@
+get:
+  tags:
+    - Sincronización de datos
+  summary: Obtiene el listado de recursos que la aplicación puede sincronizar
+  description: |
+    Este es el primer paso para realizar una descarga de datos a la aplicación móvil, se debe consultar este endpoint para obtener el listado de recursos que la aplicación puede sincronizar.
+
+    ### A continuación se listan los pasos para realizar una descarga de datos:
+
+    1. Consultar este endpoint para obtener el listado de recursos que la aplicación puede sincronizar.
+    2. Consultar el endpoint de lotes para obtener el número de lotes que se deben descargar por cada recurso.
+    3. Descargar cada lote de cada recurso desde el endpoint de descarga.
+
+  security:
+    - bearerToken: []
+  responses:
+    200:
+      description: "Retorna el listado de recursos que la aplicación puede sincronizar"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+              example: "customers"
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    404:
+      $ref: "#components/responses/404NotFound"
+    

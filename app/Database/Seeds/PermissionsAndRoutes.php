@@ -11,6 +11,7 @@ class PermissionsAndRoutes extends CustomSeeder
         // Inserción de permisos
         $this->call('PermissionsUser');
         $this->call('PermissionsSettings');
+        $this->call('PermissionsSync');
 
         // Asignación de permisos al grupo super administrador
         $this->call('AssignPermissions');

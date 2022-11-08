@@ -42,6 +42,13 @@ $routes->group('documentation', ['namespace' => 'App\Controllers'], function ($r
 // Versión 1 de las api
 $routes->group('v1', ['namespace' => 'App\Controllers'], function ($routes) {
 
+    // Ruta para la descarga de datos desde la aplicación móvil
+    $routes->group('sync', function ($routes) {
+        $routes->get('resources', 'SyncController::resources_list', ['filter' => 'auth:SYNC', 'as' => 'sync_list']);
+        $routes->get('batchs', 'SyncController::batchs_info', ['filter' => 'auth:SYNC', 'as' => 'sync_batchs_info']);
+        $routes->get('download', 'SyncController::data', ['filter' => 'auth:SYNC', 'as' => 'sync_data']);
+    });
+
     // Rutas de autenticación
     $routes->post('login', 'AuthController::index', ['as' => 'login']);
     $routes->get('verify', 'AuthController::verify', ['filter' => 'auth', 'as' => 'verify']);

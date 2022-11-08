@@ -26,3 +26,10 @@
   $ref: "./Groups/Permissions.yml"
 /v1/route:
   $ref: "./Routes/Routes.yml"
+# Descarga y sincronización de datos
+/v1/sync/resources:
+  $ref: "./Sync/Resources.yml"
+/v1/sync/batchs:
+  $ref: "./Sync/Batchs.yml"
+/v1/sync/download:
+  $ref: "./Sync/Download.yml"

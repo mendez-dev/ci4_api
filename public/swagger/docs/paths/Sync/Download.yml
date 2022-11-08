@@ -1,0 +1,52 @@
+get:
+  tags:
+    - Sincronización de datos
+  summary: Descarga un lote de registros de una tabla
+  description: |
+    Descarga un lote de registros de una tabla
+
+    El lote de registros se descarga en formato JSON cada recurso tiene un formato diferente, por lo que se debe consultar la documentación de cada recurso para conocer el formato de los datos.
+  security:
+    - bearerToken: []
+  parameters:
+    - in: query
+      name: resource
+      required: true
+      schema:
+        type: string
+      description: "El nombre del recurso que se desea sincronizar"
+      example: "user"
+    - in: query
+      name: limit
+      required: true
+      schema:
+        type: integer
+      description: "El número de registros que se requieren por lote, por defecto 1000."
+      example: "1000"
+    - in: query
+      name: last_update
+      required: false
+      schema:
+        type: string
+        format: date-time
+      description: "Filtra los registros que se deben sincronizar por fecha de actualización"
+    - in: query
+      name: batch
+      required: true
+      schema:
+        type: integer
+      description: "El número de lote que se desea descargar"
+      example: "1"
+  responses:
+    200:
+      description: "Retorna un lote de registros de una tabla"
+      content:
+        application/json:
+          schema:
+            type: object
+    401:
+      $ref: "#components/responses/401Unauthorized"
+    403:
+      $ref: "#components/responses/403Forbidden"
+    404:
+      $ref: "#components/responses/404NotFound"
