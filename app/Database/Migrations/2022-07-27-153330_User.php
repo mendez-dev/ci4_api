@@ -56,7 +56,7 @@ class User extends Migration
             ],
             'password_hash' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '128',
+                'constraint' => '256',
                 'comment'    => 'SHA512',
             ],
             'picture' => [
